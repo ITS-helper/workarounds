@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Чек-листы ITSSupport</title>
+  <style>
+    body { font-family: sans-serif; background:#f5f5f5; margin:0; }
+    .container { max-width: 900px; margin: 20px auto; padding: 20px; background:#fff; border-radius:8px; }
+    h1 { margin-top:0; }
+    .task-group { margin-bottom: 24px; }
+    .task-group h2 { margin-bottom: 8px; }
+    .task { display:flex; align-items:flex-start; margin: 6px 0; padding:6px 8px; border-radius:4px; }
+    .task input[type="checkbox"] { margin-right:10px; margin-top:4px; }
+    .task img { width:48px; height:48px; object-fit:cover; margin-left:auto; border-radius:4px; }
+    .task span { max-width: 70%; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Ежедневный чек-лист инженера</h1>
+    <p>Отметь пункты по мере выполнения. Примеры справа на картинках.</p>
+
+    <div class="task-group">
+      <h2>Утро (начало смены)</h2>
+
+      <div class="task">
+        <input type="checkbox">
+        <span>Сфотографировать пропуска инженеров перед началом работы.</span>
+        <img src="images/propusk-example.jpg" alt="Пример фото пропусков">
+      </div>
+
+      <div class="task">
+        <input type="checkbox">
+        <span>Выдать часы в окне 6:00–8:00 и проверить, что все получили свои устройства.</span>
+        <img src="images/watches.jpg" alt="Часы для выдачи">
+      </div>
+    </div>
+
+    <div class="task-group">
+      <h2>День</h2>
+
+      <div class="task">
+        <input type="checkbox">
+        <span>Проверить сеть (UniFi), убедиться, что точки онлайн, нет аварий.</span>
+        <img src="images/network-dashboard.jpg" alt="Панель сети">
+      </div>
+
+      <div class="task">
+        <input type="checkbox">
+        <span>Обновить Google Sheets с часами и сменами.</span>
+        <img src="images/google-sheets.jpg" alt="Google Sheets">
+      </div>
+    </div>
+
+    <div class="task-group">
+      <h2>Вечер (конец смены)</h2>
+
+      <div class="task">
+        <input type="checkbox">
+        <span>Принять часы (18:00–20:00), отметить проблемные устройства.</span>
+        <img src="images/return-watches.jpg" alt="Возврат часов">
+      </div>
+
+      <div class="task">
+        <input type="checkbox">
+        <span>Отправить краткий отчёт в рабочий чат: “Все часы сданы, аварий нет / есть проблемы…”.</span>
+        <img src="images/chat-report.jpg" alt="Отчет в чате">
+      </div>
+    </div>
+  </div>
+</body>
+</html>
