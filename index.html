@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Чек-листы ITSSupport</title>
   <style>
-    /* СКРЫВАЕМ СИНИЙ БАР GITHUB PAGES */
-    .site-header, .header, [data-page-style="home"] header,
-    #header, .top-bar, .github-header { display: none !important; }
+    /* ЖЁСТКО убираем ВСЕ полоски GitHub */
+    * { margin: 0 !important; padding: 0 !important; }
+    body:before, body::before { display: none !important; }
+    .site-header, header.site-header, #site-header { display: none !important; }
+    [id*="header"], [class*="header"] { display: none !important; }
     
     body { 
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
