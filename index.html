@@ -126,7 +126,7 @@
     <div class="intro">
       <strong>Дата:</strong> <input type="date" style="padding:5px; border:1px solid #ddd; border-radius:4px;"> 
       <strong>ФИО:</strong> <input type="text" placeholder="впиши имя" style="padding:5px; border:1px solid #ddd; border-radius:4px;">
-      <br><small>Кликни по строке чтобы отметить. Картинки справа — примеры. Состояние сохраняется в браузере.</small>
+      <br><small>Кликни по строке чтобы отметить. Картинки справа — примеры.</small>
     </div>
 
     <!-- УТРО -->
@@ -185,14 +185,6 @@
         <img src="./images/chat.jpg" alt="Чат" onerror="this.style.display='none'">
       </div>
     </div>
-
-    <div style="text-align:center; padding:25px; background:#e8f4f8; border-radius:12px; margin-top:30px;">
-      <button onclick="saveChecklist()" style="background:linear-gradient(45deg,#28a745,#20c997); color:white; border:none; padding:15px 40px; border-radius:10px; font-size:18px; cursor:pointer; box-shadow:0 4px 15px rgba(40,167,69,0.3);">
-        💾 Сохранить и распечатать
-      </button>
-      <br><br>
-      <small>✅ Состояние сохраняется автоматически<br>🖨️ Ctrl+P для печати отчёта</small>
-    </div>
   </div>
 
   <script>
@@ -200,33 +192,6 @@
       const checkbox = task.querySelector('input[type="checkbox"]');
       checkbox.checked = !checkbox.checked;
       task.classList.toggle('completed', checkbox.checked);
-      saveChecklist(); // авто-сохранение
-    }
-
-    function saveChecklist() {
-      const tasks = document.querySelectorAll('.task input[type="checkbox"]');
-      const state = Array.from(tasks).map(cb => cb.checked);
-      localStorage.setItem('itssupport-checklist-v2', JSON.stringify(state));
-    }
-
-    // Загрузка при открытии страницы
-    window.onload = function() {
-      const saved = localStorage.getItem('itssupport-checklist-v2');
-      if (saved) {
-        const state = JSON.parse(saved);
-        const tasks = document.querySelectorAll('.task input[type="checkbox"]');
-        tasks.forEach((cb, i) => {
-          if (state[i] !== undefined) {
-            cb.checked = state[i];
-            cb.parentElement.classList.toggle('completed', state[i]);
-          }
-        });
-      }
-      
-      // Фокус на поле ФИО
-      setTimeout(() => {
-        document.querySelector('input[type="text"]').focus();
-      }, 500);
     }
   </script>
 </body>
