@@ -5,110 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Чек-листы ITSSupport</title>
   <style>
-    /* ЖЁСТКО убираем ВСЕ полоски GitHub */
-    * { margin: 0 !important; padding: 0 !important; }
-    body:before, body::before { display: none !important; }
-    .site-header, header.site-header, #site-header { display: none !important; }
-    [id*="header"], [class*="header"] { display: none !important; }
+    /* ПОЛНЫЙ СПИСОК - убираем ВСЕ полоски GitHub */
+    .site-header, .header, [data-page-style="home"] header, #header, 
+    .top-bar, .github-header, header.site-header, body::before,
+    [class*="header"], [id*="header"] { display: none !important; }
     
     body { 
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
       background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
-      margin: 0; 
-      padding: 0;
-      min-height: 100vh;
+      margin: 0; padding: 0; min-height: 100vh;
     }
     header { 
       background: linear-gradient(90deg, #1a3c5e 0%, #2a5a8e 100%);
-      padding: 15px 0; 
-      text-align: center; 
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 15px 0; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     header img { 
-      max-height: 60px; 
-      max-width: 350px; 
-      height: auto;
+      max-height: 60px; max-width: 350px; height: auto;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
     }
     .container { 
-      max-width: 900px; 
-      margin: 30px auto; 
-      padding: 30px; 
-      background: rgba(255,255,255,0.95); 
-      border-radius: 16px; 
+      max-width: 900px; margin: 30px auto; padding: 30px; 
+      background: rgba(255,255,255,0.95); border-radius: 16px; 
       box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     }
-    h1 { 
-      color: #1a3c5e; 
-      margin-top: 0; 
-      font-size: 2.2em;
-      text-align: center;
-    }
+    h1 { color: #1a3c5e; margin-top: 0; font-size: 2.2em; text-align: center; }
     .intro { 
-      background: #e8f4f8; 
-      padding: 20px; 
-      border-radius: 10px; 
-      margin-bottom: 30px; 
-      text-align: center;
-      font-size: 1.1em;
+      background: #e8f4f8; padding: 20px; border-radius: 10px; 
+      margin-bottom: 30px; text-align: center; font-size: 1.1em;
     }
     .task-group { 
-      margin-bottom: 35px; 
-      padding: 25px; 
-      background: white; 
-      border-radius: 12px; 
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      margin-bottom: 35px; padding: 25px; background: white; 
+      border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
     .task-group h2 { 
-      color: #2a5a8e; 
-      margin: 0 0 20px 0; 
-      font-size: 1.5em;
-      padding-bottom: 10px;
-      border-bottom: 3px solid #e8f4f8;
+      color: #2a5a8e; margin: 0 0 20px 0; font-size: 1.5em;
+      padding-bottom: 10px; border-bottom: 3px solid #e8f4f8;
     }
     .task { 
-      display: flex; 
-      align-items: flex-start; 
-      margin: 15px 0; 
-      padding: 18px; 
-      border-radius: 10px; 
-      background: #f8f9ff;
-      transition: all 0.3s ease;
-      border-left: 5px solid #1a3c5e;
+      display: flex; align-items: flex-start; margin: 15px 0; 
+      padding: 18px; border-radius: 10px; background: #f8f9ff;
+      transition: all 0.3s ease; border-left: 5px solid #1a3c5e;
       cursor: pointer;
     }
-    .task:hover {
-      transform: translateX(5px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-    }
+    .task:hover { transform: translateX(5px); box-shadow: 0 8px 25px rgba(0,0,0,0.12); }
     .task input[type="checkbox"] { 
-      margin-right: 15px; 
-      margin-top: 3px; 
-      width: 22px; 
-      height: 22px;
+      margin-right: 15px; margin-top: 3px; width: 22px; height: 22px;
       accent-color: #1a3c5e;
     }
-    .task.completed {
-      background: #e8f5e8;
-      border-left-color: #28a745;
-    }
-    .task.completed span {
-      text-decoration: line-through;
-      color: #666;
-    }
+    .task.completed { background: #e8f5e8; border-left-color: #28a745; }
+    .task.completed span { text-decoration: line-through; color: #666; }
     .task img { 
-      width: 55px; 
-      height: 55px; 
-      object-fit: cover; 
-      margin-left: auto; 
-      border-radius: 8px; 
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      width: 55px; height: 55px; object-fit: cover; margin-left: auto; 
+      border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
-    .task span { 
-      flex: 1; 
-      line-height: 1.5; 
-      font-size: 1.05em;
-    }
+    .task span { flex: 1; line-height: 1.5; font-size: 1.05em; }
     @media (max-width: 768px) {
       .container { margin: 15px; padding: 20px; }
       .task { flex-direction: column; }
@@ -117,9 +67,9 @@
   </style>
 </head>
 <body>
-  <!-- ЛОГО ITSSUPPORT -->
   <header>
-    <img src="./images/ITS_logo_horizont.png" alt="ITSSupport" onerror="this.src='https://via.placeholder.com/300x60/1a3c5e/ffffff?text=ITSSupport'">
+    <img src="./images/ITS_logo_horizont.png" alt="ITSSupport" 
+         onerror="this.src='https://via.placeholder.com/300x60/1a3c5e/ffffff?text=ITSSupport'">
   </header>
   
   <div class="container">
@@ -131,16 +81,13 @@
       <br><small>Кликни по строке чтобы отметить. Картинки справа — примеры.</small>
     </div>
 
-    <!-- УТРО -->
     <div class="task-group">
       <h2>🌅 Утро (6:00-8:00)</h2>
-      
       <div class="task" onclick="toggleTask(this)">
         <input type="checkbox" id="task1">
         <span>📸 Сфотографировать пропуска инженеров перед началом работы</span>
         <img src="./images/propusk.jpg" alt="Пропуска" onerror="this.style.display='none'">
       </div>
-
       <div class="task" onclick="toggleTask(this)">
         <input type="checkbox" id="task2">
         <span>⏰ Выдать часы в окне 6:00–8:00. Проверить комплектность</span>
@@ -148,22 +95,18 @@
       </div>
     </div>
 
-    <!-- ДЕНЬ -->
     <div class="task-group">
       <h2>☀️ День (обход и проверки)</h2>
-      
       <div class="task" onclick="toggleTask(this)">
         <input type="checkbox" id="task3">
         <span>🌐 Проверить сеть UniFi — все точки онлайн, нет аварий</span>
         <img src="./images/unifi.jpg" alt="UniFi" onerror="this.style.display='none'">
       </div>
-
       <div class="task" onclick="toggleTask(this)">
         <input type="checkbox" id="task4">
         <span>📊 Обновить Google Sheets — смены, часы, метки</span>
         <img src="./images/sheets.jpg" alt="Sheets" onerror="this.style.display='none'">
       </div>
-
       <div class="task" onclick="toggleTask(this)">
         <input type="checkbox" id="task5">
         <span>🔖 Метки: пропала → ответственный → новая + пломба → фото в чат</span>
@@ -171,16 +114,13 @@
       </div>
     </div>
 
-    <!-- ВЕЧЕР -->
     <div class="task-group">
       <h2>🌙 Вечер (18:00-20:00)</h2>
-      
       <div class="task" onclick="toggleTask(this)">
         <input type="checkbox" id="task6">
         <span>🔄 Принять часы, отметить проблемные устройства (разрядка/повреждения)</span>
         <img src="./images/return.jpg" alt="Возврат" onerror="this.style.display='none'">
       </div>
-
       <div class="task" onclick="toggleTask(this)">
         <input type="checkbox" id="task7">
         <span>💬 Отчёт в рабочий чат: "Смена завершена. Проблем: X"</span>
