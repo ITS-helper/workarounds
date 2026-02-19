@@ -40,29 +40,40 @@
     .task-group h2 { 
       color: #2a5a8e; margin: 0 0 20px 0; font-size: 1.5em;
       padding-bottom: 10px; border-bottom: 3px solid #e8f4f8;
-    }
-    .task { 
-      display: flex; align-items: flex-start; margin: 15px 0; 
-      padding: 18px; border-radius: 10px; background: #f8f9ff;
-      transition: all 0.3s ease; border-left: 5px solid #1a3c5e;
       cursor: pointer;
     }
-    .task:hover { transform: translateX(5px); box-shadow: 0 8px 25px rgba(0,0,0,0.12); }
-    .task input[type="checkbox"] { 
-      margin-right: 15px; margin-top: 3px; width: 22px; height: 22px;
-      accent-color: #1a3c5e;
+    .task-group h2:hover { color: #1a3c5e; }
+    .subtasks { 
+      max-height: 0; overflow: hidden; transition: all 0.3s ease;
+      background: #f0f8ff; padding: 0 20px; border-radius: 8px;
     }
-    .task.completed { background: #e8f5e8; border-left-color: #28a745; }
-    .task.completed span { text-decoration: line-through; color: #666; }
+    .subtasks.open { max-height: 500px; padding: 20px 20px; }
+    .subtask { 
+      display: flex; align-items: center; margin: 12px 0; padding: 12px;
+      background: white; border-radius: 8px; border-left: 4px solid #e8f4f8;
+      transition: all 0.2s ease;
+    }
+    .subtask:hover { 
+      transform: translateX(3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-left-color: #1a3c5e;
+    }
+    .subtask input[type="checkbox"] { 
+      margin-right: 12px; width: 18px; height: 18px; accent-color: #1a3c5e;
+    }
+    .subtask.completed {
+      background: #e8f5e8; border-left-color: #28a745;
+    }
+    .subtask.completed span {
+      text-decoration: line-through; color: #666;
+    }
     .task img { 
-      width: 55px; height: 55px; object-fit: cover; margin-left: auto; 
-      border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      width: 50px; height: 50px; object-fit: cover; margin-left: auto; 
+      border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .task span { flex: 1; line-height: 1.5; font-size: 1.05em; }
     @media (max-width: 768px) {
       .container { margin: 15px; padding: 20px; }
-      .task { flex-direction: column; }
-      .task img { order: -1; margin-bottom: 10px; }
+      .subtask { flex-direction: column; align-items: flex-start; }
+      .subtask img { order: -1; margin-bottom: 8px; width: 40px; height: 40px; }
     }
   </style>
 </head>
@@ -78,62 +89,101 @@
     <div class="intro">
       <strong>Дата:</strong> <input type="date" style="padding:5px; border:1px solid #ddd; border-radius:4px;"> 
       <strong>ФИО:</strong> <input type="text" placeholder="впиши имя" style="padding:5px; border:1px solid #ddd; border-radius:4px;">
-      <br><small>Кликни по строке чтобы отметить. Картинки справа — примеры.</small>
+      <br><small>Кликни по заголовкам блоков → откроется список задач. Отмечай по мере выполнения.</small>
     </div>
 
     <div class="task-group">
-      <h2>🌅 Утро (6:00-8:00)</h2>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="task1">
-        <span>📸 Сфотографировать пропуска инженеров перед началом работы</span>
-        <img src="./images/propusk.jpg" alt="Пропуска" onerror="this.style.display='none'">
-      </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="task2">
-        <span>⏰ Выдать часы в окне 6:00–8:00. Проверить полки с часами</span>
-        <img src="./images/watches.jpg" alt="Часы" onerror="this.style.display='none'">
-      </div>
-    </div>
-
-    <div class="task-group">
-      <h2>☀️ День (обход и проверки)</h2>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="task3">
-        <span>🌐 Здесь блок с обходами</span>
-        <img src="./images/unifi.jpg" alt="UniFi" onerror="this.style.display='none'">
-      </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="task4">
-        <span>📊 Здесь будет блок работы с фронтом (новенькие, фото, отчеты)</span>
-        <img src="./images/sheets.jpg" alt="Sheets" onerror="this.style.display='none'">
-      </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="task5">
-        <span>🔖 Блок с метками: пропала → новая → настройки → отчеты </span>
-        <img src="./images/tag.jpg" alt="Метка" onerror="this.style.display='none'">
+      <h2 onclick="toggleSubtasks(this)">🌅 Утро (6:00-8:00)</h2>
+      <div class="subtasks">
+        <div class="subtask" onclick="toggleSubtask(this)">
+          <input type="checkbox" id="task1">
+          <span>📸 Сфотографировать пропуска инженеров перед началом работы</span>
+          <img src="./images/propusk.jpg" alt="Пропуска" onerror="this.style.display='none'">
+        </div>
+        <div class="subtask" onclick="toggleSubtask(this)">
+          <input type="checkbox" id="task2">
+          <span>⏰ Выдать часы в окне 6:00–8:00. Проверить полки с часами</span>
+          <img src="./images/watches.jpg" alt="Часы" onerror="this.style.display='none'">
+        </div>
       </div>
     </div>
 
     <div class="task-group">
-      <h2>🌙 Вечер (18:00-19:30)</h2>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="task6">
-        <span>🔄 Принять часы, отметить проблемные устройства </span>
-        <img src="./images/return.jpg" alt="Возврат" onerror="this.style.display='none'">
+      <h2 onclick="toggleSubtasks(this)">☀️ День: Блок с обходами</h2>
+      <div class="subtasks">
+        <div class="subtask" onclick="toggleSubtask(this)">
+          <input type="checkbox" id="task3">
+          <span>✅ Обновить метки в мобильном приложении</span>
+          <span>✅ Проверить рюкзак на наличие инструмента</span>
+        </div>
+        <div class="subtask" onclick="toggleSubtask(this)">
+          <input type="checkbox" id="task4">
+          <span>🔋 Заряженный шуруповерт</span>
+        </div>
+        <div class="subtask" onclick="toggleSubtask(this)">
+          <input type="checkbox" id="task5">
+          <span>🖨️ Принтер</span>
+        </div>
+        <div class="subtask" onclick="toggleSubtask(this)">
+          <input type="checkbox" id="task6">
+          <span>🔒 Пломбы</span>
+        </div>
+        <div class="subtask" onclick="toggleSubtask(this)">
+          <input type="checkbox" id="task7">
+          <span>✂️ Кусачки</span>
+        </div>
+        <div class="subtask" onclick="toggleSubtask(this)">
+          <input type="checkbox" id="task8">
+          <span>🔗 Стяжки + инструмент</span>
+        </div>
+        <div class="subtask" onclick="toggleSubtask(this)">
+          <input type="checkbox" id="task9">
+          <span>🔋 Батарейки</span>
+        </div>
       </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="task7">
-        <span>💬 Отчёты в рабочий чат:</span>
-        <img src="./images/chat.jpg" alt="Чат" onerror="this.style.display='none'">
+    </div>
+
+    <div class="task-group">
+      <h2 onclick="toggleSubtasks(this)">📊 День: Фронт (новенькие, фото, отчеты)</h2>
+      <div class="subtasks">
+        <!-- сюда потом добавим -->
+      </div>
+    </div>
+
+    <div class="task-group">
+      <h2 onclick="toggleSubtasks(this)">🔖 День: Метки</h2>
+      <div class="subtasks">
+        <!-- сюда потом добавим -->
+      </div>
+    </div>
+
+    <div class="task-group">
+      <h2 onclick="toggleSubtasks(this)">🌙 Вечер (18:00-19:30)</h2>
+      <div class="subtasks">
+        <div class="subtask" onclick="toggleSubtask(this)">
+          <input type="checkbox" id="task10">
+          <span>🔄 Принять часы, отметить проблемные устройства</span>
+          <img src="./images/return.jpg" alt="Возврат" onerror="this.style.display='none'">
+        </div>
+        <div class="subtask" onclick="toggleSubtask(this)">
+          <input type="checkbox" id="task11">
+          <span>💬 Отчёты в рабочий чат</span>
+          <img src="./images/chat.jpg" alt="Чат" onerror="this.style.display='none'">
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    function toggleTask(task) {
-      const checkbox = task.querySelector('input[type="checkbox"]');
+    function toggleSubtasks(header) {
+      const subtasks = header.nextElementSibling;
+      subtasks.classList.toggle('open');
+    }
+
+    function toggleSubtask(subtask) {
+      const checkbox = subtask.querySelector('input[type="checkbox"]');
       checkbox.checked = !checkbox.checked;
-      task.classList.toggle('completed', checkbox.checked);
+      subtask.classList.toggle('completed', checkbox.checked);
     }
   </script>
 </body>
