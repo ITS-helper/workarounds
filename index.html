@@ -111,6 +111,10 @@
     <div class="task-group">
       <h2 onclick="toggleSubtasks(this)">☀️ Подготовка к обходу:</h2>
       <div class="subtasks">
+         <div class="subtask" onclick="toggleSubtask(this)">
+          <input type="checkbox" id="task6">
+          <span>🔒 Запускаем смену на часах, берем отладку</span>
+        </div>
         <div class="subtask" onclick="toggleSubtask(this)">
           <input type="checkbox" id="task3">
           <span>✅ Обновить метки в мобильном приложении</span>
@@ -138,6 +142,22 @@
         <div class="subtask" onclick="toggleSubtask(this)">
           <input type="checkbox" id="task9">
           <span>🔋 Батарейки</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <h2 onclick="toggleSubtasks(this)">🌅 Во время обхода:</h2>
+      <div class="subtasks">
+        <div class="subtask" onclick="toggleSubtask(this)">
+          <input type="checkbox" id="task1">
+          <span>📸 Загружаем маршрут</span>
+          <img src="./images/propusk.jpg" alt="Пропуска" onerror="this.style.display='none'">
+        </div>
+        <div class="subtask" onclick="toggleSubtask(this)">
+          <input type="checkbox" id="task2">
+          <span>⏰ проверяем настройки метки</span>
+          <img src="./images/watches.jpg" alt="Часы" onerror="this.style.display='none'">
         </div>
       </div>
     </div>
