@@ -74,7 +74,7 @@
 
     .task-group h2 { 
       color: var(--primary); margin: 0 0 20px 0; font-size: 1.6em;
-      padding-bottom: 12px; border-bottom: 3px солид #e8f4f8;
+      padding-bottom: 12px; border-bottom: 3px solid #e8f4f8;
       cursor: pointer; transition: all 0.2s ease;
       display: flex; align-items: center; gap: 12px;
       user-select: none;
@@ -148,19 +148,40 @@
       border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
       border: 1px solid rgba(255,255,255,0.5); z-index: 999;
       max-width: 420px; margin: 0 auto;
+      align-items: center;
+      justify-content: space-between;
     }
+
     .btn {
-      padding: 14px 24px; border: none; border-radius: 30px; font-weight: 600;
-      cursor: pointer; transition: all 0.3s ease; font-size: 15px;
-      display: flex; align-items: center; gap: 8px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
-    .btn-success { background: linear-gradient(135deg, var(--success), #34d399); color: white; }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+
+    .btn-success {
+      background: white;
+      color: var(--primary);
+      border: 1px solid #d1d5db;
+    }
+
+    .btn-success:hover {
+      background: #f3f4f6;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transform: translateY(-1px);
+    }
 
     #totalProgress { 
-      padding: 14px 24px; font-weight: 700; font-size: 18px; 
-      color: var(--primary); align-self: center;
+      padding: 0 4px;
+      font-weight: 700;
+      font-size: 18px; 
+      color: var(--primary);
     }
 
     /* Конфетти */
@@ -173,11 +194,12 @@
         justify-content: center;
       }
       .btn { 
-        flex: 1; min-width: 100px; padding: 12px 16px; 
+        flex: 1; min-width: 140px; padding: 10px 16px; 
         font-size: 14px; text-align: center;
+        justify-content: center;
       }
       #totalProgress { 
-        order: -1; font-size: 20px; padding: 12px 16px;
+        order: -1; font-size: 20px; padding: 4px 0 0 0;
       }
     }
 
@@ -363,9 +385,6 @@
 
   <!-- Actions -->
   <div class="actions">
-    <button class="btn btn-primary" onclick="resetChecklist()">
-      🔄 Сброс
-    </button>
     <button class="btn btn-success" onclick="exportReport()">
       📄 Отчёт
     </button>
@@ -533,21 +552,6 @@
       }).catch(() => {
         prompt('Скопируй отчёт:', report);
       });
-    }
-
-    function resetChecklist() {
-      if (confirm('🔄 Сбросить весь чек-лист?\n(Состояние сохранится в истории браузера)')) {
-        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-          cb.checked = false;
-          cb.closest('.subtask').classList.remove('completed');
-        });
-        document.querySelectorAll('.task-group').forEach(g => g.classList.remove('open'));
-        document.querySelectorAll('.task-count').forEach(inp => {
-          inp.value = '0';
-        });
-        localStorage.removeItem(STORAGE_KEY);
-        updateAllProgress();
-      }
     }
 
     // EVENT HANDLERS
