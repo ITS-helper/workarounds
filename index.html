@@ -532,14 +532,8 @@
       if (!document.hidden) saveState();
     });
 
-    // Pull to refresh (mobile)
-    let startY = 0;
-    document.addEventListener('touchstart', e => {
-      startY = e.touches[0].clientY;
-    });
-    document.addEventListener('touchend', e => {
-      if (startY && e.changedTouches[0].clientY - startY > 80) {
-        resetChecklist();
+    
+  
       }
     });
   </script>
