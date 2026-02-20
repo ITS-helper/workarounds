@@ -131,6 +131,15 @@
       border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
+    .task-count {
+      margin-left: 12px;
+      width: 70px;
+      padding: 4px 6px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      font-size: 14px;
+    }
+
     /* Sticky actions */
     .actions { 
       position: fixed; bottom: 20px; left: 12px; right: 12px;
@@ -188,12 +197,12 @@
   </header>
   
   <div class="container">
-    <h1>📋 Ежедневный чек-лист дежурного инженера</h1>
+    <h1>📋 Ежедневный чек-лист инженера</h1>
     
     <div class="intro">
       <strong>Дата:</strong> <input type="date" id="workDate"> 
       <strong>ФИО:</strong> <input type="text" id="workerName" placeholder="впиши имя">
-      <br><small>👆 Клик по заголовкам = открыть блок. Клик по задачам = отметить.</small>
+      <br><small>👆 Клик по заголовкам = открыть блок. Клик по задачам = отметить. Для задач со счётчиком можно вписать количество.</small>
     </div>
 
     <!-- УТРО -->
@@ -208,7 +217,7 @@
         </div>
         <div class="subtask">
           <input type="checkbox" data-task-id="morning-2">
-          <span>⏰ Распределить инженеров на пункты выдачи Утро/Вечер</span>
+          <span>⏰ Выдать часы в окне 6:00–8:00. Проверить полки с часами</span>
           <img src="./images/watches.jpg" alt="Часы" onerror="this.style.display='none'">
         </div>
       </div>
@@ -216,7 +225,7 @@
 
     <!-- ПОДГОТОВКА -->
     <div class="task-group" data-group="prep">
-      <h2>☀️ Подготовка к обходу, проверка рюкзаков</h2>
+      <h2>☀️ Подготовка к обходу</h2>
       <div class="progress-container"><div class="progress-bar" data-group="prep"></div></div>
       <div class="subtasks">
         <div class="subtask">
@@ -226,10 +235,6 @@
         <div class="subtask">
           <input type="checkbox" data-task-id="prep-2">
           <span>✅ Обновить метки в мобильном приложении</span>
-        </div>
-         <div class="subtask">
-          <input type="checkbox" data-task-id="prep-2">
-          <span>✅ Готовые метки для установки</span>
         </div>
         <div class="subtask">
           <input type="checkbox" data-task-id="prep-3">
@@ -265,7 +270,7 @@
       <div class="subtasks">
         <div class="subtask">
           <input type="checkbox" data-task-id="round-1">
-          <span>📸 не придумал</span>
+          <span>📸 Загружаем маршрут</span>
           <img src="./images/propusk.jpg" alt="Пропуска" onerror="this.style.display='none'">
         </div>
         <div class="subtask">
@@ -284,6 +289,10 @@
         <div class="subtask">
           <input type="checkbox" data-task-id="front-1">
           <span>👤 Регистрация новичков</span>
+          <input type="number" min="0" value="0"
+                 class="task-count"
+                 data-count-for="front-1"
+                 placeholder="0">
         </div>
         <div class="subtask">
           <input type="checkbox" data-task-id="front-2">
@@ -350,7 +359,7 @@
   <canvas id="confetti" style="position:fixed;top:0;left:0;pointer-events:none;z-index:1000;"></canvas>
 
   <script>
-    const STORAGE_KEY = 'itssupport_checklist_v2';
+    const STORAGE_KEY = 'itssupport_checklist_v3';
 
     // СОХРАНЕНИЕ/ЗАГРУЗКА
     function saveState() {
@@ -360,7 +369,9 @@
         date: document.getElementById('workDate').value,
         name: document.getElementById('workerName').value,
         groups: Array.from(document.querySelectorAll('.task-group'))
-          .map(g => ({ id: g.dataset.group, open: g.classList.contains('open') }))
+          .map(g => ({ id: g.dataset.group, open: g.classList.contains('open') })),
+        counts: Array.from(document.querySelectorAll('.task-count'))
+          .map(inp => ({ id: inp.dataset.countFor, value: inp.value }))
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
@@ -369,18 +380,26 @@
       try {
         const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
         if (saved) {
-          saved.tasks.forEach(({ id, checked }) => {
+          // чекбоксы
+          saved.tasks?.forEach(({ id, checked }) => {
             const cb = document.querySelector(`[data-task-id="${id}"]`);
             if (cb) {
               cb.checked = checked;
               cb.closest('.subtask').classList.toggle('completed', checked);
             }
           });
+          // дата/имя
           if (saved.date) document.getElementById('workDate').value = saved.date;
           if (saved.name) document.getElementById('workerName').value = saved.name;
+          // группы
           saved.groups?.forEach(({ id, open }) => {
             const group = document.querySelector(`[data-group="${id}"]`);
             if (group && open) group.classList.add('open');
+          });
+          // количества
+          saved.counts?.forEach(({ id, value }) => {
+            const inp = document.querySelector(`.task-count[data-count-for="${id}"]`);
+            if (inp) inp.value = value;
           });
         }
       } catch (e) { console.log('Load error:', e); }
@@ -463,10 +482,29 @@
       const date = document.getElementById('workDate').value || new Date().toLocaleDateString('ru-RU');
       const progress = document.getElementById('totalProgress').textContent;
       
+      // собираем количества по всем задачам со счётчиком
+      const counts = Array.from(document.querySelectorAll('.task-count'))
+        .map(inp => {
+          const id = inp.dataset.countFor;
+          const value = parseInt(inp.value || '0', 10) || 0;
+          const subtask = document.querySelector(`.subtask input[data-task-id="${id}"]`)?.closest('.subtask');
+          const label = subtask ? subtask.querySelector('span')?.textContent.trim() : id;
+          return { id, value, label };
+        })
+        .filter(item => item.value > 0);
+
       let report = `📋 ITSSupport - Чек-лист\n`;
       report += `👤 ${name} | 📅 ${date}\n`;
       report += `✅ Выполнено: ${progress}\n\n`;
-      
+
+      if (counts.length) {
+        report += `📦 Количества по задачам:\n`;
+        counts.forEach(item => {
+          report += `• ${item.label}: ${item.value}\n`;
+        });
+        report += `\n`;
+      }
+
       document.querySelectorAll('.task-group').forEach(group => {
         const title = group.querySelector('h2').textContent;
         const percent = group.querySelector('.progress-bar').style.width;
@@ -487,6 +525,9 @@
           cb.closest('.subtask').classList.remove('completed');
         });
         document.querySelectorAll('.task-group').forEach(g => g.classList.remove('open'));
+        document.querySelectorAll('.task-count').forEach(inp => {
+          inp.value = '0';
+        });
         localStorage.removeItem(STORAGE_KEY);
         updateAllProgress();
       }
@@ -508,16 +549,25 @@
         });
       });
 
-      // Toggle tasks
+      // Toggle tasks (чекбоксы)
       document.querySelectorAll('.subtask').forEach(subtask => {
         subtask.addEventListener('click', function(e) {
           const checkbox = this.querySelector('input[type="checkbox"]');
-          if (e.target !== checkbox) {
+          const isCountInput = e.target.classList.contains('task-count');
+          // не трогаем чекбокс, если кликаем в поле количества
+          if (!isCountInput && e.target !== checkbox && checkbox) {
             checkbox.checked = !checkbox.checked;
             this.classList.toggle('completed', checkbox.checked);
           }
           saveState();
           updateAllProgress();
+        });
+      });
+
+      // изменения в полях количества
+      document.querySelectorAll('.task-count').forEach(inp => {
+        inp.addEventListener('input', () => {
+          saveState();
         });
       });
 
