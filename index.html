@@ -5,429 +5,570 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Чек-листы ITSSupport</title>
   <meta name="theme-color" content="#0b2740">
-  <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiSVRTU3VwcG9ydCBDaGVjay1saXN0Iiwic2hvcnRfbmFtZSI6IklUUyBDaGVjayIsInN0YXJybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjM2E0ZDZjIiwidGhlbWVfY29sb3IiOiIjM2E0ZDZjIn0=">
-    <style>
-    /* Скрываем GitHub элементы */
-    .site-header, .header, [data-page-style="home"] header, #header, 
-    .top-bar, .github-header, header.site-header, body::before,
-    [class*="header"], [id*="header"] { display: none !important; }
-    
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
     :root {
-      /* Брендовые цвета */
-      --primary: #0b2740;      /* тёмный синий – заголовки, текст */
-      --secondary: #123b63;    /* синий – бордюры, hover */
-      --accent: #00b0ff;       /* голубой – акценты/кнопки */
-
-      --bg-main: #f5f7fb;      /* общий фон */
-      --card-bg: #ffffff;      /* фон карточек */
-      --muted: #6b7280;
-
+      --primary: #0b2740;
+      --secondary: #123b63;
+      --accent: #00b0ff;
+      --bg-main: #f0f4f9;
+      --card-bg: #ffffff;
+      --muted: #5a6a7e;
       --success: #10b981;
       --warning: #f59e0b;
-      --progress-bg: #e5e7eb;
-      --glass-bg: rgba(255,255,255,0.9);
+      --progress-bg: #dde4ee;
+      --glass-bg: rgba(255,255,255,0.92);
+      --border: #dde4ee;
     }
 
     * { box-sizing: border-box; }
-    
-    body { 
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-      background: radial-gradient(circle at top, #e5f1ff 0%, #f5f7fb 40%, #eef2f7 100%);
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: #eef2f8;
+      background-image:
+        radial-gradient(ellipse at 20% 0%, rgba(0,176,255,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 100%, rgba(11,39,64,0.07) 0%, transparent 55%);
       margin: 0; padding: 0; min-height: 100vh;
       overscroll-behavior: none;
-      color: #1f2937;
+      color: #1a2a3a;
     }
 
-    header { 
-      background: linear-gradient(90deg, #0b2740 0%, #123b63 100%);
-      padding: 15px 0; text-align: center; box-shadow: 0 4px 18px rgba(15,23,42,0.35);
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(90deg, #0b2740 0%, #0e3359 60%, #123b63 100%);
+      padding: 0;
+      box-shadow: 0 4px 24px rgba(11,39,64,0.45);
       position: sticky; top: 0; z-index: 100;
+      border-bottom: 2px solid rgba(0,176,255,0.3);
     }
-    header img { 
-      max-height: 60px; max-width: 350px; height: auto;
-      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.35));
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    header img {
+      max-height: 44px; max-width: 200px; height: auto;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+    }
+    .header-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75em;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      border-left: 1px solid rgba(255,255,255,0.2);
+      padding-left: 16px;
     }
 
-    .container { 
-      max-width: 900px; margin: 20px auto 100px auto; padding: 20px; 
+    /* ── CONTAINER ── */
+    .container {
+      max-width: 900px; margin: 0 auto 110px auto; padding: 24px 20px;
     }
 
-    h1 { 
-      color: var(--primary); margin: 0 0 30px 0; font-size: 2.2em; 
-      text-align: center; text-shadow: 0 1px 2px rgba(255,255,255,0.8);
-    }
-
-    .intro { 
-      background: var(--glass-bg); 
-      backdrop-filter: blur(10px);
-      padding: 20px; border-radius: 16px; margin-bottom: 30px; 
-      text-align: center; border: 1px solid rgba(0,176,255,0.18);
-      box-shadow: 0 10px 25px rgba(15,23,42,0.12);
-      color: var(--muted);
-    }
-    .intro strong {
+    h1 {
+      font-family: 'Oswald', sans-serif;
       color: var(--primary);
+      margin: 0 0 24px 0;
+      font-size: 1.9em;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    /* ── INTRO ── */
+    .intro {
+      background: var(--glass-bg);
+      padding: 18px 22px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 16px rgba(11,39,64,0.08);
+    }
+    .intro-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .intro-field label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.78em;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+      white-space: nowrap;
     }
     .intro input {
-      padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 8px;
-      margin: 0 8px; font-size: 16px; width: 180px;
-      background: #ffffff;
-      color: #111827;
+      padding: 7px 11px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: 14px;
+      font-family: 'Source Sans 3', sans-serif;
+      background: #f8fafc;
+      color: #1a2a3a;
+      transition: border-color 0.2s;
     }
-    .intro input::placeholder {
-      color: #9ca3af;
+    .intro input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: #fff;
+    }
+    .intro input::placeholder { color: #a0b0c0; }
+    #workDate { width: 160px; }
+    #workerName { width: 180px; }
+    .intro-hint {
+      font-size: 12px;
+      color: var(--muted);
+      width: 100%;
+      margin: 0;
+      padding-top: 4px;
+      border-top: 1px solid var(--border);
     }
 
-    .task-group { 
-      margin-bottom: 25px; padding: 22px 24px; 
+    /* ── TASK GROUP ── */
+    .task-group {
+      margin-bottom: 16px;
       background: var(--card-bg);
-      border-radius: 18px; 
-      box-shadow: 0 12px 30px rgba(15,23,42,0.08);
-      border: 1px solid #e5e7eb;
-      transition: all 0.25s ease;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(11,39,64,0.07);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: box-shadow 0.25s ease, border-color 0.25s ease;
     }
-    .task-group:hover { 
-      transform: translateY(-3px); 
-      box-shadow: 0 18px 40px rgba(15,23,42,0.12);
+    .task-group:hover {
+      box-shadow: 0 8px 28px rgba(11,39,64,0.12);
       border-color: rgba(0,176,255,0.35);
     }
 
-    .task-group h2 { 
-      color: var(--primary); margin: 0 0 18px 0; font-size: 1.5em;
-      padding-bottom: 10px; border-bottom: 2px solid #e5edf7;
-      cursor: pointer; transition: all 0.2s ease;
-      display: flex; align-items: center; gap: 10px;
+    .group-header {
+      padding: 16px 20px 14px;
+      cursor: pointer;
       user-select: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: background 0.2s;
     }
-    .task-group h2:hover { 
-      color: var(--secondary); 
+    .group-header:hover { background: #f7fafd; }
+
+    .group-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .task-group h2 {
+      font-family: 'Oswald', sans-serif;
+      color: var(--primary);
+      margin: 0;
+      font-size: 1.05em;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .task-group h2 .icon {
+      font-size: 1.1em;
+      line-height: 1;
+    }
+
+    .group-chevron {
+      color: var(--muted);
+      font-size: 18px;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+    .task-group.open .group-chevron {
+      transform: rotate(180deg);
     }
 
     .progress-container {
-      height: 8px; background: var(--progress-bg); border-radius: 999px;
-      margin-bottom: 18px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+      height: 4px;
+      background: var(--progress-bg);
+      border-radius: 999px;
+      overflow: hidden;
     }
     .progress-bar {
-      height: 100%; 
-      background: linear-gradient(90deg, var(--accent), #34d399);
-      width: 0%; transition: width 0.4s ease; border-radius: 999px;
-      box-shadow: 0 0 12px rgba(0,176,255,0.45);
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent) 0%, #34d399 100%);
+      width: 0%;
+      transition: width 0.4s ease;
+      border-radius: 999px;
+      box-shadow: 0 0 8px rgba(0,176,255,0.5);
     }
 
-    .subtasks { 
-      max-height: 0; overflow: hidden; transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      background: #f9fafb; padding: 0 18px; border-radius: 12px;
+    /* ── SUBTASKS ── */
+    .subtasks {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .task-group.open .subtasks { 
-      max-height: 1000px; padding: 20px 18px; 
+    .task-group.open .subtasks {
+      max-height: 2000px;
+    }
+    .subtasks-inner {
+      padding: 6px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
-    .subtask { 
-      display: flex; align-items: center; margin: 10px 0; padding: 14px 14px;
-      background: #ffffff;
-      border-radius: 12px; border-left: 4px solid #e5e7eb;
-      cursor: pointer; transition: all 0.2s ease;
-      box-shadow: 0 2px 6px rgba(15,23,42,0.04);
-    }
-    .subtask:hover { 
-      transform: translateX(4px); 
-      border-left-color: var(--accent);
-      box-shadow: 0 4px 12px rgba(15,23,42,0.08);
-    }
-    .subtask input[type="checkbox"] { 
-      margin-right: 14px; width: 20px; height: 20px; accent-color: var(--accent);
+    .subtask {
+      display: flex;
+      align-items: center;
+      padding: 12px 14px;
+      background: #f8fafc;
+      border-radius: 9px;
+      border-left: 3px solid transparent;
       cursor: pointer;
+      transition: all 0.18s ease;
+      gap: 12px;
+    }
+    .subtask:hover {
+      background: #f0f6ff;
+      border-left-color: var(--accent);
     }
     .subtask.completed {
-      background: #ecfdf5; 
+      background: #f0fdf8;
       border-left-color: var(--success);
     }
-    .subtask.completed span {
-      text-decoration: line-through; color: #9ca3af;
+
+    .subtask input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
     }
 
     .subtask span {
-      color: #111827;
+      font-size: 14px;
+      color: #2a3a4a;
+      flex: 1;
+      line-height: 1.4;
+      font-weight: 400;
+    }
+    .subtask.completed span {
+      text-decoration: line-through;
+      color: #94a3b8;
     }
 
-    .task img { 
-      width: 44px; height: 44px; object-fit: cover; margin-left: auto; 
-      border-radius: 10px; box-shadow: 0 2px 6px rgba(15,23,42,0.2);
+    .subtask img {
+      width: 40px; height: 40px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(11,39,64,0.18);
+      flex-shrink: 0;
     }
 
     .task-count {
-      margin-left: 10px;
-      width: 70px;
-      padding: 4px 6px;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
+      width: 68px;
+      padding: 5px 8px;
+      border-radius: 7px;
+      border: 1px solid var(--border);
       font-size: 14px;
-      background: #f9fafb;
-      color: #111827;
+      font-family: 'Source Sans 3', sans-serif;
+      background: #fff;
+      color: #1a2a3a;
+      text-align: center;
+      flex-shrink: 0;
+      transition: border-color 0.2s;
     }
-    .task-count::placeholder {
-      color: #9ca3af;
+    .task-count:focus {
+      outline: none;
+      border-color: var(--accent);
     }
+    .task-count::placeholder { color: #a0b0c0; }
 
-    /* Sticky actions */
-    .actions { 
-      position: fixed; bottom: 20px; left: 12px; right: 12px;
-      display: flex; gap: 12px; padding: 10px 16px; 
-      background: rgba(255,255,255,0.96); backdrop-filter: blur(14px);
-      border-radius: 999px; box-shadow: 0 12px 30px rgba(15,23,42,0.18);
-      border: 1px solid #e5e7eb; z-index: 999;
-      max-width: 420px; margin: 0 auto;
+    /* ── ACTIONS BAR ── */
+    .actions {
+      position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      padding: 10px 16px;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(16px);
+      border-radius: 999px;
+      box-shadow: 0 8px 32px rgba(11,39,64,0.2);
+      border: 1px solid var(--border);
+      z-index: 999;
+      width: calc(100% - 32px);
+      max-width: 400px;
       align-items: center;
       justify-content: space-between;
     }
 
     .btn {
-      padding: 9px 18px;
+      padding: 9px 20px;
       border: none;
       border-radius: 999px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
-      font-size: 14px;
+      font-size: 13.5px;
+      font-family: 'Oswald', sans-serif;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
     }
-
-    .btn-success {
+    .btn-primary {
       background: var(--accent);
       color: #04111f;
-      border: 1px solid #33c2ff;
+      border: 1px solid rgba(0,176,255,0.5);
     }
-
-    .btn-success:hover {
+    .btn-primary:hover {
       background: #19b9ff;
-      box-shadow: 0 6px 16px rgba(0,176,255,0.35);
+      box-shadow: 0 4px 16px rgba(0,176,255,0.4);
       transform: translateY(-1px);
     }
-
-    #totalProgress { 
-      padding: 0 4px;
-      font-weight: 700;
-      font-size: 18px; 
+    .btn-ghost {
+      background: transparent;
       color: var(--primary);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover {
+      background: #f0f6ff;
+      border-color: var(--accent);
     }
 
-    /* Конфетти */
+    #totalProgress {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--primary);
+      min-width: 52px;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── CONFETTI ── */
     #confetti { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1000; }
 
-    /* Мобильная оптимизация */
-    @media (max-width: 480px) {
+    /* ── MOBILE ── */
+    @media (max-width: 500px) {
+      h1 { font-size: 1.4em; }
       .actions {
-        left: 8px; right: 8px; flex-wrap: wrap; gap: 8px;
-        justify-content: center;
+        flex-wrap: wrap; gap: 8px; justify-content: center;
+        padding: 12px 14px;
       }
-      .btn { 
-        flex: 1; min-width: 140px; padding: 9px 14px; 
-        font-size: 14px; text-align: center;
-        justify-content: center;
-      }
-      #totalProgress { 
-        order: -1; font-size: 20px; padding: 2px 0 0 0;
-      }
+      .btn { flex: 1; min-width: 120px; justify-content: center; }
+      #totalProgress { order: -1; width: 100%; font-size: 22px; }
     }
 
-    /* PWA install prompt / safe-area bottom */
     @supports (padding: max(0px)) {
       .actions {
-        padding-bottom: max(16px, env(safe-area-inset-bottom));
-        bottom: max(20px, env(safe-area-inset-bottom));
+        bottom: max(16px, env(safe-area-inset-bottom));
       }
     }
   </style>
-
 </head>
 <body>
+
   <header>
-    <img src="./images/ITS_logo_horizont.png" alt="ITSSupport" 
-         onerror="this.src='https://via.placeholder.com/300x60/0b2740/ffffff?text=ITSSupport'">
+    <div class="header-inner">
+      <img src="./images/ITS_logo_horizont.png" alt="ITSSupport"
+           onerror="this.src='https://via.placeholder.com/200x44/0b2740/ffffff?text=ITSSupport'">
+      <span class="header-title">Система мониторинга</span>
+    </div>
   </header>
-  
+
   <div class="container">
-    <h1>📋 Ежедневный чек-лист дежурного инженера</h1>
-    
+    <h1>Чек-лист дежурного инженера</h1>
+
     <div class="intro">
-      <strong>Дата:</strong> <input type="date" id="workDate"> 
-      <strong>ФИО:</strong> <input type="text" id="workerName" placeholder="впиши имя">
-      <br><small>👆 Клик по заголовкам = открыть блок. Клик по задачам = отметить. Для задач со счётчиком можно вписать количество.</small>
+      <div class="intro-field">
+        <label>Дата</label>
+        <input type="date" id="workDate">
+      </div>
+      <div class="intro-field">
+        <label>Сотрудник</label>
+        <input type="text" id="workerName" placeholder="Введите имя">
+      </div>
+      <p class="intro-hint">Нажмите на заголовок блока чтобы раскрыть задачи · Отметьте выполненные пункты кликом</p>
     </div>
 
     <!-- УТРО -->
     <div class="task-group" data-group="morning">
-      <h2>🌅 Утро (6:00-8:00)</h2>
-      <div class="progress-container"><div class="progress-bar" data-group="morning"></div></div>
-      <div class="subtasks">
+      <div class="group-header">
+        <div class="group-title-row">
+          <h2><span class="icon">🕕</span> Утро (6:00–8:00)</h2>
+          <span class="group-chevron">▼</span>
+        </div>
+        <div class="progress-container"><div class="progress-bar" data-group="morning"></div></div>
+      </div>
+      <div class="subtasks"><div class="subtasks-inner">
         <div class="subtask">
           <input type="checkbox" data-task-id="morning-1">
-          <span>📸 Сфотографировать пропуска инженеров перед началом работы/перекличка</span>
+          <span>Фотофиксация пропусков инженеров / перекличка перед началом смены</span>
           <img src="./images/propusk.jpg" alt="Пропуска" onerror="this.style.display='none'">
         </div>
         <div class="subtask">
           <input type="checkbox" data-task-id="morning-2">
-          <span>⏰ Выдать часы в окне 6:00–8:00. Проверить полки с часами</span>
+          <span>Выдача часов в окне 6:00–8:00. Проверка полок с часами</span>
           <img src="./images/watches.jpg" alt="Часы" onerror="this.style.display='none'">
         </div>
-      </div>
+      </div></div>
     </div>
 
     <!-- ПОДГОТОВКА -->
     <div class="task-group" data-group="prep">
-      <h2>☀️ Подготовка к обходу</h2>
-      <div class="progress-container"><div class="progress-bar" data-group="prep"></div></div>
-      <div class="subtasks">
+      <div class="group-header">
+        <div class="group-title-row">
+          <h2><span class="icon">⚙️</span> Подготовка к обходу</h2>
+          <span class="group-chevron">▼</span>
+        </div>
+        <div class="progress-container"><div class="progress-bar" data-group="prep"></div></div>
+      </div>
+      <div class="subtasks"><div class="subtasks-inner">
         <div class="subtask">
           <input type="checkbox" data-task-id="prep-1">
-          <span>🔒 Запускаем смену на часах, берём отладку</span>
+          <span>Запуск смены на часах, получение отладочного устройства</span>
         </div>
         <div class="subtask">
           <input type="checkbox" data-task-id="prep-2">
-          <span>✅ Обновить метки в мобильном приложении</span>
+          <span>Обновление меток в мобильном приложении</span>
         </div>
         <div class="subtask">
           <input type="checkbox" data-task-id="prep-3">
-          <span>🔋 Проверка рюкзака с инструментом</span>
+          <span>Проверка рюкзака с инструментом</span>
         </div>
-      </div>
+      </div></div>
     </div>
 
     <!-- ОБХОД -->
     <div class="task-group" data-group="round">
-      <h2>🌅 Во время обхода</h2>
-      <div class="progress-container"><div class="progress-bar" data-group="round"></div></div>
-      <div class="subtasks">
+      <div class="group-header">
+        <div class="group-title-row">
+          <h2><span class="icon">🗺️</span> Обход объекта</h2>
+          <span class="group-chevron">▼</span>
+        </div>
+        <div class="progress-container"><div class="progress-bar" data-group="round"></div></div>
+      </div>
+      <div class="subtasks"><div class="subtasks-inner">
         <div class="subtask">
           <input type="checkbox" data-task-id="round-1">
-          <span>📸 Проверка пунктов выдачи (температура помещения, выгруженные часы)</span>
+          <span>Проверка пунктов выдачи: температура помещения, наличие выгруженных часов</span>
           <img src="./images/propusk.jpg" alt="Пропуска" onerror="this.style.display='none'">
         </div>
         <div class="subtask">
           <input type="checkbox" data-task-id="round-2">
-          <span>⏰ сюда нужны идеи</span>
-          <img src="./images/watches.jpg" alt="Часы" onerror="this.style.display='none'">
+          <span>Сюда нужны идеи</span>
         </div>
-      </div>
+      </div></div>
     </div>
 
     <!-- ФРОНТ -->
     <div class="task-group" data-group="front">
-      <h2>📊 День: Фронт (новенькие, бот, табель)</h2>
-      <div class="progress-container"><div class="progress-bar" data-group="front"></div></div>
-      <div class="subtasks">
-
+      <div class="group-header">
+        <div class="group-title-row">
+          <h2><span class="icon">👥</span> День: Фронт (новенькие, бот, табель)</h2>
+          <span class="group-chevron">▼</span>
+        </div>
+        <div class="progress-container"><div class="progress-bar" data-group="front"></div></div>
+      </div>
+      <div class="subtasks"><div class="subtasks-inner">
         <div class="subtask">
           <input type="checkbox" data-task-id="front-1">
-          <span>👤 Регистрация новичков</span>
-          <input type="number" min="0" value="0"
-                 class="task-count"
-                 data-count-for="front-1"
-                 placeholder="0">
+          <span>Регистрация новичков</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="front-1" placeholder="0">
         </div>
-
         <div class="subtask">
           <input type="checkbox" data-task-id="front-2">
-          <span>🤖 Регистрация в боте</span>
-          <input type="number" min="0" value="0"
-                 class="task-count"
-                 data-count-for="front-2"
-                 placeholder="0">
+          <span>Регистрация в боте</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="front-2" placeholder="0">
         </div>
-
         <div class="subtask">
           <input type="checkbox" data-task-id="front-3">
-          <span>📑 Обращения, связанные с табелем</span>
-          <input type="number" min="0" value="0"
-                 class="task-count"
-                 data-count-for="front-3"
-                 placeholder="0">
+          <span>Обращения, связанные с табелем</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="front-3" placeholder="0">
         </div>
-
-      </div>
+      </div></div>
     </div>
 
     <!-- МЕТКИ -->
     <div class="task-group" data-group="tags">
-      <h2>🔖 День: Метки</h2>
-      <div class="progress-container"><div class="progress-bar" data-group="tags"></div></div>
-      <div class="subtasks">
-
+      <div class="group-header">
+        <div class="group-title-row">
+          <h2><span class="icon">📡</span> День: Метки</h2>
+          <span class="group-chevron">▼</span>
+        </div>
+        <div class="progress-container"><div class="progress-bar" data-group="tags"></div></div>
+      </div>
+      <div class="subtasks"><div class="subtasks-inner">
         <div class="subtask">
           <input type="checkbox" data-task-id="tags-1">
-          <span>🏷️ Количество пройденных меток</span>
-          <input type="number" min="0" value="0"
-                 class="task-count"
-                 data-count-for="tags-1"
-                 placeholder="0">
+          <span>Количество пройденных меток</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="tags-1" placeholder="0">
         </div>
-
         <div class="subtask">
           <input type="checkbox" data-task-id="tags-2">
-          <span>🏷️ Количество новых меток</span>
-          <input type="number" min="0" value="0"
-                 class="task-count"
-                 data-count-for="tags-2"
-                 placeholder="0">
+          <span>Количество новых меток</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="tags-2" placeholder="0">
         </div>
-
         <div class="subtask">
           <input type="checkbox" data-task-id="tags-3">
-          <span>🏷️ Количество потерянных меток</span>
-          <input type="number" min="0" value="0"
-                 class="task-count"
-                 data-count-for="tags-3"
-                 placeholder="0">
+          <span>Количество потерянных меток</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="tags-3" placeholder="0">
         </div>
-
         <div class="subtask">
           <input type="checkbox" data-task-id="tags-4">
-          <span>🔄 Синхронизация данных (работа с журналом BLE/backend)</span>
+          <span>Синхронизация данных: работа с журналом BLE / backend</span>
         </div>
-
-      </div>
+      </div></div>
     </div>
 
     <!-- ВЕЧЕР -->
     <div class="task-group" data-group="evening">
-      <h2>🌙 Вечер (18:00-19:30)</h2>
-      <div class="progress-container"><div class="progress-bar" data-group="evening"></div></div>
-      <div class="subtasks">
+      <div class="group-header">
+        <div class="group-title-row">
+          <h2><span class="icon">🌙</span> Вечер (18:00–19:30)</h2>
+          <span class="group-chevron">▼</span>
+        </div>
+        <div class="progress-container"><div class="progress-bar" data-group="evening"></div></div>
+      </div>
+      <div class="subtasks"><div class="subtasks-inner">
         <div class="subtask">
           <input type="checkbox" data-task-id="evening-1">
-          <span>🔄 Нарушения</span>
-          <input type="number" min="0" value="0"
-                 class="task-count"
-                 data-count-for="evening-1"
-                 placeholder="0">
+          <span>Нарушения</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="evening-1" placeholder="0">
           <img src="./images/return.jpg" alt="Возврат" onerror="this.style.display='none'">
         </div>
-
         <div class="subtask">
           <input type="checkbox" data-task-id="evening-3">
-          <span>🔒 Закрытие смены/перекличка</span>
+          <span>Закрытие смены / перекличка</span>
         </div>
-      </div>
+      </div></div>
     </div>
   </div>
 
-  <!-- Actions -->
+  <!-- Actions bar -->
   <div class="actions">
-    <button class="btn btn-success" onclick="exportReport()">
-      📄 Отчёт
-    </button>
+    <button class="btn btn-ghost" onclick="resetAll()">↺ Сброс</button>
     <div id="totalProgress">0%</div>
+    <button class="btn btn-primary" onclick="exportReport()">↗ Отчёт</button>
   </div>
 
-  <!-- Конфетти -->
-  <canvas id="confetti" style="position:fixed;top:0;left:0;pointer-events:none;z-index:1000;"></canvas>
+  <canvas id="confetti"></canvas>
 
   <script>
-    const STORAGE_KEY = 'itssupport_checklist_v3';
+    const STORAGE_KEY = 'itssupport_checklist_v4';
 
-    // СОХРАНЕНИЕ/ЗАГРУЗКА
     function saveState() {
       const state = {
         tasks: Array.from(document.querySelectorAll('input[type="checkbox"]'))
@@ -446,167 +587,146 @@
       try {
         const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
         if (saved) {
-          // чекбоксы
           saved.tasks?.forEach(({ id, checked }) => {
             const cb = document.querySelector(`[data-task-id="${id}"]`);
-            if (cb) {
-              cb.checked = checked;
-              cb.closest('.subtask').classList.toggle('completed', checked);
-            }
+            if (cb) { cb.checked = checked; cb.closest('.subtask').classList.toggle('completed', checked); }
           });
-          // дата/имя
           if (saved.date) document.getElementById('workDate').value = saved.date;
           if (saved.name) document.getElementById('workerName').value = saved.name;
-          // группы
           saved.groups?.forEach(({ id, open }) => {
             const group = document.querySelector(`[data-group="${id}"]`);
             if (group && open) group.classList.add('open');
           });
-          // количества
           saved.counts?.forEach(({ id, value }) => {
             const inp = document.querySelector(`.task-count[data-count-for="${id}"]`);
             if (inp) inp.value = value;
           });
         }
-      } catch (e) { console.log('Load error:', e); }
+      } catch (e) {}
       updateAllProgress();
     }
 
-    // ПРОГРЕСС
     function updateGroupProgress(groupId) {
       const group = document.querySelector(`[data-group="${groupId}"]`);
       const tasks = group.querySelectorAll('input[type="checkbox"]');
       const checked = group.querySelectorAll('input[type="checkbox"]:checked').length;
       const percent = tasks.length ? Math.round((checked / tasks.length) * 100) : 0;
       group.querySelector('.progress-bar').style.width = percent + '%';
-      return percent;
+      return { checked, total: tasks.length };
     }
 
     function updateAllProgress() {
       let totalTasks = 0, totalChecked = 0;
       document.querySelectorAll('.task-group').forEach(group => {
-        const groupId = group.dataset.group;
-        const checked = updateGroupProgress(groupId);
-        const tasks = group.querySelectorAll('input[type="checkbox"]').length;
-        totalTasks += tasks;
-        totalChecked += Math.round((checked / 100) * tasks);
+        const { checked, total } = updateGroupProgress(group.dataset.group);
+        totalTasks += total;
+        totalChecked += checked;
       });
-      
-      const overallPercent = totalTasks ? Math.round((totalChecked / totalTasks) * 100) : 0;
-      document.getElementById('totalProgress').textContent = overallPercent + '%';
-      
-      if (overallPercent === 100) showConfetti();
+      const pct = totalTasks ? Math.round((totalChecked / totalTasks) * 100) : 0;
+      document.getElementById('totalProgress').textContent = pct + '%';
+      if (pct === 100) showConfetti();
     }
 
-    // КОНФЕТТИ
+    function resetAll() {
+      if (!confirm('Сбросить весь чек-лист?')) return;
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+        cb.closest('.subtask').classList.remove('completed');
+      });
+      document.querySelectorAll('.task-count').forEach(inp => inp.value = 0);
+      updateAllProgress();
+      saveState();
+    }
+
     function showConfetti() {
       const canvas = document.getElementById('confetti');
       const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      
-      const confetti = [];
-      for (let i = 0; i < 150; i++) {
-        confetti.push({
-          x: Math.random() * canvas.width,
-          y: -10,
-          vx: (Math.random() - 0.5) * 10,
-          vy: Math.random() * 5 + 5,
-          color: `hsl(${Math.random() * 60 + 0}, 70%, 60%)`,
-          size: Math.random() * 6 + 3,
-          rotation: Math.random() * 360,
-          rotSpeed: (Math.random() - 0.5) * 10
+      const pieces = [];
+      const colors = ['#00b0ff','#34d399','#f59e0b','#f87171','#a78bfa'];
+      for (let i = 0; i < 120; i++) {
+        pieces.push({
+          x: Math.random() * canvas.width, y: -10,
+          vx: (Math.random() - 0.5) * 8, vy: Math.random() * 5 + 3,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          size: Math.random() * 7 + 3,
+          rot: Math.random() * 360, rotV: (Math.random() - 0.5) * 8
         });
       }
-      
       function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        confetti.forEach((c, i) => {
-          c.x += c.vx;
-          c.y += c.vy;
-          c.vy += 0.1;
-          c.rotation += c.rotSpeed;
-          
+        pieces.forEach((p, i) => {
+          p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.rot += p.rotV;
           ctx.save();
-          ctx.translate(c.x, c.y);
-          ctx.rotate(c.rotation * Math.PI / 180);
-          ctx.fillStyle = c.color;
-          ctx.fillRect(-c.size/2, -c.size/2, c.size, c.size);
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot * Math.PI / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
           ctx.restore();
-          
-          if (c.y > canvas.height) confetti.splice(i, 1);
+          if (p.y > canvas.height) pieces.splice(i, 1);
         });
-        
-        if (confetti.length) requestAnimationFrame(animate);
+        if (pieces.length) requestAnimationFrame(animate);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
       animate();
     }
 
-    // ОТЧЁТ
     function exportReport() {
       const name = document.getElementById('workerName').value || 'Инженер';
       const date = document.getElementById('workDate').value || new Date().toLocaleDateString('ru-RU');
       const progress = document.getElementById('totalProgress').textContent;
-      
-      // собираем количества по всем задачам со счётчиком
+
       const counts = Array.from(document.querySelectorAll('.task-count'))
         .map(inp => {
           const id = inp.dataset.countFor;
           const value = parseInt(inp.value || '0', 10) || 0;
           const subtask = document.querySelector(`.subtask input[data-task-id="${id}"]`)?.closest('.subtask');
-          const label = subtask ? subtask.querySelector('span')?.textContent.trim() : id;
-          return { id, value, label };
+          const label = subtask?.querySelector('span')?.textContent.trim() || id;
+          return { value, label };
         })
         .filter(item => item.value > 0);
 
-      let report = `📋 ITSSupport - Чек-лист\n`;
-      report += `👤 ${name} | 📅 ${date}\n`;
-      report += `✅ Выполнено: ${progress}\n\n`;
+      let report = `📋 ITSSupport — Чек-лист дежурного\n`;
+      report += `👤 ${name}   📅 ${date}\n`;
+      report += `✅ Выполнено: ${progress}\n`;
 
       if (counts.length) {
-        report += `📦 Количества по задачам:\n`;
-        counts.forEach(item => {
-          report += `• ${item.label}: ${item.value}\n`;
-        });
-        report += `\n`;
+        report += `\n📊 Статистика:\n`;
+        counts.forEach(item => { report += `  • ${item.label}: ${item.value}\n`; });
       }
 
+      report += `\n📁 Блоки:\n`;
       document.querySelectorAll('.task-group').forEach(group => {
-        const title = group.querySelector('h2').textContent;
-        const percent = group.querySelector('.progress-bar').style.width;
-        report += `${title} [${percent}]\n`;
+        const title = group.querySelector('h2').textContent.trim();
+        const bar = group.querySelector('.progress-bar').style.width || '0%';
+        report += `  ${bar === '100%' ? '✅' : '⬜'} ${title} [${bar}]\n`;
       });
-      
-      navigator.clipboard.writeText(report).then(() => {
-        alert('✅ Отчёт скопирован в буфер!\nВставь в Telegram или Excel');
-      }).catch(() => {
-        prompt('Скопируй отчёт:', report);
-      });
+
+      navigator.clipboard.writeText(report)
+        .then(() => alert('✅ Отчёт скопирован!\nВставьте в Telegram или другой чат.'))
+        .catch(() => prompt('Скопируйте отчёт:', report));
     }
 
-    // EVENT HANDLERS
-    document.addEventListener('DOMContentLoaded', function() {
-      // Автозаполнение даты
-      const today = new Date();
-      document.getElementById('workDate').valueAsDate = today;
-      
+    // ── INIT ──
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('workDate').valueAsDate = new Date();
       loadState();
 
-      // Toggle groups
-      document.querySelectorAll('.task-group h2').forEach(header => {
+      // Toggle groups via header click
+      document.querySelectorAll('.group-header').forEach(header => {
         header.addEventListener('click', () => {
           header.parentElement.classList.toggle('open');
           saveState();
         });
       });
 
-      // Toggle tasks (чекбоксы)
+      // Toggle tasks
       document.querySelectorAll('.subtask').forEach(subtask => {
         subtask.addEventListener('click', function(e) {
           const checkbox = this.querySelector('input[type="checkbox"]');
-          const isCountInput = e.target.classList.contains('task-count');
-          // не трогаем чекбокс, если кликаем в поле количества
-          if (!isCountInput && e.target !== checkbox && checkbox) {
+          const isCount = e.target.classList.contains('task-count');
+          if (!isCount && e.target !== checkbox && checkbox) {
             checkbox.checked = !checkbox.checked;
             this.classList.toggle('completed', checkbox.checked);
           }
@@ -615,26 +735,13 @@
         });
       });
 
-      // изменения в полях количества
       document.querySelectorAll('.task-count').forEach(inp => {
-        inp.addEventListener('input', () => {
-          saveState();
-        });
-      });
-
-      // PWA install
-      let deferredPrompt;
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
+        inp.addEventListener('input', saveState);
       });
     });
 
-    // Автосохранение
     window.addEventListener('beforeunload', saveState);
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) saveState();
-    });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) saveState(); });
   </script>
 </body>
 </html>
