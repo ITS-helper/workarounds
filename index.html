@@ -331,10 +331,15 @@
       <div class="progress-container"><div class="progress-bar" data-group="evening"></div></div>
       <div class="subtasks">
         <div class="subtask">
-          <input type="checkbox" data-task-id="evening-1">
-          <span>🔄 Принять часы, отметить проблемные устройства</span>
-          <img src="./images/return.jpg" alt="Возврат" onerror="this.style.display='none'">
-        </div>
+  <input type="checkbox" data-task-id="evening-1">
+  <span>🔄 Принять часы, отметить нарушения</span>
+  <input type="number" min="0" value="0"
+         class="task-count"
+         data-count-for="evening-1"
+         placeholder="0">
+  <img src="./images/return.jpg" alt="Возврат" onerror="this.style.display='none'">
+</div>
+
         <div class="subtask">
           <input type="checkbox" data-task-id="evening-2">
           <span>💬 Отчёты в рабочий чат</span>
