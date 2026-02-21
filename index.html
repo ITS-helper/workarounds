@@ -713,54 +713,67 @@
       animate();
     }
 
-    function exportReport() {
+    async function fetchBleCount() {
+      try {
+        const SHEET_ID = '1CU56AZdWC9dCvkf_z6CWMtrgfuWRCG3HYx7hp79vI_c';
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent('Свод_журналов_СПГ+ТСБ')}&range=J22&headers=0&t=${Date.now()}`;
+        const res = await fetch(url);
+        const text = await res.text();
+        const json = JSON.parse(text.substring(47).slice(0, -2));
+        const val = json?.table?.rows?.[0]?.c?.[0]?.v;
+        return val !== null && val !== undefined ? String(val) : '—';
+      } catch { return '—'; }
+    }
+
+    async function exportReport() {
       const name = document.getElementById('workerName').value || 'Инженер';
       const date = document.getElementById('workDate').value || new Date().toLocaleDateString('ru-RU');
-      const progress = document.getElementById('totalProgress').textContent;
 
-      const counts = Array.from(document.querySelectorAll('.task-count'))
-        .map(inp => {
-          const id = inp.dataset.countFor;
-          const value = parseInt(inp.value || '0', 10) || 0;
-          const subtask = document.querySelector(`.subtask input[data-task-id="${id}"]`)?.closest('.subtask');
-          const label = subtask?.querySelector('span')?.textContent.trim() || id;
-          return { value, label };
-        })
-        .filter(item => item.value > 0);
+      // Статистика — всё кроме пройденных меток (tags-1), всегда включаем фронт-данные
+      const frontFields = [
+        { id: 'front-1', label: 'Регистрация новичков' },
+        { id: 'front-2', label: 'Регистрация в боте' },
+        { id: 'front-3', label: 'Обращения, связанные с табелем' },
+        { id: 'evening-1', label: 'Нарушения' },
+      ];
 
-      let report = `📅 ${date}\n`;
-      report += `Отчёт по смене:\n`;
-      report += `${name}\n`;
-      report += `Выполнено: ${progress}\n`;
+      const statsLines = frontFields.map(f => {
+        const value = parseInt(document.querySelector(`.task-count[data-count-for="${f.id}"]`)?.value || '0') || 0;
+        return { label: f.label, value };
+      }).filter(item => item.value > 0);
 
-      if (counts.length) {
-        report += `\nСтатистика:\n`;
-        counts.forEach(item => { report += `  • ${item.label}: ${item.value}\n`; });
-      }
-
+      // Метки
+      const walkedCount = parseInt(document.querySelector('.task-count[data-count-for="tags-1"]')?.value || '0') || 0;
       const countNew = parseInt(document.getElementById('countNew').textContent) || 0;
       const countLost = parseInt(document.getElementById('countLost').textContent) || 0;
       const notesNew = document.getElementById('notesNew').value.trim();
       const notesLost = document.getElementById('notesLost').value.trim();
 
+      // BLE count from Google Sheets
+      const bleCount = await fetchBleCount();
+
+      let report = `📅 ${date}\n`;
+      report += `Отчёт по смене:\n`;
+      report += `${name}\n`;
+
+      if (statsLines.length) {
+        report += `\nСтатистика:\n`;
+        statsLines.forEach(item => { report += `  • ${item.label}: ${item.value}\n`; });
+      }
+
+      report += `\nМетки:\n`;
+      report += `  • Пройдено: ${walkedCount} шт.\n`;
       if (countNew > 0) {
-        report += `\nНовые метки: ${countNew} шт.`;
-        if (notesNew) report += `\nНомера: ${notesNew}`;
+        report += `  • Новые: ${countNew} шт.`;
+        if (notesNew) report += ` (${notesNew})`;
         report += `\n`;
       }
       if (countLost > 0) {
-        report += `\nПотерянные метки: ${countLost} шт.`;
-        if (notesLost) report += `\nНомера: ${notesLost}`;
+        report += `  • Потерянные: ${countLost} шт.`;
+        if (notesLost) report += ` (${notesLost})`;
         report += `\n`;
       }
-
-      report += `\nБлоки:\n`;
-      document.querySelectorAll('.task-group').forEach(group => {
-        if (group.dataset.group === 'tag-events-block') return;
-        const title = group.querySelector('h2').textContent.trim();
-        const bar = group.querySelector('.progress-bar').style.width || '0%';
-        report += `  ${bar === '100%' ? '✅' : '⬜'} ${title} [${bar}]\n`;
-      });
+      report += `  • Всего BLE-меток со статусом «Установлена»: ${bleCount} шт.\n`;
 
       navigator.clipboard.writeText(report)
         .then(() => alert('✅ Отчёт скопирован!\nВставьте в Telegram или другой чат.'))
