@@ -491,6 +491,11 @@
           <span>Обращения, связанные с табелем</span>
           <input type="number" min="0" value="0" class="task-count" data-count-for="front-3" placeholder="0">
         </div>
+        <div class="subtask">
+          <input type="checkbox" data-task-id="front-4">
+          <span>Замена наклейки NFC</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="front-4" placeholder="0">
+        </div>
       </div></div>
     </div>
 
@@ -512,6 +517,10 @@
         <div class="subtask">
           <input type="checkbox" data-task-id="tags-4">
           <span>Синхронизация данных: работа с журналом BLE / backend</span>
+        </div>
+        <div class="subtask">
+          <input type="checkbox" data-task-id="tags-5">
+          <span>Актуализация web-карты</span>
         </div>
       </div></div>
     </div>
@@ -755,6 +764,7 @@
         { id: 'front-1', label: 'Регистрация новичков' },
         { id: 'front-2', label: 'Регистрация в боте' },
         { id: 'front-3', label: 'Обращения, связанные с табелем' },
+        { id: 'front-4', label: 'Замена наклейки NFC' },
         { id: 'evening-1', label: 'Нарушения' },
       ];
 
@@ -795,6 +805,9 @@
         report += `\n`;
       }
       report += `  • Всего BLE-меток со статусом «Установлена»: ${bleCount} шт.\n`;
+
+      const webMapChecked = document.querySelector('input[data-task-id="tags-5"]')?.checked;
+      if (webMapChecked) report += `  • Web-карта актуализирована\n`;
 
       navigator.clipboard.writeText(report)
         .then(() => alert('✅ Отчёт скопирован!\nВставьте в Telegram или другой чат.'))
