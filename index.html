@@ -339,74 +339,79 @@
     .tag-event-notes:focus { outline: none; border-color: var(--accent); }
     .tag-event-notes::placeholder { color: #a0b0c0; }
 
-    /* ── ACTIONS BAR ── */
-    .actions {
-      position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
-      display: flex;
-      gap: 10px;
-      padding: 10px 16px;
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(16px);
-      border-radius: 999px;
-      box-shadow: 0 8px 32px rgba(11,39,64,0.2);
+    /* ── REPORT SECTION ── */
+    .report-section {
+      background: var(--glass-bg);
+      border-radius: 12px;
       border: 1px solid var(--border);
-      z-index: 999;
-      width: calc(100% - 32px);
-      max-width: 400px;
+      box-shadow: 0 4px 16px rgba(11,39,64,0.08);
+      padding: 18px 22px;
+      margin-top: 8px;
+      display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
     }
-    .btn {
-      padding: 9px 20px;
-      border: none;
-      border-radius: 999px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 13.5px;
-      font-family: 'Oswald', sans-serif;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+    .report-info {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 16px;
+      flex: 1;
+      min-width: 160px;
     }
-    .btn-primary {
-      background: var(--accent);
-      color: #04111f;
-      border: 1px solid rgba(0,176,255,0.5);
-    }
-    .btn-primary:hover {
-      background: #19b9ff;
-      box-shadow: 0 4px 16px rgba(0,176,255,0.4);
-      transform: translateY(-1px);
-    }
-    .btn-ghost {
-      background: transparent;
-      color: var(--primary);
-      border: 1px solid var(--border);
-    }
-    .btn-ghost:hover { background: #f0f6ff; border-color: var(--accent); }
-    #totalProgress {
+    .report-info-progress {
       font-family: 'Oswald', sans-serif;
       font-weight: 700;
-      font-size: 20px;
-      color: var(--primary);
-      min-width: 52px;
-      text-align: center;
+      font-size: 2em;
+      color: var(--accent);
       letter-spacing: 0.02em;
+      line-height: 1;
+      min-width: 64px;
+    }
+    .report-info-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .report-info-meta span {
+      font-size: 13px;
+      color: var(--muted);
+      font-family: 'Source Sans 3', sans-serif;
+    }
+    .report-info-meta span:first-child {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 14px;
+    }
+    .btn-report {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.95em;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 11px 28px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #04111f;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(0,176,255,0.3);
+    }
+    .btn-report:hover {
+      background: #19b9ff;
+      box-shadow: 0 6px 20px rgba(0,176,255,0.45);
+      transform: translateY(-1px);
     }
 
     /* ── CONFETTI ── */
     #confetti { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1000; }
 
     @media (max-width: 500px) {
-      .actions { flex-wrap: wrap; gap: 8px; justify-content: center; padding: 12px 14px; }
-      .btn { flex: 1; min-width: 120px; justify-content: center; }
-      #totalProgress { order: -1; width: 100%; font-size: 22px; }
-    }
-    @supports (padding: max(0px)) {
-      .actions { bottom: max(16px, env(safe-area-inset-bottom)); }
+      .report-section { flex-direction: column; align-items: stretch; }
+      .btn-report { text-align: center; }
     }
   </style>
 </head>
@@ -576,14 +581,22 @@
       </div></div>
     </div>
 
+    <!-- ОТЧЁТ -->
+    <div class="report-section">
+      <div class="report-info">
+        <div class="report-info-progress" id="totalProgress">0%</div>
+        <div class="report-info-meta">
+          <span id="reportName">—</span>
+          <span id="reportDate">—</span>
+        </div>
+      </div>
+      <button class="btn-report" onclick="exportReport()">↗ Сформировать отчёт</button>
+    </div>
+
   </div>
 
   <!-- Actions bar -->
-  <div class="actions">
-    <button class="btn btn-ghost" onclick="resetAll()">↺ Сброс</button>
-    <div id="totalProgress">0%</div>
-    <button class="btn btn-primary" onclick="exportReport()">↗ Отчёт</button>
-  </div>
+  <!-- removed -->
 
   <canvas id="confetti"></canvas>
 
@@ -644,6 +657,13 @@
       return { checked, total: tasks.length };
     }
 
+    function updateReportMeta() {
+      const name = document.getElementById('workerName').value || '—';
+      const date = document.getElementById('workDate').value || '—';
+      document.getElementById('reportName').textContent = name;
+      document.getElementById('reportDate').textContent = date;
+    }
+
     function updateAllProgress() {
       let totalTasks = 0, totalChecked = 0;
       document.querySelectorAll('.task-group').forEach(group => {
@@ -654,6 +674,7 @@
       });
       const pct = totalTasks ? Math.round((totalChecked / totalTasks) * 100) : 0;
       document.getElementById('totalProgress').textContent = pct + '%';
+      updateReportMeta();
       if (pct === 100) showConfetti();
     }
 
@@ -811,8 +832,8 @@
 
       document.getElementById('notesNew').addEventListener('input', saveState);
       document.getElementById('notesLost').addEventListener('input', saveState);
-      document.getElementById('workDate').addEventListener('change', saveState);
-      document.getElementById('workerName').addEventListener('input', saveState);
+      document.getElementById('workDate').addEventListener('change', () => { saveState(); updateReportMeta(); });
+      document.getElementById('workerName').addEventListener('input', () => { saveState(); updateReportMeta(); });
     });
 
     window.addEventListener('beforeunload', saveState);
