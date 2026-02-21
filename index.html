@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Чек-листы ITSSupport</title>
+  <title>Чек-лист дежурного инженера</title>
   <meta name="theme-color" content="#0b2740">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,7 +53,10 @@
       gap: 16px;
     }
     header img {
-      max-height: 44px; max-width: 200px; height: auto;
+      height: 36px;
+      width: auto;
+      max-width: 160px;
+      object-fit: contain;
       filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
     }
     .header-title {
@@ -69,18 +72,7 @@
 
     /* ── CONTAINER ── */
     .container {
-      max-width: 900px; margin: 0 auto 110px auto; padding: 24px 20px;
-    }
-
-    h1 {
-      font-family: 'Oswald', sans-serif;
-      color: var(--primary);
-      margin: 0 0 24px 0;
-      font-size: 1.9em;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-align: center;
-      text-transform: uppercase;
+      max-width: 900px; margin: 0 auto 40px auto; padding: 24px 20px;
     }
 
     /* ── INTRO ── */
@@ -120,11 +112,7 @@
       color: #1a2a3a;
       transition: border-color 0.2s;
     }
-    .intro input:focus {
-      outline: none;
-      border-color: var(--accent);
-      background: #fff;
-    }
+    .intro input:focus { outline: none; border-color: var(--accent); background: #fff; }
     .intro input::placeholder { color: #a0b0c0; }
     #workDate { width: 160px; }
     #workerName { width: 180px; }
@@ -151,7 +139,6 @@
       box-shadow: 0 8px 28px rgba(11,39,64,0.12);
       border-color: rgba(0,176,255,0.35);
     }
-
     .group-header {
       padding: 16px 20px 14px;
       cursor: pointer;
@@ -162,13 +149,11 @@
       transition: background 0.2s;
     }
     .group-header:hover { background: #f7fafd; }
-
     .group-title-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-
     .task-group h2 {
       font-family: 'Oswald', sans-serif;
       color: var(--primary);
@@ -181,21 +166,14 @@
       align-items: center;
       gap: 10px;
     }
-    .task-group h2 .icon {
-      font-size: 1.1em;
-      line-height: 1;
-    }
-
+    .task-group h2 .icon { font-size: 1.1em; line-height: 1; display: flex; align-items: center; }
     .group-chevron {
       color: var(--muted);
       font-size: 18px;
       transition: transform 0.3s ease;
       flex-shrink: 0;
     }
-    .task-group.open .group-chevron {
-      transform: rotate(180deg);
-    }
-
+    .task-group.open .group-chevron { transform: rotate(180deg); }
     .progress-container {
       height: 4px;
       background: var(--progress-bg);
@@ -217,16 +195,13 @@
       overflow: hidden;
       transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .task-group.open .subtasks {
-      max-height: 2000px;
-    }
+    .task-group.open .subtasks { max-height: 2000px; }
     .subtasks-inner {
       padding: 6px 16px 16px;
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
-
     .subtask {
       display: flex;
       align-items: center;
@@ -238,35 +213,18 @@
       transition: all 0.18s ease;
       gap: 12px;
     }
-    .subtask:hover {
-      background: #f0f6ff;
-      border-left-color: var(--accent);
-    }
-    .subtask.completed {
-      background: #f0fdf8;
-      border-left-color: var(--success);
-    }
-
+    .subtask:hover { background: #f0f6ff; border-left-color: var(--accent); }
+    .subtask.completed { background: #f0fdf8; border-left-color: var(--success); }
     .subtask input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
+      width: 18px; height: 18px;
       accent-color: var(--accent);
-      cursor: pointer;
-      flex-shrink: 0;
+      cursor: pointer; flex-shrink: 0;
     }
-
     .subtask span {
-      font-size: 14px;
-      color: #2a3a4a;
-      flex: 1;
-      line-height: 1.4;
-      font-weight: 400;
+      font-size: 14px; color: #2a3a4a;
+      flex: 1; line-height: 1.4; font-weight: 400;
     }
-    .subtask.completed span {
-      text-decoration: line-through;
-      color: #94a3b8;
-    }
-
+    .subtask.completed span { text-decoration: line-through; color: #94a3b8; }
     .subtask img {
       width: 40px; height: 40px;
       object-fit: cover;
@@ -274,7 +232,6 @@
       box-shadow: 0 2px 6px rgba(11,39,64,0.18);
       flex-shrink: 0;
     }
-
     .task-count {
       width: 68px;
       padding: 5px 8px;
@@ -288,11 +245,99 @@
       flex-shrink: 0;
       transition: border-color 0.2s;
     }
-    .task-count:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
+    .task-count:focus { outline: none; border-color: var(--accent); }
     .task-count::placeholder { color: #a0b0c0; }
+
+    /* ── TAG EVENTS ── */
+    .tag-events {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    @media (max-width: 540px) {
+      .tag-events { grid-template-columns: 1fr; }
+    }
+    .tag-event-block {
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .tag-event-new { border-left: 3px solid var(--success); }
+    .tag-event-lost { border-left: 3px solid #f87171; }
+    .tag-event-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tag-event-icon {
+      font-size: 15px;
+      font-weight: 700;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-family: 'Oswald', sans-serif;
+    }
+    .tag-event-new .tag-event-icon { background: rgba(16,185,129,0.15); color: var(--success); }
+    .tag-event-lost .tag-event-icon { background: rgba(248,113,113,0.15); color: #e11d48; }
+    .tag-event-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.82em;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--primary);
+      flex: 1;
+    }
+    .tag-event-counter {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tag-event-counter span {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 1.15em;
+      min-width: 24px;
+      text-align: center;
+      color: var(--primary);
+    }
+    .counter-btn {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--primary);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+      line-height: 1;
+      padding: 0;
+    }
+    .counter-btn:hover { background: #f0f6ff; border-color: var(--accent); }
+    .tag-event-notes {
+      width: 100%;
+      min-height: 56px;
+      resize: vertical;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: 13px;
+      font-family: 'Source Sans 3', sans-serif;
+      background: #fff;
+      color: #1a2a3a;
+      transition: border-color 0.2s;
+      line-height: 1.4;
+    }
+    .tag-event-notes:focus { outline: none; border-color: var(--accent); }
+    .tag-event-notes::placeholder { color: #a0b0c0; }
 
     /* ── ACTIONS BAR ── */
     .actions {
@@ -311,7 +356,6 @@
       align-items: center;
       justify-content: space-between;
     }
-
     .btn {
       padding: 9px 20px;
       border: none;
@@ -342,11 +386,7 @@
       color: var(--primary);
       border: 1px solid var(--border);
     }
-    .btn-ghost:hover {
-      background: #f0f6ff;
-      border-color: var(--accent);
-    }
-
+    .btn-ghost:hover { background: #f0f6ff; border-color: var(--accent); }
     #totalProgress {
       font-family: 'Oswald', sans-serif;
       font-weight: 700;
@@ -360,21 +400,13 @@
     /* ── CONFETTI ── */
     #confetti { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1000; }
 
-    /* ── MOBILE ── */
     @media (max-width: 500px) {
-      h1 { font-size: 1.4em; }
-      .actions {
-        flex-wrap: wrap; gap: 8px; justify-content: center;
-        padding: 12px 14px;
-      }
+      .actions { flex-wrap: wrap; gap: 8px; justify-content: center; padding: 12px 14px; }
       .btn { flex: 1; min-width: 120px; justify-content: center; }
       #totalProgress { order: -1; width: 100%; font-size: 22px; }
     }
-
     @supports (padding: max(0px)) {
-      .actions {
-        bottom: max(16px, env(safe-area-inset-bottom));
-      }
+      .actions { bottom: max(16px, env(safe-area-inset-bottom)); }
     }
   </style>
 </head>
@@ -383,13 +415,12 @@
   <header>
     <div class="header-inner">
       <img src="./images/ITS_logo_horizont.png" alt="ITSSupport"
-           onerror="this.src='https://via.placeholder.com/200x44/0b2740/ffffff?text=ITSSupport'">
-      <span class="header-title"></span>
+           onerror="this.style.display='none'">
+      <span class="header-title">Чек-лист дежурного инженера</span>
     </div>
   </header>
 
   <div class="container">
-    <h1>Чек-лист дежурного инженера</h1>
 
     <div class="intro">
       <div class="intro-field">
@@ -407,7 +438,7 @@
     <div class="task-group" data-group="morning">
       <div class="group-header">
         <div class="group-title-row">
-          <h2><span class="icon">🕕</span> Утро (6:00–8:00)</h2>
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg></span> Утро (6:00–8:00)</h2>
           <span class="group-chevron">▼</span>
         </div>
         <div class="progress-container"><div class="progress-bar" data-group="morning"></div></div>
@@ -423,30 +454,9 @@
           <span>Выдача часов в окне 6:00–8:00. Проверка полок с часами</span>
           <img src="./images/watches.jpg" alt="Часы" onerror="this.style.display='none'">
         </div>
-      </div></div>
-    </div>
-
-    <!-- ПОДГОТОВКА -->
-    <div class="task-group" data-group="prep">
-      <div class="group-header">
-        <div class="group-title-row">
-          <h2><span class="icon">⚙️</span> Подготовка к обходу</h2>
-          <span class="group-chevron">▼</span>
-        </div>
-        <div class="progress-container"><div class="progress-bar" data-group="prep"></div></div>
-      </div>
-      <div class="subtasks"><div class="subtasks-inner">
         <div class="subtask">
-          <input type="checkbox" data-task-id="prep-1">
-          <span>Запуск смены на часах, получение отладочного устройства</span>
-        </div>
-        <div class="subtask">
-          <input type="checkbox" data-task-id="prep-2">
-          <span>Обновление меток в мобильном приложении</span>
-        </div>
-        <div class="subtask">
-          <input type="checkbox" data-task-id="prep-3">
-          <span>Проверка рюкзака с инструментом</span>
+          <input type="checkbox" data-task-id="morning-3">
+          <span>Закрытие неосновных пунктов выдачи</span>
         </div>
       </div></div>
     </div>
@@ -455,7 +465,7 @@
     <div class="task-group" data-group="front">
       <div class="group-header">
         <div class="group-title-row">
-          <h2><span class="icon">👥</span> День: Фронт (новенькие, бот, табель)</h2>
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> День: Фронт (новенькие, бот, табель)</h2>
           <span class="group-chevron">▼</span>
         </div>
         <div class="progress-container"><div class="progress-bar" data-group="front"></div></div>
@@ -483,7 +493,7 @@
     <div class="task-group" data-group="tags">
       <div class="group-header">
         <div class="group-title-row">
-          <h2><span class="icon">📡</span> День: Метки</h2>
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> День: Метки</h2>
           <span class="group-chevron">▼</span>
         </div>
         <div class="progress-container"><div class="progress-bar" data-group="tags"></div></div>
@@ -495,18 +505,50 @@
           <input type="number" min="0" value="0" class="task-count" data-count-for="tags-1" placeholder="0">
         </div>
         <div class="subtask">
-          <input type="checkbox" data-task-id="tags-2">
-          <span>Количество новых меток</span>
-          <input type="number" min="0" value="0" class="task-count" data-count-for="tags-2" placeholder="0">
-        </div>
-        <div class="subtask">
-          <input type="checkbox" data-task-id="tags-3">
-          <span>Количество потерянных меток</span>
-          <input type="number" min="0" value="0" class="task-count" data-count-for="tags-3" placeholder="0">
-        </div>
-        <div class="subtask">
           <input type="checkbox" data-task-id="tags-4">
           <span>Синхронизация данных: работа с журналом BLE / backend</span>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- ИЗМЕНЕНИЯ ПО МЕТКАМ -->
+    <div class="task-group" data-group="tag-events-block">
+      <div class="group-header">
+        <div class="group-title-row">
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span> Изменения по меткам</h2>
+          <span class="group-chevron">▼</span>
+        </div>
+        <div class="progress-container"><div class="progress-bar" data-group="tag-events-block" style="width:0%"></div></div>
+      </div>
+      <div class="subtasks"><div class="subtasks-inner">
+        <div class="tag-events">
+
+          <div class="tag-event-block tag-event-new">
+            <div class="tag-event-header">
+              <span class="tag-event-icon">＋</span>
+              <span class="tag-event-title">Новые метки</span>
+              <div class="tag-event-counter">
+                <button class="counter-btn" onclick="changeCount('new', -1)">−</button>
+                <span id="countNew">0</span>
+                <button class="counter-btn" onclick="changeCount('new', 1)">＋</button>
+              </div>
+            </div>
+            <textarea id="notesNew" class="tag-event-notes" placeholder="Номера новых меток через запятую: 101, 205, 318..."></textarea>
+          </div>
+
+          <div class="tag-event-block tag-event-lost">
+            <div class="tag-event-header">
+              <span class="tag-event-icon">−</span>
+              <span class="tag-event-title">Потерянные метки</span>
+              <div class="tag-event-counter">
+                <button class="counter-btn" onclick="changeCount('lost', -1)">−</button>
+                <span id="countLost">0</span>
+                <button class="counter-btn" onclick="changeCount('lost', 1)">＋</button>
+              </div>
+            </div>
+            <textarea id="notesLost" class="tag-event-notes" placeholder="Номера потерянных меток через запятую: 42, 77..."></textarea>
+          </div>
+
         </div>
       </div></div>
     </div>
@@ -515,7 +557,7 @@
     <div class="task-group" data-group="evening">
       <div class="group-header">
         <div class="group-title-row">
-          <h2><span class="icon">🌙</span> Вечер (18:00–19:30)</h2>
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span> Вечер (18:00–19:30)</h2>
           <span class="group-chevron">▼</span>
         </div>
         <div class="progress-container"><div class="progress-bar" data-group="evening"></div></div>
@@ -533,6 +575,7 @@
         </div>
       </div></div>
     </div>
+
   </div>
 
   <!-- Actions bar -->
@@ -545,7 +588,7 @@
   <canvas id="confetti"></canvas>
 
   <script>
-    const STORAGE_KEY = 'itssupport_checklist_v4';
+    const STORAGE_KEY = 'itssupport_checklist_v5';
 
     function saveState() {
       const state = {
@@ -556,7 +599,11 @@
         groups: Array.from(document.querySelectorAll('.task-group'))
           .map(g => ({ id: g.dataset.group, open: g.classList.contains('open') })),
         counts: Array.from(document.querySelectorAll('.task-count'))
-          .map(inp => ({ id: inp.dataset.countFor, value: inp.value }))
+          .map(inp => ({ id: inp.dataset.countFor, value: inp.value })),
+        countNew: document.getElementById('countNew').textContent,
+        countLost: document.getElementById('countLost').textContent,
+        notesNew: document.getElementById('notesNew').value,
+        notesLost: document.getElementById('notesLost').value
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
@@ -579,6 +626,10 @@
             const inp = document.querySelector(`.task-count[data-count-for="${id}"]`);
             if (inp) inp.value = value;
           });
+          if (saved.countNew) document.getElementById('countNew').textContent = saved.countNew;
+          if (saved.countLost) document.getElementById('countLost').textContent = saved.countLost;
+          if (saved.notesNew) document.getElementById('notesNew').value = saved.notesNew;
+          if (saved.notesLost) document.getElementById('notesLost').value = saved.notesLost;
         }
       } catch (e) {}
       updateAllProgress();
@@ -596,6 +647,7 @@
     function updateAllProgress() {
       let totalTasks = 0, totalChecked = 0;
       document.querySelectorAll('.task-group').forEach(group => {
+        if (group.dataset.group === 'tag-events-block') return;
         const { checked, total } = updateGroupProgress(group.dataset.group);
         totalTasks += total;
         totalChecked += checked;
@@ -605,6 +657,13 @@
       if (pct === 100) showConfetti();
     }
 
+    function changeCount(type, delta) {
+      const el = document.getElementById(type === 'new' ? 'countNew' : 'countLost');
+      const current = parseInt(el.textContent) || 0;
+      el.textContent = Math.max(0, current + delta);
+      saveState();
+    }
+
     function resetAll() {
       if (!confirm('Сбросить весь чек-лист?')) return;
       document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
@@ -612,6 +671,10 @@
         cb.closest('.subtask').classList.remove('completed');
       });
       document.querySelectorAll('.task-count').forEach(inp => inp.value = 0);
+      document.getElementById('countNew').textContent = '0';
+      document.getElementById('countLost').textContent = '0';
+      document.getElementById('notesNew').value = '';
+      document.getElementById('notesLost').value = '';
       updateAllProgress();
       saveState();
     }
@@ -665,17 +728,35 @@
         })
         .filter(item => item.value > 0);
 
-      let report = `📋 ITSSupport — Чек-лист дежурного\n`;
-      report += `👤 ${name}   📅 ${date}\n`;
-      report += `✅ Выполнено: ${progress}\n`;
+      let report = `📅 ${date}\n`;
+      report += `Отчёт по смене:\n`;
+      report += `${name}\n`;
+      report += `Выполнено: ${progress}\n`;
 
       if (counts.length) {
-        report += `\n📊 Статистика:\n`;
+        report += `\nСтатистика:\n`;
         counts.forEach(item => { report += `  • ${item.label}: ${item.value}\n`; });
       }
 
-      report += `\n📁 Блоки:\n`;
+      const countNew = parseInt(document.getElementById('countNew').textContent) || 0;
+      const countLost = parseInt(document.getElementById('countLost').textContent) || 0;
+      const notesNew = document.getElementById('notesNew').value.trim();
+      const notesLost = document.getElementById('notesLost').value.trim();
+
+      if (countNew > 0) {
+        report += `\nНовые метки: ${countNew} шт.`;
+        if (notesNew) report += `\nНомера: ${notesNew}`;
+        report += `\n`;
+      }
+      if (countLost > 0) {
+        report += `\nПотерянные метки: ${countLost} шт.`;
+        if (notesLost) report += `\nНомера: ${notesLost}`;
+        report += `\n`;
+      }
+
+      report += `\nБлоки:\n`;
       document.querySelectorAll('.task-group').forEach(group => {
+        if (group.dataset.group === 'tag-events-block') return;
         const title = group.querySelector('h2').textContent.trim();
         const bar = group.querySelector('.progress-bar').style.width || '0%';
         report += `  ${bar === '100%' ? '✅' : '⬜'} ${title} [${bar}]\n`;
@@ -691,7 +772,6 @@
       document.getElementById('workDate').valueAsDate = new Date();
       loadState();
 
-      // Toggle groups via header click
       document.querySelectorAll('.group-header').forEach(header => {
         header.addEventListener('click', () => {
           header.parentElement.classList.toggle('open');
@@ -699,7 +779,6 @@
         });
       });
 
-      // Toggle tasks
       document.querySelectorAll('.subtask').forEach(subtask => {
         subtask.addEventListener('click', function(e) {
           const checkbox = this.querySelector('input[type="checkbox"]');
@@ -716,6 +795,11 @@
       document.querySelectorAll('.task-count').forEach(inp => {
         inp.addEventListener('input', saveState);
       });
+
+      document.getElementById('notesNew').addEventListener('input', saveState);
+      document.getElementById('notesLost').addEventListener('input', saveState);
+      document.getElementById('workDate').addEventListener('change', saveState);
+      document.getElementById('workerName').addEventListener('input', saveState);
     });
 
     window.addEventListener('beforeunload', saveState);
