@@ -809,9 +809,38 @@
       const webMapChecked = document.querySelector('input[data-task-id="tags-5"]')?.checked;
       if (webMapChecked) report += `  • Web-карта актуализирована\n`;
 
-      navigator.clipboard.writeText(report)
-        .then(() => alert('✅ Отчёт скопирован!\nВставьте в Telegram или другой чат.'))
-        .catch(() => prompt('Скопируйте отчёт:', report));
+      copyToClipboard(report);
+    }
+
+    function copyToClipboard(text) {
+      // iOS Safari requires a different approach
+      const isIOS = /ipad|iphone|ipod/i.test(navigator.userAgent);
+
+      if (isIOS) {
+        const el = document.createElement('textarea');
+        el.value = text;
+        el.style.cssText = 'position:fixed;top:0;left:0;opacity:0;font-size:16px;';
+        document.body.appendChild(el);
+        el.focus();
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        el.setSelectionRange(0, text.length);
+        let success = false;
+        try { success = document.execCommand('copy'); } catch(e) {}
+        document.body.removeChild(el);
+        if (success) {
+          alert('✅ Отчёт скопирован!\nВставьте в Telegram или другой чат.');
+        } else {
+          prompt('Скопируйте отчёт вручную:', text);
+        }
+      } else {
+        navigator.clipboard.writeText(text)
+          .then(() => alert('✅ Отчёт скопирован!\nВставьте в Telegram или другой чат.'))
+          .catch(() => prompt('Скопируйте отчёт:', text));
+      }
     }
 
     // ── INIT ──
