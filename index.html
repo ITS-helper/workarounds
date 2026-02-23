@@ -631,6 +631,11 @@
           <input type="checkbox" data-task-id="tags-5">
           <span>Актуализация web-карты</span>
         </div>
+        <div class="subtask">
+          <input type="checkbox" data-task-id="tags-6">
+          <span>Метки, готовые к установке</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="tags-6" placeholder="0">
+        </div>
       </div></div>
     </div>
 
@@ -970,6 +975,12 @@
 
       const webMapChecked = document.querySelector('input[data-task-id="tags-5"]')?.checked;
       if (webMapChecked) report += `  • Web-карта актуализирована\n`;
+
+      const tagsReadyChecked = document.querySelector('input[data-task-id="tags-6"]')?.checked;
+      if (tagsReadyChecked) {
+        const tagsReadyCount = parseInt(document.querySelector('.task-count[data-count-for="tags-6"]')?.value || '0') || 0;
+        report += `  • Метки, готовые к установке: ${tagsReadyCount} шт.\n`;
+      }
 
       copyToClipboard(report);
     }
