@@ -125,6 +125,79 @@
       border-top: 1px solid var(--border);
     }
 
+    /* ── REMINDERS ── */
+    .reminders-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .reminder-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #eef6ff 0%, #f0f7ff 100%);
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid var(--accent);
+      box-shadow: 0 2px 10px rgba(0,176,255,0.10);
+      animation: reminderSlideIn 0.4s ease-out;
+    }
+    @keyframes reminderSlideIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reminder-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .reminder-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+    .reminder-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .reminder-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.82em;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+    .reminder-text {
+      font-size: 13.5px;
+      color: #1e3a5f;
+      line-height: 1.4;
+    }
+    .reminder-close {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,176,255,0.08);
+      color: var(--primary);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s;
+      line-height: 1;
+      padding: 0;
+    }
+    .reminder-close:hover { background: rgba(0,176,255,0.18); }
+    .reminder-banner.hidden { display: none; }
+
     /* ── TASK GROUP ── */
     .task-group {
       margin-bottom: 16px;
@@ -247,6 +320,36 @@
     }
     .task-count:focus { outline: none; border-color: var(--accent); }
     .task-count::placeholder { color: #a0b0c0; }
+    .inet-time-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: #f0f6ff;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+    }
+    .inet-time-row .inet-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.72em;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      min-width: 16px;
+    }
+    .inet-time-row input[type="time"] {
+      width: 100px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+      font-family: 'Source Sans 3', sans-serif;
+      background: #fff;
+      color: #1a2a3a;
+      transition: border-color 0.2s;
+    }
+    .inet-time-row input[type="time"]:focus { outline: none; border-color: var(--accent); }
 
     /* ── TAG EVENTS ── */
     .tag-events {
@@ -439,6 +542,8 @@
       <p class="intro-hint">Нажмите на заголовок блока чтобы раскрыть задачи · Отметьте выполненные пункты кликом</p>
     </div>
 
+    <div class="reminders-container" id="remindersContainer"></div>
+
     <!-- УТРО -->
     <div class="task-group" data-group="morning">
       <div class="group-header">
@@ -458,6 +563,10 @@
           <input type="checkbox" data-task-id="morning-2">
           <span>Выдача часов в окне 6:00–8:00. Проверка полок с часами</span>
           <img src="./images/watches.jpg" alt="Часы" onerror="this.style.display='none'">
+        </div>
+        <div class="subtask">
+          <input type="checkbox" data-task-id="morning-3a">
+          <span>Подготовка инженеров перед обходом (рюкзак, рация, часы)</span>
         </div>
         <div class="subtask">
           <input type="checkbox" data-task-id="morning-3">
@@ -583,6 +692,12 @@
           <input type="number" min="0" value="0" class="task-count" data-count-for="evening-1" placeholder="0">
           <img src="./images/return.jpg" alt="Возврат" onerror="this.style.display='none'">
         </div>
+        <div class="subtask" style="flex-wrap:wrap;">
+          <input type="checkbox" data-task-id="evening-2">
+          <span>Проблемы с интернет соединением</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="evening-2" id="inetCount" placeholder="0">
+          <div id="inetTimesContainer" style="width:100%;display:none;margin-top:8px;display:flex;flex-direction:column;gap:6px;"></div>
+        </div>
         <div class="subtask">
           <input type="checkbox" data-task-id="evening-3">
           <span>Закрытие смены / перекличка</span>
@@ -604,9 +719,6 @@
 
   </div>
 
-  <!-- Actions bar -->
-  <!-- removed -->
-
   <canvas id="confetti"></canvas>
 
   <script>
@@ -625,7 +737,11 @@
         countNew: document.getElementById('countNew').textContent,
         countLost: document.getElementById('countLost').textContent,
         notesNew: document.getElementById('notesNew').value,
-        notesLost: document.getElementById('notesLost').value
+        notesLost: document.getElementById('notesLost').value,
+        inetTimes: Array.from(document.querySelectorAll('.inet-time-row')).map(row => ({
+          from: row.querySelector('.inet-from').value,
+          to: row.querySelector('.inet-to').value
+        }))
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
@@ -652,6 +768,16 @@
           if (saved.countLost) document.getElementById('countLost').textContent = saved.countLost;
           if (saved.notesNew) document.getElementById('notesNew').value = saved.notesNew;
           if (saved.notesLost) document.getElementById('notesLost').value = saved.notesLost;
+          if (saved.inetTimes) {
+            renderInetTimes(saved.inetTimes.length);
+            saved.inetTimes.forEach((t, i) => {
+              const rows = document.querySelectorAll('.inet-time-row');
+              if (rows[i]) {
+                rows[i].querySelector('.inet-from').value = t.from || '';
+                rows[i].querySelector('.inet-to').value = t.to || '';
+              }
+            });
+          }
         }
       } catch (e) {}
       updateAllProgress();
@@ -692,6 +818,29 @@
       const current = parseInt(el.textContent) || 0;
       el.textContent = Math.max(0, current + delta);
       saveState();
+    }
+
+    function renderInetTimes(count) {
+      const container = document.getElementById('inetTimesContainer');
+      const oldValues = Array.from(container.querySelectorAll('.inet-time-row')).map(row => ({
+        from: row.querySelector('.inet-from').value,
+        to: row.querySelector('.inet-to').value
+      }));
+      container.innerHTML = '';
+      if (count <= 0) { container.style.display = 'none'; return; }
+      container.style.display = 'flex';
+      for (let i = 0; i < count; i++) {
+        const row = document.createElement('div');
+        row.className = 'inet-time-row';
+        row.innerHTML = `
+          <span class="inet-label">${i + 1}.</span>
+          <input type="time" class="inet-from" value="${oldValues[i]?.from || ''}">
+          <span style="color:var(--muted);font-size:13px;">—</span>
+          <input type="time" class="inet-to" value="${oldValues[i]?.to || ''}">
+        `;
+        row.querySelectorAll('input').forEach(inp => inp.addEventListener('change', saveState));
+        container.appendChild(row);
+      }
     }
 
     function resetAll() {
@@ -759,28 +908,36 @@
       const name = document.getElementById('workerName').value || 'Инженер';
       const date = document.getElementById('workDate').value || new Date().toLocaleDateString('ru-RU');
 
-      // Статистика — всё кроме пройденных меток (tags-1), всегда включаем фронт-данные
       const frontFields = [
         { id: 'front-1', label: 'Регистрация новичков' },
         { id: 'front-2', label: 'Регистрация в боте' },
         { id: 'front-3', label: 'Обращения, связанные с табелем' },
         { id: 'front-4', label: 'Замена наклейки NFC' },
         { id: 'evening-1', label: 'Нарушения' },
+        { id: 'evening-2', label: 'Проблемы с интернет соединением' },
       ];
 
       const statsLines = frontFields.map(f => {
         const value = parseInt(document.querySelector(`.task-count[data-count-for="${f.id}"]`)?.value || '0') || 0;
-        return { label: f.label, value };
+        return { label: f.label, value, id: f.id };
       }).filter(item => item.value > 0);
 
-      // Метки
+      // Collect inet time ranges
+      const inetTimes = Array.from(document.querySelectorAll('.inet-time-row')).map(row => {
+        const from = row.querySelector('.inet-from').value;
+        const to = row.querySelector('.inet-to').value;
+        if (from && to) return `${from}–${to}`;
+        if (from) return `с ${from}`;
+        if (to) return `до ${to}`;
+        return '';
+      }).filter(Boolean);
+
       const walkedCount = parseInt(document.querySelector('.task-count[data-count-for="tags-1"]')?.value || '0') || 0;
       const countNew = parseInt(document.getElementById('countNew').textContent) || 0;
       const countLost = parseInt(document.getElementById('countLost').textContent) || 0;
       const notesNew = document.getElementById('notesNew').value.trim();
       const notesLost = document.getElementById('notesLost').value.trim();
 
-      // BLE count from Google Sheets
       const bleCount = await fetchBleCount();
 
       let report = `📅 ${date}\n`;
@@ -789,7 +946,12 @@
 
       if (statsLines.length) {
         report += `\nСтатистика:\n`;
-        statsLines.forEach(item => { report += `  • ${item.label}: ${item.value}\n`; });
+        statsLines.forEach(item => {
+          report += `  • ${item.label}: ${item.value}\n`;
+          if (item.id === 'evening-2' && inetTimes.length) {
+            inetTimes.forEach(t => { report += `      ${t}\n`; });
+          }
+        });
       }
 
       report += `\nМетки:\n`;
@@ -813,7 +975,6 @@
     }
 
     function copyToClipboard(text) {
-      // iOS Safari requires a different approach
       const isIOS = /ipad|iphone|ipod/i.test(navigator.userAgent);
 
       if (isIOS) {
@@ -843,9 +1004,92 @@
       }
     }
 
+    // ── REMINDERS SYSTEM ──
+    const SVG_ICONS = {
+      package: '<svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4l-9-5.19"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
+      truck: '<svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+      sync: '<svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>',
+      building: '<svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/><path d="M9 18h6"/></svg>',
+      people: '<svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>'
+    };
+
+    const REMINDERS = [
+      {
+        id: 'ozon-cdek-prep',
+        days: [0, 3],
+        icon: SVG_ICONS.package,
+        title: 'Напоминание',
+        text: 'Сегодня необходимо подготовить заказы для размещения в OZON / CDEK'
+      },
+      {
+        id: 'ozon-cdek-place',
+        days: [1, 4],
+        icon: SVG_ICONS.truck,
+        title: 'Напоминание',
+        text: 'Сегодня необходимо разместить заказы в OZON / CDEK'
+      },
+      {
+        id: 'sync-ww-dev',
+        days: [2],
+        icon: SVG_ICONS.sync,
+        title: 'Встреча',
+        text: 'Сегодня еженедельный синк ITS WW dev'
+      },
+      {
+        id: 'meeting-deploy',
+        days: [3],
+        icon: SVG_ICONS.building,
+        title: 'Встреча',
+        text: 'Сегодня встреча площадок отдела внедрения'
+      },
+      {
+        id: 'meetup-friday',
+        days: [5],
+        icon: SVG_ICONS.people,
+        title: 'Meet-up',
+        text: 'Сегодня meet-up!'
+      }
+    ];
+
+    function checkReminders() {
+      const container = document.getElementById('remindersContainer');
+      const today = new Date().getDay();
+      const dismissed = JSON.parse(sessionStorage.getItem('dismissed_reminders') || '[]');
+
+      const active = REMINDERS.filter(r => r.days.includes(today) && !dismissed.includes(r.id));
+
+      if (active.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+
+      container.style.display = 'flex';
+      container.innerHTML = active.map(r => `
+        <div class="reminder-banner" data-reminder-id="${r.id}">
+          <span class="reminder-icon">${r.icon}</span>
+          <div class="reminder-content">
+            <span class="reminder-title">${r.title}</span>
+            <span class="reminder-text">${r.text}</span>
+          </div>
+          <button class="reminder-close" onclick="dismissReminder('${r.id}')" title="Скрыть">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function dismissReminder(id) {
+      const dismissed = JSON.parse(sessionStorage.getItem('dismissed_reminders') || '[]');
+      dismissed.push(id);
+      sessionStorage.setItem('dismissed_reminders', JSON.stringify(dismissed));
+      const banner = document.querySelector(`[data-reminder-id="${id}"]`);
+      if (banner) banner.classList.add('hidden');
+      const container = document.getElementById('remindersContainer');
+      if (!container.querySelector('.reminder-banner:not(.hidden)')) container.style.display = 'none';
+    }
+
     // ── INIT ──
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('workDate').valueAsDate = new Date();
+      checkReminders();
       loadState();
 
       document.querySelectorAll('.group-header').forEach(header => {
@@ -874,6 +1118,10 @@
 
       document.getElementById('notesNew').addEventListener('input', saveState);
       document.getElementById('notesLost').addEventListener('input', saveState);
+      document.getElementById('inetCount').addEventListener('input', function() {
+        renderInetTimes(parseInt(this.value) || 0);
+        saveState();
+      });
       document.getElementById('workDate').addEventListener('change', () => { saveState(); updateReportMeta(); });
       document.getElementById('workerName').addEventListener('input', () => { saveState(); updateReportMeta(); });
     });
