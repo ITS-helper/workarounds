@@ -1048,15 +1048,29 @@
         icon: SVG_ICONS.people,
         title: 'Meet-up',
         text: 'Сегодня meet-up!'
+      },
+      {
+        id: 'delete-test-shifts',
+        monthly: { fromDay: 25 },
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>',
+        title: 'Напоминание',
+        text: 'Необходимо удалить тестовые смены'
       }
     ];
 
     function checkReminders() {
       const container = document.getElementById('remindersContainer');
-      const today = new Date().getDay();
+      const now = new Date();
+      const dayOfWeek = now.getDay();
+      const dayOfMonth = now.getDate();
       const dismissed = JSON.parse(sessionStorage.getItem('dismissed_reminders') || '[]');
 
-      const active = REMINDERS.filter(r => r.days.includes(today) && !dismissed.includes(r.id));
+      const active = REMINDERS.filter(r => {
+        if (dismissed.includes(r.id)) return false;
+        if (r.days && r.days.includes(dayOfWeek)) return true;
+        if (r.monthly && dayOfMonth >= r.monthly.fromDay) return true;
+        return false;
+      });
 
       if (active.length === 0) {
         container.style.display = 'none';
