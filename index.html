@@ -1016,6 +1016,57 @@
     }
 
     // ── REMINDERS SYSTEM ──
+    const SCHEDULE_SHEET_ID = '1h-GMxdT2z3MC-somIq8sX3iV6KfjaoCffIIfeBQezRk';
+    const SCHEDULE_SHEET_NAME = 'график 2026';
+
+    const MONTH_NAMES = ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
+
+    async function fetchDayOff() {
+      try {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const tMonth = MONTH_NAMES[tomorrow.getMonth()];
+        const tDay = tomorrow.getDate();
+
+        // Load header rows (months + days) and names + data
+        const url = `https://docs.google.com/spreadsheets/d/${SCHEDULE_SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SCHEDULE_SHEET_NAME)}&range=E1:PZ50&headers=0&t=${Date.now()}`;
+        const res = await fetch(url);
+        const text = await res.text();
+        const json = JSON.parse(text.substring(47).slice(0, -2));
+        const rows = json.table.rows;
+
+        // Row 0 = months, Row 1 = day numbers, Row 2+ = employees
+        const monthRow = (rows[0]?.c || []).map(c => c ? String(c.v || '').trim().toLowerCase() : '');
+        const dayRow = (rows[1]?.c || []).map(c => c ? String(c.v ?? '') .trim() : '');
+
+        // Find column: match month name and day number (data starts at col index relative to E)
+        let targetCol = -1;
+        let lastMonth = '';
+        for (let i = 1; i < monthRow.length; i++) {
+          if (monthRow[i]) lastMonth = monthRow[i];
+          if (lastMonth === tMonth && dayRow[i] === String(tDay)) {
+            targetCol = i;
+            break;
+          }
+        }
+
+        if (targetCol === -1) return [];
+
+        const dayOffNames = [];
+        for (let r = 2; r < rows.length; r++) {
+          const cells = rows[r]?.c || [];
+          const name = cells[0] ? String(cells[0].v || '').trim() : '';
+          const value = cells[targetCol] ? String(cells[targetCol].v || '').trim().toUpperCase() : '';
+          if (name && value === 'ВХ') {
+            dayOffNames.push(name);
+          }
+        }
+        return dayOffNames;
+      } catch (e) {
+        console.error('Ошибка загрузки графика:', e);
+        return [];
+      }
+    }
     const SVG_ICONS = {
       package: '<svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4l-9-5.19"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
       truck: '<svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
@@ -1069,7 +1120,7 @@
       }
     ];
 
-    function checkReminders() {
+    async function checkReminders() {
       const container = document.getElementById('remindersContainer');
       const now = new Date();
       const dayOfWeek = now.getDay();
@@ -1083,13 +1134,34 @@
         return false;
       });
 
-      if (active.length === 0) {
+      // Day-off reminder
+      let dayOffHtml = '';
+      if (!dismissed.includes('day-off-tomorrow')) {
+        const dayOffNames = await fetchDayOff();
+        if (dayOffNames.length > 0) {
+          const tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          const dateStr = tomorrow.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+          dayOffHtml = `
+            <div class="reminder-banner" data-reminder-id="day-off-tomorrow">
+              <span class="reminder-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+              <div class="reminder-content">
+                <span class="reminder-title">Выходные завтра (${dateStr})</span>
+                <span class="reminder-text">${dayOffNames.join(', ')}</span>
+              </div>
+              <button class="reminder-close" onclick="dismissReminder('day-off-tomorrow')" title="Скрыть">✕</button>
+            </div>
+          `;
+        }
+      }
+
+      if (active.length === 0 && !dayOffHtml) {
         container.style.display = 'none';
         return;
       }
 
       container.style.display = 'flex';
-      container.innerHTML = active.map(r => `
+      container.innerHTML = dayOffHtml + active.map(r => `
         <div class="reminder-banner" data-reminder-id="${r.id}">
           <span class="reminder-icon">${r.icon}</span>
           <div class="reminder-content">
