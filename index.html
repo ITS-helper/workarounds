@@ -21,6 +21,7 @@
       --progress-bg: #dde4ee;
       --glass-bg: rgba(255,255,255,0.92);
       --border: #dde4ee;
+      --danger: #ef4444;
     }
 
     * { box-sizing: border-box; }
@@ -36,7 +37,6 @@
       color: #1a2a3a;
     }
 
-    /* ── HEADER ── */
     header {
       background: linear-gradient(90deg, #0b2740 0%, #0e3359 60%, #123b63 100%);
       padding: 0;
@@ -45,476 +45,227 @@
       border-bottom: 2px solid rgba(0,176,255,0.3);
     }
     .header-inner {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
+      max-width: 900px; margin: 0 auto;
+      padding: 14px 20px; display: flex; align-items: center; gap: 16px;
     }
-    header img {
-      height: 36px;
-      width: auto;
-      max-width: 160px;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
-    }
+    header img { height: 36px; width: auto; max-width: 160px; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4)); }
     .header-title {
-      font-family: 'Oswald', sans-serif;
-      font-size: 0.75em;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      border-left: 1px solid rgba(255,255,255,0.2);
-      padding-left: 16px;
+      font-family: 'Oswald', sans-serif; font-size: 0.75em; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5);
+      border-left: 1px solid rgba(255,255,255,0.2); padding-left: 16px;
     }
 
-    /* ── CONTAINER ── */
-    .container {
-      max-width: 900px; margin: 0 auto 40px auto; padding: 24px 20px;
-    }
+    .container { max-width: 900px; margin: 0 auto 40px auto; padding: 24px 20px; }
 
-    /* ── INTRO ── */
     .intro {
-      background: var(--glass-bg);
-      padding: 18px 22px;
-      border-radius: 12px;
-      margin-bottom: 24px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      align-items: center;
-      border: 1px solid var(--border);
+      background: var(--glass-bg); padding: 18px 22px; border-radius: 12px;
+      margin-bottom: 24px; display: flex; flex-wrap: wrap; gap: 14px;
+      align-items: center; border: 1px solid var(--border);
       box-shadow: 0 4px 16px rgba(11,39,64,0.08);
     }
-    .intro-field {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .intro-field { display: flex; align-items: center; gap: 8px; }
     .intro-field label {
-      font-family: 'Oswald', sans-serif;
-      font-size: 0.78em;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 500;
-      white-space: nowrap;
+      font-family: 'Oswald', sans-serif; font-size: 0.78em; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); font-weight: 500; white-space: nowrap;
     }
     .intro input {
-      padding: 7px 11px;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      font-size: 14px;
-      font-family: 'Source Sans 3', sans-serif;
-      background: #f8fafc;
-      color: #1a2a3a;
-      transition: border-color 0.2s;
+      padding: 7px 11px; border: 1px solid var(--border); border-radius: 7px;
+      font-size: 14px; font-family: 'Source Sans 3', sans-serif;
+      background: #f8fafc; color: #1a2a3a; transition: border-color 0.2s;
     }
     .intro input:focus { outline: none; border-color: var(--accent); background: #fff; }
     .intro input::placeholder { color: #a0b0c0; }
-    #workDate { width: 160px; }
-    #workerName { width: 180px; }
-    .intro-hint {
-      font-size: 12px;
-      color: var(--muted);
-      width: 100%;
-      margin: 0;
-      padding-top: 4px;
-      border-top: 1px solid var(--border);
-    }
+    #workDate { width: 160px; } #workerName { width: 180px; }
+    .intro-hint { font-size: 12px; color: var(--muted); width: 100%; margin: 0; padding-top: 4px; border-top: 1px solid var(--border); }
 
-    /* ── REMINDERS ── */
-    .reminders-container {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
+    .reminders-container { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
     .reminder-banner {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 18px;
-      border-radius: 10px;
-      background: linear-gradient(90deg, #eef6ff 0%, #f0f7ff 100%);
-      border: 1px solid #bfdbfe;
-      border-left: 4px solid var(--accent);
-      box-shadow: 0 2px 10px rgba(0,176,255,0.10);
-      animation: reminderSlideIn 0.4s ease-out;
+      display: flex; align-items: center; gap: 12px; padding: 14px 18px;
+      border-radius: 10px; background: linear-gradient(90deg, #eef6ff 0%, #f0f7ff 100%);
+      border: 1px solid #bfdbfe; border-left: 4px solid var(--accent);
+      box-shadow: 0 2px 10px rgba(0,176,255,0.10); animation: reminderSlideIn 0.4s ease-out;
     }
-    @keyframes reminderSlideIn {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .reminder-icon {
-      flex-shrink: 0;
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .reminder-icon svg {
-      width: 20px;
-      height: 20px;
-    }
-    .reminder-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .reminder-title {
-      font-family: 'Oswald', sans-serif;
-      font-size: 0.82em;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--primary);
-    }
-    .reminder-text {
-      font-size: 13.5px;
-      color: #1e3a5f;
-      line-height: 1.4;
-    }
+    @keyframes reminderSlideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+    .reminder-icon { flex-shrink: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+    .reminder-icon svg { width: 20px; height: 20px; }
+    .reminder-content { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+    .reminder-title { font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--primary); }
+    .reminder-text { font-size: 13.5px; color: #1e3a5f; line-height: 1.4; }
     .reminder-close {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(0,176,255,0.08);
-      color: var(--primary);
-      font-size: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: background 0.15s;
-      line-height: 1;
-      padding: 0;
+      width: 28px; height: 28px; border-radius: 50%; border: none;
+      background: rgba(0,176,255,0.08); color: var(--primary); font-size: 16px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background 0.15s; line-height: 1; padding: 0;
     }
     .reminder-close:hover { background: rgba(0,176,255,0.18); }
     .reminder-banner.hidden { display: none; }
 
-    /* ── TASK GROUP ── */
     .task-group {
-      margin-bottom: 16px;
-      background: var(--card-bg);
-      border-radius: 12px;
-      box-shadow: 0 4px 16px rgba(11,39,64,0.07);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      transition: box-shadow 0.25s ease, border-color 0.25s ease;
+      margin-bottom: 16px; background: var(--card-bg); border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(11,39,64,0.07); border: 1px solid var(--border);
+      overflow: hidden; transition: box-shadow 0.25s ease, border-color 0.25s ease;
     }
-    .task-group:hover {
-      box-shadow: 0 8px 28px rgba(11,39,64,0.12);
-      border-color: rgba(0,176,255,0.35);
-    }
+    .task-group:hover { box-shadow: 0 8px 28px rgba(11,39,64,0.12); border-color: rgba(0,176,255,0.35); }
     .group-header {
-      padding: 16px 20px 14px;
-      cursor: pointer;
-      user-select: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      transition: background 0.2s;
+      padding: 16px 20px 14px; cursor: pointer; user-select: none;
+      display: flex; flex-direction: column; gap: 10px; transition: background 0.2s;
     }
     .group-header:hover { background: #f7fafd; }
-    .group-title-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    .group-title-row { display: flex; align-items: center; justify-content: space-between; }
     .task-group h2 {
-      font-family: 'Oswald', sans-serif;
-      color: var(--primary);
-      margin: 0;
-      font-size: 1.05em;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      font-family: 'Oswald', sans-serif; color: var(--primary); margin: 0;
+      font-size: 1.05em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 10px;
     }
     .task-group h2 .icon { font-size: 1.1em; line-height: 1; display: flex; align-items: center; }
-    .group-chevron {
-      color: var(--muted);
-      font-size: 18px;
-      transition: transform 0.3s ease;
-      flex-shrink: 0;
-    }
+    .group-chevron { color: var(--muted); font-size: 18px; transition: transform 0.3s ease; flex-shrink: 0; }
     .task-group.open .group-chevron { transform: rotate(180deg); }
-    .progress-container {
-      height: 4px;
-      background: var(--progress-bg);
-      border-radius: 999px;
-      overflow: hidden;
-    }
+    .progress-container { height: 4px; background: var(--progress-bg); border-radius: 999px; overflow: hidden; }
     .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent) 0%, #34d399 100%);
-      width: 0%;
-      transition: width 0.4s ease;
-      border-radius: 999px;
+      height: 100%; background: linear-gradient(90deg, var(--accent) 0%, #34d399 100%);
+      width: 0%; transition: width 0.4s ease; border-radius: 999px;
       box-shadow: 0 0 8px rgba(0,176,255,0.5);
     }
 
-    /* ── SUBTASKS ── */
-    .subtasks {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+    .subtasks { max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
     .task-group.open .subtasks { max-height: 2000px; }
-    .subtasks-inner {
-      padding: 6px 16px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+    .subtasks-inner { padding: 6px 16px 16px; display: flex; flex-direction: column; gap: 6px; }
     .subtask {
-      display: flex;
-      align-items: center;
-      padding: 12px 14px;
-      background: #f8fafc;
-      border-radius: 9px;
-      border-left: 3px solid transparent;
-      cursor: pointer;
-      transition: all 0.18s ease;
-      gap: 12px;
+      display: flex; align-items: center; padding: 12px 14px; background: #f8fafc;
+      border-radius: 9px; border-left: 3px solid transparent; cursor: pointer;
+      transition: all 0.18s ease; gap: 12px;
     }
     .subtask:hover { background: #f0f6ff; border-left-color: var(--accent); }
     .subtask.completed { background: #f0fdf8; border-left-color: var(--success); }
-    .subtask input[type="checkbox"] {
-      width: 18px; height: 18px;
-      accent-color: var(--accent);
-      cursor: pointer; flex-shrink: 0;
-    }
-    .subtask span {
-      font-size: 14px; color: #2a3a4a;
-      flex: 1; line-height: 1.4; font-weight: 400;
-    }
+    .subtask input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+    .subtask span { font-size: 14px; color: #2a3a4a; flex: 1; line-height: 1.4; font-weight: 400; }
     .subtask.completed span { text-decoration: line-through; color: #94a3b8; }
-    .subtask img {
-      width: 40px; height: 40px;
-      object-fit: cover;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(11,39,64,0.18);
-      flex-shrink: 0;
-    }
+    .subtask img { width: 40px; height: 40px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 6px rgba(11,39,64,0.18); flex-shrink: 0; }
     .task-count {
-      width: 68px;
-      padding: 5px 8px;
-      border-radius: 7px;
-      border: 1px solid var(--border);
-      font-size: 14px;
-      font-family: 'Source Sans 3', sans-serif;
-      background: #fff;
-      color: #1a2a3a;
-      text-align: center;
-      flex-shrink: 0;
-      transition: border-color 0.2s;
+      width: 68px; padding: 5px 8px; border-radius: 7px; border: 1px solid var(--border);
+      font-size: 14px; font-family: 'Source Sans 3', sans-serif; background: #fff;
+      color: #1a2a3a; text-align: center; flex-shrink: 0; transition: border-color 0.2s;
     }
     .task-count:focus { outline: none; border-color: var(--accent); }
     .task-count::placeholder { color: #a0b0c0; }
     .inet-time-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 10px;
-      background: #f0f6ff;
-      border-radius: 7px;
-      border: 1px solid var(--border);
+      display: flex; align-items: center; gap: 6px; padding: 6px 10px;
+      background: #f0f6ff; border-radius: 7px; border: 1px solid var(--border);
     }
     .inet-time-row .inet-label {
-      font-family: 'Oswald', sans-serif;
-      font-size: 0.72em;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--muted);
-      min-width: 16px;
+      font-family: 'Oswald', sans-serif; font-size: 0.72em; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); min-width: 16px;
     }
     .inet-time-row input[type="time"] {
-      width: 100px;
-      padding: 4px 8px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      font-size: 13px;
-      font-family: 'Source Sans 3', sans-serif;
-      background: #fff;
-      color: #1a2a3a;
-      transition: border-color 0.2s;
+      width: 100px; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border);
+      font-size: 13px; font-family: 'Source Sans 3', sans-serif; background: #fff; color: #1a2a3a;
     }
     .inet-time-row input[type="time"]:focus { outline: none; border-color: var(--accent); }
 
-    /* ── TAG EVENTS ── */
-    .tag-events {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 4px;
-    }
-    @media (max-width: 540px) {
-      .tag-events { grid-template-columns: 1fr; }
-    }
-    .tag-event-block {
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      padding: 12px 14px;
-      background: #f8fafc;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    .tag-events { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+    @media (max-width: 540px) { .tag-events { grid-template-columns: 1fr; } }
+    .tag-event-block { border-radius: 10px; border: 1px solid var(--border); padding: 12px 14px; background: #f8fafc; display: flex; flex-direction: column; gap: 10px; }
     .tag-event-new { border-left: 3px solid var(--success); }
     .tag-event-lost { border-left: 3px solid #f87171; }
-    .tag-event-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .tag-event-icon {
-      font-size: 15px;
-      font-weight: 700;
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      font-family: 'Oswald', sans-serif;
-    }
+    .tag-event-header { display: flex; align-items: center; gap: 8px; }
+    .tag-event-icon { font-size: 15px; font-weight: 700; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'Oswald', sans-serif; }
     .tag-event-new .tag-event-icon { background: rgba(16,185,129,0.15); color: var(--success); }
     .tag-event-lost .tag-event-icon { background: rgba(248,113,113,0.15); color: #e11d48; }
-    .tag-event-title {
-      font-family: 'Oswald', sans-serif;
-      font-size: 0.82em;
-      font-weight: 600;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--primary);
-      flex: 1;
-    }
-    .tag-event-counter {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .tag-event-counter span {
-      font-family: 'Oswald', sans-serif;
-      font-weight: 700;
-      font-size: 1.15em;
-      min-width: 24px;
-      text-align: center;
-      color: var(--primary);
-    }
-    .counter-btn {
-      width: 26px; height: 26px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: #fff;
-      color: var(--primary);
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s;
-      line-height: 1;
-      padding: 0;
-    }
+    .tag-event-title { font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--primary); flex: 1; }
+    .tag-event-counter { display: flex; align-items: center; gap: 6px; }
+    .tag-event-counter span { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.15em; min-width: 24px; text-align: center; color: var(--primary); }
+    .counter-btn { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--border); background: #fff; color: var(--primary); font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; line-height: 1; padding: 0; }
     .counter-btn:hover { background: #f0f6ff; border-color: var(--accent); }
-    .tag-event-notes {
-      width: 100%;
-      min-height: 56px;
-      resize: vertical;
-      padding: 8px 10px;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      font-size: 13px;
-      font-family: 'Source Sans 3', sans-serif;
-      background: #fff;
-      color: #1a2a3a;
-      transition: border-color 0.2s;
-      line-height: 1.4;
-    }
+    .tag-event-notes { width: 100%; min-height: 56px; resize: vertical; padding: 8px 10px; border: 1px solid var(--border); border-radius: 7px; font-size: 13px; font-family: 'Source Sans 3', sans-serif; background: #fff; color: #1a2a3a; transition: border-color 0.2s; line-height: 1.4; }
     .tag-event-notes:focus { outline: none; border-color: var(--accent); }
     .tag-event-notes::placeholder { color: #a0b0c0; }
 
-    /* ── REPORT SECTION ── */
     .report-section {
-      background: var(--glass-bg);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 16px rgba(11,39,64,0.08);
-      padding: 18px 22px;
-      margin-top: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
+      background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--border);
+      box-shadow: 0 4px 16px rgba(11,39,64,0.08); padding: 18px 22px; margin-top: 8px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
     }
-    .report-info {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex: 1;
-      min-width: 160px;
-    }
-    .report-info-progress {
-      font-family: 'Oswald', sans-serif;
-      font-weight: 700;
-      font-size: 2em;
-      color: var(--accent);
-      letter-spacing: 0.02em;
-      line-height: 1;
-      min-width: 64px;
-    }
-    .report-info-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .report-info-meta span {
-      font-size: 13px;
-      color: var(--muted);
-      font-family: 'Source Sans 3', sans-serif;
-    }
-    .report-info-meta span:first-child {
-      font-weight: 600;
-      color: var(--primary);
-      font-size: 14px;
-    }
+    .report-info { display: flex; align-items: center; gap: 16px; flex: 1; min-width: 160px; }
+    .report-info-progress { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 2em; color: var(--accent); letter-spacing: 0.02em; line-height: 1; min-width: 64px; }
+    .report-info-meta { display: flex; flex-direction: column; gap: 2px; }
+    .report-info-meta span { font-size: 13px; color: var(--muted); font-family: 'Source Sans 3', sans-serif; }
+    .report-info-meta span:first-child { font-weight: 600; color: var(--primary); font-size: 14px; }
     .btn-report {
-      font-family: 'Oswald', sans-serif;
-      font-size: 0.95em;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      font-weight: 600;
-      padding: 11px 28px;
-      border-radius: 999px;
-      border: none;
-      background: var(--accent);
-      color: #04111f;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-      box-shadow: 0 4px 14px rgba(0,176,255,0.3);
+      font-family: 'Oswald', sans-serif; font-size: 0.95em; letter-spacing: 0.06em;
+      text-transform: uppercase; font-weight: 600; padding: 11px 28px; border-radius: 999px;
+      border: none; background: var(--accent); color: #04111f; cursor: pointer;
+      transition: all 0.2s ease; white-space: nowrap; box-shadow: 0 4px 14px rgba(0,176,255,0.3);
     }
-    .btn-report:hover {
-      background: #19b9ff;
-      box-shadow: 0 6px 20px rgba(0,176,255,0.45);
-      transform: translateY(-1px);
-    }
+    .btn-report:hover { background: #19b9ff; box-shadow: 0 6px 20px rgba(0,176,255,0.45); transform: translateY(-1px); }
 
-    /* ── CONFETTI ── */
     #confetti { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1000; }
 
     @media (max-width: 500px) {
       .report-section { flex-direction: column; align-items: stretch; }
       .btn-report { text-align: center; }
+    }
+/* ===== MODAL REPORT ===== */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(11,39,64,0.55);
+      backdrop-filter: blur(4px); z-index: 500;
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px; opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: #fff; border-radius: 16px; width: 100%; max-width: 520px;
+      box-shadow: 0 24px 64px rgba(11,39,64,0.3); display: flex; flex-direction: column;
+      max-height: 90vh; transform: translateY(20px); transition: transform 0.25s ease;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-header {
+      padding: 18px 20px 14px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-header h3 {
+      font-family: 'Oswald', sans-serif; font-size: 1em; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase; color: var(--primary); margin: 0;
+    }
+    .modal-close {
+      width: 30px; height: 30px; border-radius: 50%; border: none;
+      background: #f0f4f9; color: var(--muted); font-size: 16px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+    }
+    .modal-close:hover { background: #fee2e2; color: var(--danger); }
+    .modal-body { padding: 16px 20px; flex: 1; overflow-y: auto; }
+    .modal-body textarea {
+      width: 100%; min-height: 220px; resize: vertical;
+      padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px;
+      font-size: 14px; font-family: 'Source Sans 3', sans-serif;
+      line-height: 1.6; color: #1a2a3a; background: #f8fafc;
+      transition: border-color 0.2s;
+    }
+    .modal-body textarea:focus { outline: none; border-color: var(--accent); background: #fff; }
+    .modal-footer {
+      padding: 14px 20px; border-top: 1px solid var(--border);
+      display: flex; gap: 10px; justify-content: flex-end;
+    }
+    .btn-copy {
+      font-family: 'Oswald', sans-serif; font-size: 0.9em; letter-spacing: 0.06em;
+      text-transform: uppercase; font-weight: 600; padding: 10px 22px; border-radius: 999px;
+      border: none; background: var(--accent); color: #04111f; cursor: pointer;
+      transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(0,176,255,0.3);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .btn-copy:hover { background: #19b9ff; transform: translateY(-1px); }
+    .btn-copy.copied { background: var(--success); box-shadow: 0 4px 14px rgba(16,185,129,0.3); }
+    .btn-cancel {
+      font-family: 'Oswald', sans-serif; font-size: 0.9em; letter-spacing: 0.06em;
+      text-transform: uppercase; font-weight: 600; padding: 10px 18px; border-radius: 999px;
+      border: 1px solid var(--border); background: #f8fafc; color: var(--muted); cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-cancel:hover { background: #f0f4f9; color: var(--primary); }
+    @media (max-width: 500px) {
+      .modal { max-height: 95vh; border-radius: 12px; }
+      .modal-footer { flex-direction: column; }
+      .btn-copy, .btn-cancel { width: 100%; justify-content: center; }
     }
   </style>
 </head>
@@ -522,8 +273,7 @@
 
   <header>
     <div class="header-inner">
-      <img src="./images/ITS_logo_horizont.png" alt="ITSSupport"
-           onerror="this.style.display='none'">
+      <img src="./images/ITS_logo_horizont.png" alt="ITSSupport" onerror="this.style.display='none'">
       <span class="header-title">Чек-лист дежурного инженера</span>
     </div>
   </header>
@@ -650,7 +400,6 @@
       </div>
       <div class="subtasks"><div class="subtasks-inner">
         <div class="tag-events">
-
           <div class="tag-event-block tag-event-new">
             <div class="tag-event-header">
               <span class="tag-event-icon">＋</span>
@@ -663,7 +412,6 @@
             </div>
             <textarea id="notesNew" class="tag-event-notes" placeholder="Номера новых меток через запятую: 101, 205, 318..."></textarea>
           </div>
-
           <div class="tag-event-block tag-event-lost">
             <div class="tag-event-header">
               <span class="tag-event-icon">−</span>
@@ -676,7 +424,6 @@
             </div>
             <textarea id="notesLost" class="tag-event-notes" placeholder="Номера потерянных меток через запятую: 42, 77..."></textarea>
           </div>
-
         </div>
       </div></div>
     </div>
@@ -722,6 +469,23 @@
       <button class="btn-report" onclick="exportReport()">↗ Сформировать отчёт</button>
     </div>
 
+  </div>
+
+  <!-- MODAL REPORT -->
+  <div class="modal-overlay" id="reportModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>✉️ Отчёт смены</h3>
+        <button class="modal-close" onclick="closeReportModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <textarea id="reportTextarea" spellcheck="false"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeReportModal()">Закрыть</button>
+        <button class="btn-copy" id="btnCopy" onclick="copyReport()">📋 Скопировать</button>
+      </div>
+    </div>
   </div>
 
   <canvas id="confetti"></canvas>
@@ -809,8 +573,7 @@
       document.querySelectorAll('.task-group').forEach(group => {
         if (group.dataset.group === 'tag-events-block') return;
         const { checked, total } = updateGroupProgress(group.dataset.group);
-        totalTasks += total;
-        totalChecked += checked;
+        totalTasks += total; totalChecked += checked;
       });
       const pct = totalTasks ? Math.round((totalChecked / totalTasks) * 100) : 0;
       document.getElementById('totalProgress').textContent = pct + '%';
@@ -848,47 +611,21 @@
       }
     }
 
-    function resetAll() {
-      if (!confirm('Сбросить весь чек-лист?')) return;
-      document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-        cb.checked = false;
-        cb.closest('.subtask').classList.remove('completed');
-      });
-      document.querySelectorAll('.task-count').forEach(inp => inp.value = 0);
-      document.getElementById('countNew').textContent = '0';
-      document.getElementById('countLost').textContent = '0';
-      document.getElementById('notesNew').value = '';
-      document.getElementById('notesLost').value = '';
-      updateAllProgress();
-      saveState();
-    }
-
     function showConfetti() {
       const canvas = document.getElementById('confetti');
       const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth; canvas.height = window.innerHeight;
       const pieces = [];
       const colors = ['#00b0ff','#34d399','#f59e0b','#f87171','#a78bfa'];
       for (let i = 0; i < 120; i++) {
-        pieces.push({
-          x: Math.random() * canvas.width, y: -10,
-          vx: (Math.random() - 0.5) * 8, vy: Math.random() * 5 + 3,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          size: Math.random() * 7 + 3,
-          rot: Math.random() * 360, rotV: (Math.random() - 0.5) * 8
-        });
+        pieces.push({ x: Math.random() * canvas.width, y: -10, vx: (Math.random()-0.5)*8, vy: Math.random()*5+3, color: colors[Math.floor(Math.random()*colors.length)], size: Math.random()*7+3, rot: Math.random()*360, rotV: (Math.random()-0.5)*8 });
       }
       function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         pieces.forEach((p, i) => {
           p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.rot += p.rotV;
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.rot * Math.PI / 180);
-          ctx.fillStyle = p.color;
-          ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
-          ctx.restore();
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot * Math.PI / 180);
+          ctx.fillStyle = p.color; ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size); ctx.restore();
           if (p.y > canvas.height) pieces.splice(i, 1);
         });
         if (pieces.length) requestAnimationFrame(animate);
@@ -927,7 +664,6 @@
         return { label: f.label, value, id: f.id };
       }).filter(item => item.value > 0);
 
-      // Collect inet time ranges
       const inetTimes = Array.from(document.querySelectorAll('.inet-time-row')).map(row => {
         const from = row.querySelector('.inet-from').value;
         const to = row.querySelector('.inet-to').value;
@@ -942,12 +678,9 @@
       const countLost = parseInt(document.getElementById('countLost').textContent) || 0;
       const notesNew = document.getElementById('notesNew').value.trim();
       const notesLost = document.getElementById('notesLost').value.trim();
-
       const bleCount = await fetchBleCount();
 
-      let report = `📅 ${date}\n`;
-      report += `Отчёт по смене:\n`;
-      report += `${name}\n`;
+      let report = `📅 ${date}\nОтчёт по смене:\n${name}\n`;
 
       if (statsLines.length) {
         report += `\nСтатистика:\n`;
@@ -961,16 +694,8 @@
 
       report += `\nМетки:\n`;
       report += `  • Пройдено: ${walkedCount} шт.\n`;
-      if (countNew > 0) {
-        report += `  • Новые: ${countNew} шт.`;
-        if (notesNew) report += ` (${notesNew})`;
-        report += `\n`;
-      }
-      if (countLost > 0) {
-        report += `  • Потерянные: ${countLost} шт.`;
-        if (notesLost) report += ` (${notesLost})`;
-        report += `\n`;
-      }
+      if (countNew > 0) { report += `  • Новые: ${countNew} шт.`; if (notesNew) report += ` (${notesNew})`; report += `\n`; }
+      if (countLost > 0) { report += `  • Потерянные: ${countLost} шт.`; if (notesLost) report += ` (${notesLost})`; report += `\n`; }
       report += `  • Всего BLE-меток со статусом «Установлена»: ${bleCount} шт.\n`;
 
       const webMapChecked = document.querySelector('input[data-task-id="tags-5"]')?.checked;
@@ -982,12 +707,26 @@
         report += `  • Метки, готовые к установке: ${tagsReadyCount} шт.\n`;
       }
 
-      copyToClipboard(report);
+      openReportModal(report);
     }
 
-    function copyToClipboard(text) {
-      const isIOS = /ipad|iphone|ipod/i.test(navigator.userAgent);
+    function openReportModal(text) {
+      document.getElementById('reportTextarea').value = text;
+      const modal = document.getElementById('reportModal');
+      modal.classList.add('open');
+      const btn = document.getElementById('btnCopy');
+      btn.textContent = '📋 Скопировать';
+      btn.classList.remove('copied');
+    }
 
+    function closeReportModal() {
+      document.getElementById('reportModal').classList.remove('open');
+    }
+
+    function copyReport() {
+      const text = document.getElementById('reportTextarea').value;
+      const btn = document.getElementById('btnCopy');
+      const isIOS = /ipad|iphone|ipod/i.test(navigator.userAgent);
       if (isIOS) {
         const el = document.createElement('textarea');
         el.value = text;
@@ -997,76 +736,59 @@
         const range = document.createRange();
         range.selectNodeContents(el);
         const sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
+        sel.removeAllRanges(); sel.addRange(range);
         el.setSelectionRange(0, text.length);
         let success = false;
         try { success = document.execCommand('copy'); } catch(e) {}
         document.body.removeChild(el);
-        if (success) {
-          alert('✅ Отчёт скопирован!\nВставьте в Telegram или другой чат.');
-        } else {
-          prompt('Скопируйте отчёт вручную:', text);
-        }
+        if (success) { btn.textContent = '✅ Скопировано!'; btn.classList.add('copied'); }
+        else { document.getElementById('reportTextarea').select(); }
       } else {
-        navigator.clipboard.writeText(text)
-          .then(() => alert('✅ Отчёт скопирован!\nВставьте в Telegram или другой чат.'))
-          .catch(() => prompt('Скопируйте отчёт:', text));
+        navigator.clipboard.writeText(text).then(() => {
+          btn.textContent = '✅ Скопировано!';
+          btn.classList.add('copied');
+        }).catch(() => { document.getElementById('reportTextarea').select(); });
       }
+      setTimeout(() => { btn.textContent = '📋 Скопировать'; btn.classList.remove('copied'); }, 2500);
     }
+
+    document.getElementById('reportModal').addEventListener('click', function(e) {
+      if (e.target === this) closeReportModal();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeReportModal(); });
 
     // ── REMINDERS SYSTEM ──
     const SCHEDULE_SHEET_ID = '1h-GMxdT2z3MC-somIq8sX3iV6KfjaoCffIIfeBQezRk';
     const SCHEDULE_SHEET_NAME = 'график 2026';
-
     const MONTH_NAMES = ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
 
     async function fetchDayOff() {
       try {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const tMonth = MONTH_NAMES[tomorrow.getMonth()];
-        const tDay = tomorrow.getDate();
-
-        // Load header rows (months + days) and names + data
+        const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+        const tMonth = MONTH_NAMES[tomorrow.getMonth()]; const tDay = tomorrow.getDate();
         const url = `https://docs.google.com/spreadsheets/d/${SCHEDULE_SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SCHEDULE_SHEET_NAME)}&range=E1:PZ50&headers=0&t=${Date.now()}`;
-        const res = await fetch(url);
-        const text = await res.text();
+        const res = await fetch(url); const text = await res.text();
         const json = JSON.parse(text.substring(47).slice(0, -2));
         const rows = json.table.rows;
-
-        // Row 0 = months, Row 1 = day numbers, Row 2+ = employees
         const monthRow = (rows[0]?.c || []).map(c => c ? String(c.v || '').trim().toLowerCase() : '');
-        const dayRow = (rows[1]?.c || []).map(c => c ? String(c.v ?? '') .trim() : '');
-
-        // Find column: match month name and day number (data starts at col index relative to E)
-        let targetCol = -1;
-        let lastMonth = '';
+        const dayRow = (rows[1]?.c || []).map(c => c ? String(c.v ?? '').trim() : '');
+        let targetCol = -1, lastMonth = '';
         for (let i = 1; i < monthRow.length; i++) {
           if (monthRow[i]) lastMonth = monthRow[i];
-          if (lastMonth === tMonth && dayRow[i] === String(tDay)) {
-            targetCol = i;
-            break;
-          }
+          if (lastMonth === tMonth && dayRow[i] === String(tDay)) { targetCol = i; break; }
         }
-
         if (targetCol === -1) return [];
-
         const dayOffNames = [];
         for (let r = 2; r < rows.length; r++) {
           const cells = rows[r]?.c || [];
           const name = cells[0] ? String(cells[0].v || '').trim() : '';
           const value = cells[targetCol] ? String(cells[targetCol].v || '').trim().toUpperCase() : '';
-          if (name && value === 'ВХ') {
-            dayOffNames.push(name);
-          }
+          if (name && value === 'ВХ') dayOffNames.push(name);
         }
         return dayOffNames;
-      } catch (e) {
-        console.error('Ошибка загрузки графика:', e);
-        return [];
-      }
+      } catch (e) { return []; }
     }
+
     const SVG_ICONS = {
       package: '<svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4l-9-5.19"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
       truck: '<svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
@@ -1076,126 +798,55 @@
     };
 
     const REMINDERS = [
-      {
-        id: 'ozon-cdek-prep',
-        days: [0, 3],
-        icon: SVG_ICONS.package,
-        title: 'Напоминание',
-        text: 'Сегодня необходимо подготовить заказы для размещения в OZON до 13:00'
-      },
-      {
-        id: 'ozon-cdek-place',
-        days: [1, 4],
-        icon: SVG_ICONS.truck,
-        title: 'Напоминание',
-        text: 'Сегодня необходимо разместить заказы в OZON до 13:00'
-      },
-      {
-        id: 'sync-ww-dev',
-        days: [2],
-        icon: SVG_ICONS.sync,
-        title: 'Встреча',
-        text: 'Сегодня еженедельный синк ITS WW dev'
-      },
-      {
-        id: 'meeting-deploy',
-        days: [3],
-        icon: SVG_ICONS.building,
-        title: 'Встреча',
-        text: 'Сегодня встреча площадок отдела внедрения'
-      },
-      {
-        id: 'meetup-friday',
-        days: [5],
-        icon: SVG_ICONS.people,
-        title: 'Meet-up',
-        text: 'Сегодня meet-up!'
-      },
-      {
-        id: 'delete-test-shifts',
-        monthly: { fromDay: 25 },
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>',
-        title: 'Напоминание',
-        text: 'Необходимо удалить тестовые смены'
-      }
+      { id: 'ozon-cdek-prep', days: [0, 3], icon: SVG_ICONS.package, title: 'Напоминание', text: 'Сегодня необходимо подготовить заказы для размещения в OZON до 13:00' },
+      { id: 'ozon-cdek-place', days: [1, 4], icon: SVG_ICONS.truck, title: 'Напоминание', text: 'Сегодня необходимо разместить заказы в OZON до 13:00' },
+      { id: 'sync-ww-dev', days: [2], icon: SVG_ICONS.sync, title: 'Встреча', text: 'Сегодня еженедельный синк ITS WW dev' },
+      { id: 'meeting-deploy', days: [3], icon: SVG_ICONS.building, title: 'Встреча', text: 'Сегодня встреча площадок отдела внедрения' },
+      { id: 'meetup-friday', days: [5], icon: SVG_ICONS.people, title: 'Meet-up', text: 'Сегодня meet-up!' },
+      { id: 'delete-test-shifts', monthly: { fromDay: 25 }, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>', title: 'Напоминание', text: 'Необходимо удалить тестовые смены' }
     ];
 
     async function checkReminders() {
       const container = document.getElementById('remindersContainer');
       const now = new Date();
-      const dayOfWeek = now.getDay();
-      const dayOfMonth = now.getDate();
+      const dayOfWeek = now.getDay(); const dayOfMonth = now.getDate();
       const dismissed = JSON.parse(sessionStorage.getItem('dismissed_reminders') || '[]');
-
       const active = REMINDERS.filter(r => {
         if (dismissed.includes(r.id)) return false;
         if (r.days && r.days.includes(dayOfWeek)) return true;
         if (r.monthly && dayOfMonth >= r.monthly.fromDay) return true;
         return false;
       });
-
-      // Day-off reminder
       let dayOffHtml = '';
       if (!dismissed.includes('day-off-tomorrow')) {
         const dayOffNames = await fetchDayOff();
         if (dayOffNames.length > 0) {
-          const tomorrow = new Date();
-          tomorrow.setDate(tomorrow.getDate() + 1);
+          const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
           const dateStr = tomorrow.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
-          dayOffHtml = `
-            <div class="reminder-banner" data-reminder-id="day-off-tomorrow">
-              <span class="reminder-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
-              <div class="reminder-content">
-                <span class="reminder-title">Выходные завтра (${dateStr})</span>
-                <span class="reminder-text">${dayOffNames.join(', ')}</span>
-              </div>
-              <button class="reminder-close" onclick="dismissReminder('day-off-tomorrow')" title="Скрыть">✕</button>
-            </div>
-          `;
+          dayOffHtml = `<div class="reminder-banner" data-reminder-id="day-off-tomorrow"><span class="reminder-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><div class="reminder-content"><span class="reminder-title">Выходные завтра (${dateStr})</span><span class="reminder-text">${dayOffNames.join(', ')}</span></div><button class="reminder-close" onclick="dismissReminder('day-off-tomorrow')" title="Скрыть">✕</button></div>`;
         }
       }
-
-      if (active.length === 0 && !dayOffHtml) {
-        container.style.display = 'none';
-        return;
-      }
-
+      if (active.length === 0 && !dayOffHtml) { container.style.display = 'none'; return; }
       container.style.display = 'flex';
-      container.innerHTML = dayOffHtml + active.map(r => `
-        <div class="reminder-banner" data-reminder-id="${r.id}">
-          <span class="reminder-icon">${r.icon}</span>
-          <div class="reminder-content">
-            <span class="reminder-title">${r.title}</span>
-            <span class="reminder-text">${r.text}</span>
-          </div>
-          <button class="reminder-close" onclick="dismissReminder('${r.id}')" title="Скрыть">✕</button>
-        </div>
-      `).join('');
+      container.innerHTML = dayOffHtml + active.map(r => `<div class="reminder-banner" data-reminder-id="${r.id}"><span class="reminder-icon">${r.icon}</span><div class="reminder-content"><span class="reminder-title">${r.title}</span><span class="reminder-text">${r.text}</span></div><button class="reminder-close" onclick="dismissReminder('${r.id}')" title="Скрыть">✕</button></div>`).join('');
     }
 
     function dismissReminder(id) {
       const dismissed = JSON.parse(sessionStorage.getItem('dismissed_reminders') || '[]');
-      dismissed.push(id);
-      sessionStorage.setItem('dismissed_reminders', JSON.stringify(dismissed));
+      dismissed.push(id); sessionStorage.setItem('dismissed_reminders', JSON.stringify(dismissed));
       const banner = document.querySelector(`[data-reminder-id="${id}"]`);
       if (banner) banner.classList.add('hidden');
       const container = document.getElementById('remindersContainer');
       if (!container.querySelector('.reminder-banner:not(.hidden)')) container.style.display = 'none';
     }
 
-    // ── INIT ──
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('workDate').valueAsDate = new Date();
       checkReminders();
       loadState();
-
       document.querySelectorAll('.group-header').forEach(header => {
-        header.addEventListener('click', () => {
-          header.parentElement.classList.toggle('open');
-          saveState();
-        });
+        header.addEventListener('click', () => { header.parentElement.classList.toggle('open'); saveState(); });
       });
-
       document.querySelectorAll('.subtask').forEach(subtask => {
         subtask.addEventListener('click', function(e) {
           const checkbox = this.querySelector('input[type="checkbox"]');
@@ -1204,21 +855,13 @@
             checkbox.checked = !checkbox.checked;
             this.classList.toggle('completed', checkbox.checked);
           }
-          saveState();
-          updateAllProgress();
+          saveState(); updateAllProgress();
         });
       });
-
-      document.querySelectorAll('.task-count').forEach(inp => {
-        inp.addEventListener('input', saveState);
-      });
-
+      document.querySelectorAll('.task-count').forEach(inp => { inp.addEventListener('input', saveState); });
       document.getElementById('notesNew').addEventListener('input', saveState);
       document.getElementById('notesLost').addEventListener('input', saveState);
-      document.getElementById('inetCount').addEventListener('input', function() {
-        renderInetTimes(parseInt(this.value) || 0);
-        saveState();
-      });
+      document.getElementById('inetCount').addEventListener('input', function() { renderInetTimes(parseInt(this.value) || 0); saveState(); });
       document.getElementById('workDate').addEventListener('change', () => { saveState(); updateReportMeta(); });
       document.getElementById('workerName').addEventListener('input', () => { saveState(); updateReportMeta(); });
     });
