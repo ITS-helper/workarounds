@@ -1322,16 +1322,6 @@
 
       let report = `📅 ${date}\nОтчёт по смене:\n${name}\n`;
 
-      // Расстановка в отчёт
-      const deploy = getDeploymentState();
-      const hasDeployment = deploy.spg1.length || deploy.spg2.length || deploy.spg3.length;
-      if (hasDeployment) {
-        report += `\nРасстановка:\n`;
-        if (deploy.spg1.length) report += `  СПГ 1: ${deploy.spg1.join(', ')}\n`;
-        if (deploy.spg2.length) report += `  СПГ 2: ${deploy.spg2.join(', ')}\n`;
-        if (deploy.spg3.length) report += `  СПГ 3: ${deploy.spg3.join(', ')}\n`;
-        if (deploy.pool.length) report += `  Нераспределены: ${deploy.pool.join(', ')}\n`;
-      }
 
       if (statsLines.length) {
         report += `\nСтатистика:\n`;
