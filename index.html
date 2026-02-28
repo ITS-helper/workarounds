@@ -180,6 +180,181 @@
     .tag-event-notes:focus { outline: none; border-color: var(--accent); }
     .tag-event-notes::placeholder { color: #a0b0c0; }
 
+    /* ===== РАССТАНОВКА ===== */
+    .deployment-block {
+      margin-bottom: 16px; background: var(--card-bg); border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(11,39,64,0.07); border: 1px solid var(--border);
+      overflow: hidden; transition: box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .deployment-block:hover { box-shadow: 0 8px 28px rgba(11,39,64,0.12); border-color: rgba(0,176,255,0.35); }
+    .deployment-header {
+      padding: 16px 20px 14px; cursor: pointer; user-select: none;
+      display: flex; flex-direction: column; gap: 10px; transition: background 0.2s;
+    }
+    .deployment-header:hover { background: #f7fafd; }
+    .deployment-header-row { display: flex; align-items: center; justify-content: space-between; }
+    .deployment-header h2 {
+      font-family: 'Oswald', sans-serif; color: var(--primary); margin: 0;
+      font-size: 1.05em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .deployment-chevron { color: var(--muted); font-size: 18px; transition: transform 0.3s ease; flex-shrink: 0; }
+    .deployment-block.open .deployment-chevron { transform: rotate(180deg); }
+
+    .deployment-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .deployment-block.open .deployment-body { max-height: 1200px; }
+    .deployment-inner { padding: 8px 16px 20px; }
+
+    /* Пул исполнителей */
+    .pool-label {
+      font-family: 'Oswald', sans-serif; font-size: 0.72em; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+    }
+    .pool-count {
+      background: rgba(0,176,255,0.12); color: var(--accent); border-radius: 999px;
+      padding: 1px 8px; font-size: 0.85em; font-weight: 700;
+    }
+
+    .pool-zone {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      min-height: 44px; padding: 8px 10px; border-radius: 10px;
+      border: 2px dashed var(--border); background: #f8fafc;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 16px;
+    }
+    .pool-zone.drag-over { border-color: var(--accent); background: #eef8ff; }
+    .pool-zone.empty-hint::before {
+      content: attr(data-hint); color: #b0c0d0; font-size: 13px;
+      display: flex; align-items: center; width: 100%;
+    }
+
+    /* Зоны СПГ */
+    .zones-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 600px) { .zones-grid { grid-template-columns: 1fr; } }
+
+    .zone-card {
+      border-radius: 10px; border: 2px solid var(--border);
+      background: #f8fafc; overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .zone-card.drag-over { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,176,255,0.15); }
+
+    .zone-header {
+      padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .zone-spg1 .zone-header { background: linear-gradient(90deg, #0b2740 0%, #123b63 100%); }
+    .zone-spg2 .zone-header { background: linear-gradient(90deg, #134e4a 0%, #065f46 100%); }
+    .zone-spg3 .zone-header { background: linear-gradient(90deg, #7c2d12 0%, #9a3412 100%); }
+
+    .zone-title {
+      font-family: 'Oswald', sans-serif; font-size: 0.95em; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; color: #fff;
+    }
+    .zone-badge {
+      background: rgba(255,255,255,0.2); color: #fff; border-radius: 999px;
+      padding: 2px 9px; font-family: 'Oswald', sans-serif; font-size: 0.78em; font-weight: 600;
+    }
+
+    .zone-drop {
+      min-height: 80px; padding: 8px; display: flex; flex-direction: column; gap: 5px;
+      transition: background 0.2s;
+    }
+    .zone-card.drag-over .zone-drop { background: rgba(0,176,255,0.05); }
+
+    .zone-empty {
+      color: #b0c0d0; font-size: 12.5px; text-align: center;
+      padding: 16px 8px; display: flex; align-items: center; justify-content: center;
+      width: 100%;
+    }
+
+    /* Карточки сотрудников */
+    .person-chip {
+      display: flex; align-items: center; gap: 7px;
+      padding: 7px 10px; border-radius: 7px; cursor: grab;
+      border: 1px solid rgba(0,0,0,0.08);
+      font-size: 13px; font-family: 'Source Sans 3', sans-serif;
+      user-select: none; transition: all 0.15s ease;
+      white-space: nowrap;
+      background: #fff; color: #1a2a3a;
+      box-shadow: 0 1px 4px rgba(11,39,64,0.10);
+    }
+    .person-chip:hover { box-shadow: 0 3px 10px rgba(11,39,64,0.18); transform: translateY(-1px); }
+    .person-chip.dragging {
+      opacity: 0.4; cursor: grabbing; transform: scale(0.97);
+    }
+    .person-chip.ghost {
+      opacity: 0; pointer-events: none;
+    }
+
+    /* Аватар-инициалы */
+    .person-avatar {
+      width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Oswald', sans-serif; font-size: 0.65em; font-weight: 700;
+      color: #fff; letter-spacing: 0;
+    }
+
+    /* В зонах — чуть другой стиль */
+    .zone-drop .person-chip {
+      background: #fff;
+    }
+    .zone-spg1 .zone-drop .person-chip { border-left: 3px solid #00b0ff; }
+    .zone-spg2 .zone-drop .person-chip { border-left: 3px solid #10b981; }
+    .zone-spg3 .zone-drop .person-chip { border-left: 3px solid #f87171; }
+
+    /* Переключатель смены */
+    .shift-toggle {
+      display: flex; align-items: center; gap: 0;
+      background: #eef2f8; border-radius: 999px; padding: 3px;
+      border: 1px solid var(--border);
+    }
+    .shift-btn {
+      font-family: 'Oswald', sans-serif; font-size: 0.8em; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 16px;
+      border-radius: 999px; border: none; cursor: pointer;
+      transition: all 0.2s ease; color: var(--muted); background: transparent;
+      display: flex; align-items: center; gap: 6px; white-space: nowrap;
+    }
+    .shift-btn.active {
+      color: #fff; box-shadow: 0 2px 8px rgba(11,39,64,0.2);
+    }
+    .shift-btn.morning.active { background: linear-gradient(90deg, #f59e0b, #fbbf24); color: #1a2a3a; }
+    .shift-btn.evening.active { background: linear-gradient(90deg, #3730a3, #4f46e5); }
+
+    /* Нижняя панель расстановки */
+    .deployment-footer {
+      display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;
+    }
+
+    /* Кнопка сброса */
+    .btn-reset-deployment {
+      padding: 7px 18px; border-radius: 999px;
+      border: 1px solid var(--border); background: #f8fafc; color: var(--muted);
+      font-family: 'Oswald', sans-serif; font-size: 0.8em; letter-spacing: 0.07em;
+      text-transform: uppercase; cursor: pointer; transition: all 0.15s;
+    }
+    .btn-reset-deployment:hover { background: #fee2e2; color: var(--danger); border-color: #fca5a5; }
+
+    /* Кнопка копирования расстановки */
+    .btn-copy-deploy {
+      padding: 7px 18px; border-radius: 999px;
+      border: none; background: var(--accent); color: #04111f;
+      font-family: 'Oswald', sans-serif; font-size: 0.8em; letter-spacing: 0.07em;
+      text-transform: uppercase; cursor: pointer; transition: all 0.2s ease;
+      box-shadow: 0 3px 10px rgba(0,176,255,0.28);
+      display: flex; align-items: center; gap: 7px;
+    }
+    .btn-copy-deploy:hover { background: #19b9ff; transform: translateY(-1px); }
+    .btn-copy-deploy.copied { background: var(--success); box-shadow: 0 3px 10px rgba(16,185,129,0.28); }
+
+    /* ===== END РАССТАНОВКА ===== */
+
     .report-section {
       background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--border);
       box-shadow: 0 4px 16px rgba(11,39,64,0.08); padding: 18px 22px; margin-top: 8px;
@@ -204,7 +379,8 @@
       .report-section { flex-direction: column; align-items: stretch; }
       .btn-report { text-align: center; }
     }
-/* ===== MODAL REPORT ===== */
+
+    /* ===== MODAL REPORT ===== */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(11,39,64,0.55);
       backdrop-filter: blur(4px); z-index: 500;
@@ -323,6 +499,91 @@
           <span>Закрытие неосновных пунктов выдачи</span>
         </div>
       </div></div>
+    </div>
+
+    <!-- РАССТАНОВКА -->
+    <div class="deployment-block" id="deploymentBlock">
+      <div class="deployment-header" id="deploymentHeader">
+        <div class="deployment-header-row">
+          <h2>
+            <span class="icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00b0ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px">
+                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+              </svg>
+            </span>
+            Расстановка по зонам
+          </h2>
+          <span class="deployment-chevron">▼</span>
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar" id="deploymentProgress" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="deployment-body" id="deploymentBody">
+        <div class="deployment-inner">
+
+          <!-- Пул инженеров -->
+          <div class="pool-label">
+            Нераспределённые инженеры
+            <span class="pool-count" id="poolCount">15</span>
+          </div>
+          <div class="pool-zone" id="pool" data-zone="pool" data-hint="Все распределены ✓"></div>
+
+          <!-- Зоны СПГ -->
+          <div class="zones-grid">
+            <div class="zone-card zone-spg1" data-zone="spg1">
+              <div class="zone-header">
+                <span class="zone-title">СПГ 1</span>
+                <span class="zone-badge" id="badge-spg1">0</span>
+              </div>
+              <div class="zone-drop" id="zone-spg1" data-zone="spg1">
+                <span class="zone-empty">Перетащите сюда</span>
+              </div>
+            </div>
+            <div class="zone-card zone-spg2" data-zone="spg2">
+              <div class="zone-header">
+                <span class="zone-title">СПГ 2</span>
+                <span class="zone-badge" id="badge-spg2">0</span>
+              </div>
+              <div class="zone-drop" id="zone-spg2" data-zone="spg2">
+                <span class="zone-empty">Перетащите сюда</span>
+              </div>
+            </div>
+            <div class="zone-card zone-spg3" data-zone="spg3">
+              <div class="zone-header">
+                <span class="zone-title">СПГ 3</span>
+                <span class="zone-badge" id="badge-spg3">0</span>
+              </div>
+              <div class="zone-drop" id="zone-spg3" data-zone="spg3">
+                <span class="zone-empty">Перетащите сюда</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="deployment-footer">
+            <!-- Переключатель смены -->
+            <div class="shift-toggle" id="shiftToggle">
+              <button class="shift-btn morning active" id="btnMorning" onclick="setShift('morning')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+                Утро
+              </button>
+              <button class="shift-btn evening" id="btnEvening" onclick="setShift('evening')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                Вечер
+              </button>
+            </div>
+
+            <!-- Кнопка копирования -->
+            <button class="btn-copy-deploy" id="btnCopyDeploy" onclick="copyDeployment()">
+              📋 Копировать расстановку
+            </button>
+
+            <!-- Кнопка сброса -->
+            <button class="btn-reset-deployment" onclick="resetDeployment()">↺ Сбросить</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ФРОНТ -->
@@ -493,7 +754,367 @@
   <script>
     const STORAGE_KEY = 'itssupport_checklist_v5';
 
+    // ── SHIFT STATE ──
+    let currentShift = 'morning'; // 'morning' | 'evening'
+
+    function setShift(shift) {
+      currentShift = shift;
+      document.getElementById('btnMorning').classList.toggle('active', shift === 'morning');
+      document.getElementById('btnEvening').classList.toggle('active', shift === 'evening');
+      saveState();
+    }
+
+    function copyDeployment() {
+      const deploy = getDeploymentState();
+      const date = document.getElementById('workDate').value || new Date().toLocaleDateString('ru-RU');
+      const shiftLabel = currentShift === 'morning' ? 'Утро' : 'Вечер';
+      const shiftEmoji = currentShift === 'morning' ? '🌅' : '🌙';
+
+      let dateStr = date;
+      if (date.includes('-')) {
+        const [y, m, d] = date.split('-');
+        dateStr = `${d}.${m}.${y}`;
+      }
+
+      let text = `📅 ${dateStr} | ${shiftEmoji} Расстановка ${shiftLabel}:\n`;
+
+      const zones = [
+        { key: 'spg1', label: 'СПГ 1' },
+        { key: 'spg2', label: 'СПГ 2' },
+        { key: 'spg3', label: 'СПГ 3' },
+      ];
+
+      let hasAny = false;
+      zones.forEach(({ key, label }) => {
+        const names = deploy[key] || [];
+        if (names.length) {
+          text += `\n${label}:\n`;
+          names.forEach(n => { text += `  • ${n}\n`; });
+          hasAny = true;
+        }
+      });
+
+      if (!hasAny) {
+        text += '\n(Инженеры не распределены)';
+      }
+
+
+
+      const btn = document.getElementById('btnCopyDeploy');
+      const isIOS = /ipad|iphone|ipod/i.test(navigator.userAgent);
+      const doSuccess = () => {
+        btn.innerHTML = '✅ Скопировано!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = '📋 Копировать расстановку';
+          btn.classList.remove('copied');
+        }, 2500);
+      };
+
+      if (isIOS) {
+        const el = document.createElement('textarea');
+        el.value = text;
+        el.style.cssText = 'position:fixed;top:0;left:0;opacity:0;font-size:16px;';
+        document.body.appendChild(el);
+        el.focus();
+        el.setSelectionRange(0, text.length);
+        try { document.execCommand('copy'); doSuccess(); } catch(e) {}
+        document.body.removeChild(el);
+      } else {
+        navigator.clipboard.writeText(text).then(doSuccess).catch(() => {});
+      }
+    }
+
+    // ── DEPLOYMENT (РАССТАНОВКА) ──
+
+    const ALL_PERSONS = [
+      'Беккер Александр', 'Бондарь Роман', 'Вишневский Сергей',
+      'Гаджиев Ильгар', 'Зацепин Никита', 'Кумейко Николай',
+      'Окунев Александр', 'Смирнов Павел', 'Устян Авенир',
+      'Шуйский Иван', 'Савчук Руслан', 'Насыров Максим',
+      'Бурангулов Руслан', 'Жарков Александр', 'Газизуллин Рустам'
+    ];
+
+    // Палитра для аватаров
+    const AVATAR_COLORS = [
+      '#0b5394','#1a7a5e','#7c2d12','#6d28d9','#0369a1',
+      '#065f46','#92400e','#831843','#1e3a8a','#14532d',
+      '#7f1d1d','#3730a3','#155e75','#713f12','#134e4a'
+    ];
+
+    function getInitials(name) {
+      const parts = name.trim().split(' ');
+      if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+      return parts[0].slice(0, 2).toUpperCase();
+    }
+
+    function getAvatarColor(name) {
+      let hash = 0;
+      for (let c of name) hash = (hash * 31 + c.charCodeAt(0)) & 0xffffffff;
+      return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+    }
+
+    // Drag state
+    let dragPerson = null;
+    let dragSourceZone = null;
+    let dragGhost = null;
+    let touchOffsetX = 0, touchOffsetY = 0;
+
+    function createChip(name, zone) {
+      const chip = document.createElement('div');
+      chip.className = 'person-chip';
+      chip.dataset.person = name;
+      chip.dataset.zone = zone;
+
+      const avatar = document.createElement('div');
+      avatar.className = 'person-avatar';
+      avatar.style.background = getAvatarColor(name);
+      avatar.textContent = getInitials(name);
+
+      chip.appendChild(avatar);
+      chip.appendChild(document.createTextNode(name));
+
+      // Mouse drag
+      chip.addEventListener('mousedown', onMouseDown);
+      // Touch drag
+      chip.addEventListener('touchstart', onTouchStart, { passive: false });
+
+      return chip;
+    }
+
+    // ── Mouse drag ──
+    function onMouseDown(e) {
+      if (e.button !== 0) return;
+      e.preventDefault();
+      const chip = e.currentTarget;
+      startDrag(chip, e.clientX, e.clientY, false);
+    }
+
+    function startDrag(chip, clientX, clientY, isTouch) {
+      dragPerson = chip.dataset.person;
+      dragSourceZone = chip.dataset.zone;
+
+      chip.classList.add('dragging');
+
+      const rect = chip.getBoundingClientRect();
+      touchOffsetX = clientX - rect.left;
+      touchOffsetY = clientY - rect.top;
+
+      // Create floating ghost
+      dragGhost = chip.cloneNode(true);
+      dragGhost.style.cssText = `
+        position: fixed; z-index: 9999; pointer-events: none;
+        opacity: 0.85; transform: rotate(2deg) scale(1.06);
+        transition: none;
+        box-shadow: 0 8px 28px rgba(11,39,64,0.28);
+        left: ${clientX - touchOffsetX}px;
+        top: ${clientY - touchOffsetY}px;
+        width: ${rect.width}px;
+      `;
+      document.body.appendChild(dragGhost);
+    }
+
+    document.addEventListener('mousemove', e => {
+      if (!dragGhost) return;
+      dragGhost.style.left = (e.clientX - touchOffsetX) + 'px';
+      dragGhost.style.top  = (e.clientY - touchOffsetY)  + 'px';
+      highlightDropZone(e.clientX, e.clientY);
+    });
+
+    document.addEventListener('mouseup', e => {
+      if (!dragGhost) return;
+      const dropZone = getDropZoneAt(e.clientX, e.clientY);
+      finishDrag(dropZone);
+    });
+
+    // ── Touch drag ──
+    function onTouchStart(e) {
+      if (e.touches.length !== 1) return;
+      e.preventDefault();
+      const chip = e.currentTarget;
+      const t = e.touches[0];
+      startDrag(chip, t.clientX, t.clientY, true);
+    }
+
+    document.addEventListener('touchmove', e => {
+      if (!dragGhost) return;
+      e.preventDefault();
+      const t = e.touches[0];
+      dragGhost.style.left = (t.clientX - touchOffsetX) + 'px';
+      dragGhost.style.top  = (t.clientY - touchOffsetY)  + 'px';
+      highlightDropZone(t.clientX, t.clientY);
+    }, { passive: false });
+
+    document.addEventListener('touchend', e => {
+      if (!dragGhost) return;
+      const t = e.changedTouches[0];
+      const dropZone = getDropZoneAt(t.clientX, t.clientY);
+      finishDrag(dropZone);
+    });
+
+    function highlightDropZone(cx, cy) {
+      document.querySelectorAll('.pool-zone, .zone-card, .zone-drop').forEach(el => el.classList.remove('drag-over'));
+      const el = document.elementFromPoint(cx, cy);
+      if (!el) return;
+      const zone = el.closest('[data-zone]');
+      if (zone) zone.classList.add('drag-over');
+    }
+
+    function getDropZoneAt(cx, cy) {
+      const el = document.elementFromPoint(cx, cy);
+      if (!el) return null;
+      return el.closest('[data-zone]');
+    }
+
+    function finishDrag(dropZoneEl) {
+      // Remove ghost
+      if (dragGhost) { dragGhost.remove(); dragGhost = null; }
+      document.querySelectorAll('.person-chip.dragging').forEach(c => c.classList.remove('dragging'));
+      document.querySelectorAll('.pool-zone, .zone-card, .zone-drop').forEach(el => el.classList.remove('drag-over'));
+
+      if (!dragPerson) return;
+
+      let targetZone = null;
+      if (dropZoneEl) {
+        targetZone = dropZoneEl.dataset.zone;
+        // map zone-drop ids
+        if (!targetZone) {
+          const zoneCard = dropZoneEl.closest('.zone-card');
+          if (zoneCard) targetZone = zoneCard.dataset.zone;
+        }
+      }
+
+      if (targetZone && targetZone !== dragSourceZone) {
+        movePerson(dragPerson, dragSourceZone, targetZone);
+      }
+
+      dragPerson = null;
+      dragSourceZone = null;
+    }
+
+    function movePerson(name, fromZone, toZone) {
+      // Validate toZone
+      const validZones = ['pool', 'spg1', 'spg2', 'spg3'];
+      if (!validZones.includes(toZone)) return;
+
+      // Remove from source
+      const fromContainer = fromZone === 'pool' ? document.getElementById('pool') : document.getElementById('zone-' + fromZone);
+      const existing = fromContainer ? fromContainer.querySelector(`[data-person="${name}"]`) : null;
+      if (existing) existing.remove();
+
+      // Add to target
+      const toContainer = toZone === 'pool' ? document.getElementById('pool') : document.getElementById('zone-' + toZone);
+      if (!toContainer) return;
+      const chip = createChip(name, toZone);
+      // Remove placeholder if present
+      const placeholder = toContainer.querySelector('.zone-empty');
+      if (placeholder) placeholder.remove();
+      toContainer.appendChild(chip);
+
+      updateDeploymentUI();
+      saveState();
+    }
+
+    function updateDeploymentUI() {
+      const zones = ['pool', 'spg1', 'spg2', 'spg3'];
+      let totalPlaced = 0;
+
+      zones.forEach(z => {
+        const container = z === 'pool' ? document.getElementById('pool') : document.getElementById('zone-' + z);
+        if (!container) return;
+        const chips = container.querySelectorAll('.person-chip');
+
+        // Update badge
+        if (z !== 'pool') {
+          const badge = document.getElementById('badge-' + z);
+          if (badge) badge.textContent = chips.length;
+          totalPlaced += chips.length;
+
+          // Show/hide placeholder
+          const drop = container;
+          const empty = drop.querySelector('.zone-empty');
+          if (chips.length === 0 && !empty) {
+            const ph = document.createElement('span');
+            ph.className = 'zone-empty';
+            ph.textContent = 'Перетащите сюда';
+            drop.appendChild(ph);
+          } else if (chips.length > 0 && empty) {
+            empty.remove();
+          }
+        }
+      });
+
+      // Pool count
+      const poolEl = document.getElementById('pool');
+      const poolCount = poolEl ? poolEl.querySelectorAll('.person-chip').length : 0;
+      document.getElementById('poolCount').textContent = poolCount;
+
+      // Progress bar
+      const pct = Math.round((totalPlaced / ALL_PERSONS.length) * 100);
+      document.getElementById('deploymentProgress').style.width = pct + '%';
+    }
+
+    function getDeploymentState() {
+      const state = { pool: [], spg1: [], spg2: [], spg3: [] };
+      ['pool', 'spg1', 'spg2', 'spg3'].forEach(z => {
+        const container = z === 'pool' ? document.getElementById('pool') : document.getElementById('zone-' + z);
+        if (container) {
+          container.querySelectorAll('.person-chip').forEach(chip => {
+            state[z].push(chip.dataset.person);
+          });
+        }
+      });
+      return state;
+    }
+
+    function applyDeploymentState(state) {
+      // Clear all zones
+      ['pool', 'spg1', 'spg2', 'spg3'].forEach(z => {
+        const container = z === 'pool' ? document.getElementById('pool') : document.getElementById('zone-' + z);
+        if (container) container.innerHTML = '';
+      });
+
+      // Populate
+      ['pool', 'spg1', 'spg2', 'spg3'].forEach(z => {
+        const names = state[z] || [];
+        const container = z === 'pool' ? document.getElementById('pool') : document.getElementById('zone-' + z);
+        if (!container) return;
+        names.forEach(name => {
+          const chip = createChip(name, z);
+          container.appendChild(chip);
+        });
+        // Add placeholder for empty zones
+        if (z !== 'pool' && names.length === 0) {
+          const ph = document.createElement('span');
+          ph.className = 'zone-empty';
+          ph.textContent = 'Перетащите сюда';
+          container.appendChild(ph);
+        }
+      });
+
+      updateDeploymentUI();
+    }
+
+    function resetDeployment() {
+      applyDeploymentState({ pool: [...ALL_PERSONS], spg1: [], spg2: [], spg3: [] });
+      saveState();
+    }
+
+    function initDeployment() {
+      // Will be overridden by loadState if saved data exists
+      applyDeploymentState({ pool: [...ALL_PERSONS], spg1: [], spg2: [], spg3: [] });
+    }
+
+    // Deployment block toggle
+    document.getElementById('deploymentHeader').addEventListener('click', () => {
+      document.getElementById('deploymentBlock').classList.toggle('open');
+      saveState();
+    });
+
+    // ── MAIN CHECKLIST LOGIC ──
+
     function saveState() {
+      const deployState = getDeploymentState();
       const state = {
         tasks: Array.from(document.querySelectorAll('input[type="checkbox"]'))
           .map(cb => ({ id: cb.dataset.taskId, checked: cb.checked })),
@@ -501,6 +1122,9 @@
         name: document.getElementById('workerName').value,
         groups: Array.from(document.querySelectorAll('.task-group'))
           .map(g => ({ id: g.dataset.group, open: g.classList.contains('open') })),
+        deploymentOpen: document.getElementById('deploymentBlock').classList.contains('open'),
+        shift: currentShift,
+        deployment: deployState,
         counts: Array.from(document.querySelectorAll('.task-count'))
           .map(inp => ({ id: inp.dataset.countFor, value: inp.value })),
         countNew: document.getElementById('countNew').textContent,
@@ -529,6 +1153,20 @@
             const group = document.querySelector(`[data-group="${id}"]`);
             if (group && open) group.classList.add('open');
           });
+          if (saved.deploymentOpen) document.getElementById('deploymentBlock').classList.add('open');
+          if (saved.shift) { currentShift = saved.shift; setShift(saved.shift); }
+
+          // Restore deployment
+          if (saved.deployment) {
+            // Ensure all persons are accounted for (handle new persons added later)
+            const savedAll = Object.values(saved.deployment).flat();
+            const missing = ALL_PERSONS.filter(p => !savedAll.includes(p));
+            if (missing.length) saved.deployment.pool = [...(saved.deployment.pool || []), ...missing];
+            applyDeploymentState(saved.deployment);
+          } else {
+            initDeployment();
+          }
+
           saved.counts?.forEach(({ id, value }) => {
             const inp = document.querySelector(`.task-count[data-count-for="${id}"]`);
             if (inp) inp.value = value;
@@ -547,8 +1185,10 @@
               }
             });
           }
+        } else {
+          initDeployment();
         }
-      } catch (e) {}
+      } catch (e) { initDeployment(); }
       updateAllProgress();
     }
 
@@ -681,6 +1321,17 @@
       const bleCount = await fetchBleCount();
 
       let report = `📅 ${date}\nОтчёт по смене:\n${name}\n`;
+
+      // Расстановка в отчёт
+      const deploy = getDeploymentState();
+      const hasDeployment = deploy.spg1.length || deploy.spg2.length || deploy.spg3.length;
+      if (hasDeployment) {
+        report += `\nРасстановка:\n`;
+        if (deploy.spg1.length) report += `  СПГ 1: ${deploy.spg1.join(', ')}\n`;
+        if (deploy.spg2.length) report += `  СПГ 2: ${deploy.spg2.join(', ')}\n`;
+        if (deploy.spg3.length) report += `  СПГ 3: ${deploy.spg3.join(', ')}\n`;
+        if (deploy.pool.length) report += `  Нераспределены: ${deploy.pool.join(', ')}\n`;
+      }
 
       if (statsLines.length) {
         report += `\nСтатистика:\n`;
