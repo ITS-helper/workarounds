@@ -9,6 +9,51 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
+    /* ===== AUTH OVERLAY ===== */
+    #authOverlay {
+      position: fixed; inset: 0; z-index: 99999;
+      background: linear-gradient(135deg, #0b2740 0%, #123b63 100%);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      transition: opacity 0.3s ease;
+    }
+    #authOverlay.hidden { opacity: 0; pointer-events: none; }
+    .auth-box {
+      background: #fff; border-radius: 16px; padding: 36px 32px;
+      width: 100%; max-width: 360px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+      display: flex; flex-direction: column; gap: 20px; align-items: center;
+    }
+    .auth-logo {
+      font-family: 'Oswald', sans-serif; font-size: 1.1em; font-weight: 600;
+      color: #0b2740; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .auth-title {
+      font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase; color: #5a6a7e;
+      margin-top: -10px;
+    }
+    .auth-input {
+      width: 100%; padding: 11px 14px; border: 1.5px solid #dde4ee;
+      border-radius: 9px; font-size: 15px; font-family: 'Source Sans 3', sans-serif;
+      color: #1a2a3a; background: #f8fafc; transition: border-color 0.2s;
+      text-align: center; letter-spacing: 0.08em;
+    }
+    .auth-input:focus { outline: none; border-color: #00b0ff; background: #fff; }
+    .auth-btn {
+      width: 100%; font-family: 'Oswald', sans-serif; font-size: 0.95em;
+      letter-spacing: 0.07em; text-transform: uppercase; font-weight: 600;
+      padding: 12px; border-radius: 999px; border: none;
+      background: #00b0ff; color: #04111f; cursor: pointer;
+      transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(0,176,255,0.3);
+    }
+    .auth-btn:hover { background: #19b9ff; transform: translateY(-1px); }
+    .auth-error {
+      font-size: 13px; color: #ef4444; text-align: center;
+      min-height: 18px; font-family: 'Source Sans 3', sans-serif;
+    }
+    /* ===== END AUTH OVERLAY ===== */
+
     :root {
       --primary: #0b2740;
       --secondary: #123b63;
@@ -232,10 +277,11 @@
     /* Зоны СПГ */
     .zones-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 12px;
     }
-    @media (max-width: 600px) { .zones-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) { .zones-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .zones-grid { grid-template-columns: 1fr; } }
 
     .zone-card {
       border-radius: 10px; border: 2px solid var(--border);
@@ -251,6 +297,7 @@
     .zone-spg1 .zone-header { background: linear-gradient(90deg, #0b2740 0%, #123b63 100%); }
     .zone-spg2 .zone-header { background: linear-gradient(90deg, #134e4a 0%, #065f46 100%); }
     .zone-spg3 .zone-header { background: linear-gradient(90deg, #7c2d12 0%, #9a3412 100%); }
+    .zone-spg4 .zone-header { background: linear-gradient(90deg, #4a1d96 0%, #6d28d9 100%); }
 
     .zone-title {
       font-family: 'Oswald', sans-serif; font-size: 0.95em; font-weight: 700;
@@ -307,6 +354,7 @@
     .zone-spg1 .zone-drop .person-chip { border-left: 3px solid #00b0ff; }
     .zone-spg2 .zone-drop .person-chip { border-left: 3px solid #10b981; }
     .zone-spg3 .zone-drop .person-chip { border-left: 3px solid #f87171; }
+    .zone-spg4 .zone-drop .person-chip { border-left: 3px solid #a78bfa; }
 
     /* Переключатель смены */
     .shift-toggle {
@@ -447,7 +495,24 @@
 </head>
 <body>
 
-  <header>
+  <div id="authOverlay">
+  <div class="auth-box">
+    <span class="auth-logo">ITSSupport</span>
+    <span class="auth-title">Чек-лист дежурного инженера</span>
+    <input
+      class="auth-input"
+      type="password"
+      id="authInput"
+      placeholder="Введите пароль"
+      autocomplete="current-password"
+      onkeydown="if(event.key==='Enter') doAuth()"
+    >
+    <button class="auth-btn" onclick="doAuth()">Войти</button>
+    <span class="auth-error" id="authError"></span>
+  </div>
+</div>
+
+<header>
     <div class="header-inner">
       <img src="./images/ITS_logo_horizont.png" alt="ITSSupport" onerror="this.style.display='none'">
       <span class="header-title">Чек-лист дежурного инженера</span>
@@ -556,6 +621,15 @@
                 <span class="zone-badge" id="badge-spg3">0</span>
               </div>
               <div class="zone-drop" id="zone-spg3" data-zone="spg3">
+                <span class="zone-empty">Перетащите сюда</span>
+              </div>
+            </div>
+            <div class="zone-card zone-spg4" data-zone="spg4">
+              <div class="zone-header">
+                <span class="zone-title">Усиление утро</span>
+                <span class="zone-badge" id="badge-spg4">0</span>
+              </div>
+              <div class="zone-drop" id="zone-spg4" data-zone="spg4">
                 <span class="zone-empty">Перетащите сюда</span>
               </div>
             </div>
@@ -752,10 +826,42 @@
   <canvas id="confetti"></canvas>
 
   <script>
+    // ===== AUTH =====
+    const AUTH_SESSION_KEY = 'admin';
+    const AUTH_PASSWORDS = ['VELES_2024', 'impl_dept'];
+
+    function doAuth() {
+      const val = document.getElementById('authInput').value;
+      const err = document.getElementById('authError');
+      if (AUTH_PASSWORDS.includes(val)) {
+        sessionStorage.setItem(AUTH_SESSION_KEY, '1');
+        const overlay = document.getElementById('authOverlay');
+        overlay.classList.add('hidden');
+        setTimeout(() => overlay.remove(), 350);
+      } else {
+        err.textContent = 'Неверный пароль';
+        document.getElementById('authInput').value = '';
+        document.getElementById('authInput').focus();
+        setTimeout(() => { err.textContent = ''; }, 2500);
+      }
+    }
+
+    (function checkAuth() {
+      if (sessionStorage.getItem(AUTH_SESSION_KEY) === '1') {
+        document.getElementById('authOverlay').remove();
+      } else {
+        window.addEventListener('load', () => {
+          document.getElementById('authInput')?.focus();
+        });
+      }
+    })();
+    // ===== END AUTH =====
+
     const STORAGE_KEY = 'itssupport_checklist_v5';
 
     // ── SHIFT STATE ──
     let currentShift = 'morning'; // 'morning' | 'evening'
+    const ALL_ZONES = ['pool', 'spg1', 'spg2', 'spg3', 'spg4'];
 
     function setShift(shift) {
       currentShift = shift;
@@ -782,6 +888,7 @@
         { key: 'spg1', label: 'СПГ 1' },
         { key: 'spg2', label: 'СПГ 2' },
         { key: 'spg3', label: 'СПГ 3' },
+        { key: 'spg4', label: 'Усиление утро' },
       ];
 
       let hasAny = false;
@@ -994,7 +1101,7 @@
 
     function movePerson(name, fromZone, toZone) {
       // Validate toZone
-      const validZones = ['pool', 'spg1', 'spg2', 'spg3'];
+      const validZones = ['pool', 'spg1', 'spg2', 'spg3', 'spg4'];
       if (!validZones.includes(toZone)) return;
 
       // Remove from source
@@ -1016,7 +1123,7 @@
     }
 
     function updateDeploymentUI() {
-      const zones = ['pool', 'spg1', 'spg2', 'spg3'];
+      const zones = ['pool', 'spg1', 'spg2', 'spg3', 'spg4'];
       let totalPlaced = 0;
 
       zones.forEach(z => {
@@ -1055,8 +1162,8 @@
     }
 
     function getDeploymentState() {
-      const state = { pool: [], spg1: [], spg2: [], spg3: [] };
-      ['pool', 'spg1', 'spg2', 'spg3'].forEach(z => {
+      const state = { pool: [], spg1: [], spg2: [], spg3: [], spg4: [] };
+      ['pool', 'spg1', 'spg2', 'spg3', 'spg4'].forEach(z => {
         const container = z === 'pool' ? document.getElementById('pool') : document.getElementById('zone-' + z);
         if (container) {
           container.querySelectorAll('.person-chip').forEach(chip => {
@@ -1069,13 +1176,13 @@
 
     function applyDeploymentState(state) {
       // Clear all zones
-      ['pool', 'spg1', 'spg2', 'spg3'].forEach(z => {
+      ['pool', 'spg1', 'spg2', 'spg3', 'spg4'].forEach(z => {
         const container = z === 'pool' ? document.getElementById('pool') : document.getElementById('zone-' + z);
         if (container) container.innerHTML = '';
       });
 
       // Populate
-      ['pool', 'spg1', 'spg2', 'spg3'].forEach(z => {
+      ['pool', 'spg1', 'spg2', 'spg3', 'spg4'].forEach(z => {
         const names = state[z] || [];
         const container = z === 'pool' ? document.getElementById('pool') : document.getElementById('zone-' + z);
         if (!container) return;
@@ -1096,13 +1203,13 @@
     }
 
     function resetDeployment() {
-      applyDeploymentState({ pool: [...ALL_PERSONS], spg1: [], spg2: [], spg3: [] });
+      applyDeploymentState({ pool: [...ALL_PERSONS], spg1: [], spg2: [], spg3: [], spg4: [] });
       saveState();
     }
 
     function initDeployment() {
       // Will be overridden by loadState if saved data exists
-      applyDeploymentState({ pool: [...ALL_PERSONS], spg1: [], spg2: [], spg3: [] });
+      applyDeploymentState({ pool: [...ALL_PERSONS], spg1: [], spg2: [], spg3: [], spg4: [] });
     }
 
     // Deployment block toggle
@@ -1162,6 +1269,7 @@
             const savedAll = Object.values(saved.deployment).flat();
             const missing = ALL_PERSONS.filter(p => !savedAll.includes(p));
             if (missing.length) saved.deployment.pool = [...(saved.deployment.pool || []), ...missing];
+            if (!saved.deployment.spg4) saved.deployment.spg4 = [];
             applyDeploymentState(saved.deployment);
           } else {
             initDeployment();
