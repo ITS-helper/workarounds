@@ -421,6 +421,7 @@
     }
     .btn-report:hover { background: #19b9ff; box-shadow: 0 6px 20px rgba(0,176,255,0.45); transform: translateY(-1px); }
 
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     #confetti { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1000; }
 
     @media (max-width: 500px) {
@@ -806,6 +807,27 @@
 
   </div>
 
+  <!-- MODAL DEPLOYMENT -->
+  <div class="modal-overlay" id="deployModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="deployModalTitle">📋 Расстановка</h3>
+        <button class="modal-close" onclick="closeDeployModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="deployModalLoading" style="text-align:center;padding:24px;color:var(--muted);font-size:14px;display:none;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s linear infinite;vertical-align:middle;margin-right:8px"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          Загрузка данных о выходных…
+        </div>
+        <textarea id="deployTextarea" spellcheck="false"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeDeployModal()">Закрыть</button>
+        <button class="btn-copy" id="btnCopyDeploy2" onclick="copyDeployText()">📋 Скопировать</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL REPORT -->
   <div class="modal-overlay" id="reportModal">
     <div class="modal">
@@ -870,18 +892,90 @@
       saveState();
     }
 
-    function copyDeployment() {
+    // Fetch day-off names for a SPECIFIC date (not tomorrow)
+    async function fetchDayOffForDate(dateStr) {
+      // dateStr is YYYY-MM-DD
+      try {
+        const d = new Date(dateStr + 'T00:00:00');
+        const tMonth = MONTH_NAMES[d.getMonth()];
+        const tDay = d.getDate();
+        const url = `https://docs.google.com/spreadsheets/d/${SCHEDULE_SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SCHEDULE_SHEET_NAME)}&range=E1:PZ50&headers=0&t=${Date.now()}`;
+        const res = await fetch(url); const text = await res.text();
+        const json = JSON.parse(text.substring(47).slice(0, -2));
+        const rows = json.table.rows;
+        const monthRow = (rows[0]?.c || []).map(c => c ? String(c.v || '').trim().toLowerCase() : '');
+        const dayRow = (rows[1]?.c || []).map(c => c ? String(c.v ?? '').trim() : '');
+        let targetCol = -1, lastMonth = '';
+        for (let i = 1; i < monthRow.length; i++) {
+          if (monthRow[i]) lastMonth = monthRow[i];
+          if (lastMonth === tMonth && dayRow[i] === String(tDay)) { targetCol = i; break; }
+        }
+        if (targetCol === -1) return [];
+        const dayOffNames = [];
+        for (let r = 2; r < rows.length; r++) {
+          const cells = rows[r]?.c || [];
+          const name = cells[0] ? String(cells[0].v || '').trim() : '';
+          const value = cells[targetCol] ? String(cells[targetCol].v || '').trim().toUpperCase() : '';
+          if (name && value === 'ВХ') dayOffNames.push(name);
+        }
+        return dayOffNames;
+      } catch (e) { return []; }
+    }
+
+    function closeDeployModal() {
+      document.getElementById('deployModal').classList.remove('open');
+    }
+
+    function copyDeployText() {
+      const text = document.getElementById('deployTextarea').value;
+      const btn = document.getElementById('btnCopyDeploy2');
+      const isIOS = /ipad|iphone|ipod/i.test(navigator.userAgent);
+      const doSuccess = () => {
+        btn.textContent = '✅ Скопировано!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = '📋 Скопировать'; btn.classList.remove('copied'); }, 2500);
+      };
+      if (isIOS) {
+        const el = document.createElement('textarea');
+        el.value = text; el.style.cssText = 'position:fixed;top:0;left:0;opacity:0;font-size:16px;';
+        document.body.appendChild(el); el.focus(); el.setSelectionRange(0, text.length);
+        try { document.execCommand('copy'); doSuccess(); } catch(e) {}
+        document.body.removeChild(el);
+      } else {
+        navigator.clipboard.writeText(text).then(doSuccess).catch(() => {
+          document.getElementById('deployTextarea').select();
+        });
+      }
+    }
+
+    async function copyDeployment() {
       const deploy = getDeploymentState();
-      const date = document.getElementById('workDate').value || new Date().toLocaleDateString('ru-RU');
+      const dateVal = document.getElementById('workDate').value || '';
       const shiftLabel = currentShift === 'morning' ? 'Утро' : 'Вечер';
       const shiftEmoji = currentShift === 'morning' ? '🌅' : '🌙';
 
-      let dateStr = date;
-      if (date.includes('-')) {
-        const [y, m, d] = date.split('-');
+      let dateStr = dateVal;
+      if (dateVal.includes('-')) {
+        const [y, m, d] = dateVal.split('-');
         dateStr = `${d}.${m}.${y}`;
       }
 
+      // Update modal title and open it
+      document.getElementById('deployModalTitle').textContent = `${shiftEmoji} Расстановка ${shiftLabel}`;
+      document.getElementById('deployTextarea').value = '';
+      document.getElementById('deployModalLoading').style.display = 'block';
+      document.getElementById('deployTextarea').style.display = 'none';
+      document.getElementById('btnCopyDeploy2').textContent = '📋 Скопировать';
+      document.getElementById('btnCopyDeploy2').classList.remove('copied');
+      document.getElementById('deployModal').classList.add('open');
+
+      // Fetch day-off for the selected date
+      let dayOffNames = [];
+      if (dateVal) {
+        dayOffNames = await fetchDayOffForDate(dateVal);
+      }
+
+      // Build text
       let text = `📅 ${dateStr} | ${shiftEmoji} Расстановка ${shiftLabel}:\n`;
 
       const zones = [
@@ -905,31 +999,13 @@
         text += '\n(Инженеры не распределены)';
       }
 
-
-
-      const btn = document.getElementById('btnCopyDeploy');
-      const isIOS = /ipad|iphone|ipod/i.test(navigator.userAgent);
-      const doSuccess = () => {
-        btn.innerHTML = '✅ Скопировано!';
-        btn.classList.add('copied');
-        setTimeout(() => {
-          btn.innerHTML = '📋 Копировать расстановку';
-          btn.classList.remove('copied');
-        }, 2500);
-      };
-
-      if (isIOS) {
-        const el = document.createElement('textarea');
-        el.value = text;
-        el.style.cssText = 'position:fixed;top:0;left:0;opacity:0;font-size:16px;';
-        document.body.appendChild(el);
-        el.focus();
-        el.setSelectionRange(0, text.length);
-        try { document.execCommand('copy'); doSuccess(); } catch(e) {}
-        document.body.removeChild(el);
-      } else {
-        navigator.clipboard.writeText(text).then(doSuccess).catch(() => {});
+      if (dayOffNames.length > 0) {
+        text += `\n🏖 Выходной: ${dayOffNames.join(', ')}`;
       }
+
+      document.getElementById('deployModalLoading').style.display = 'none';
+      document.getElementById('deployTextarea').style.display = 'block';
+      document.getElementById('deployTextarea').value = text;
     }
 
     // ── DEPLOYMENT (РАССТАНОВКА) ──
@@ -1504,7 +1580,10 @@
     document.getElementById('reportModal').addEventListener('click', function(e) {
       if (e.target === this) closeReportModal();
     });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeReportModal(); });
+    document.getElementById('deployModal').addEventListener('click', function(e) {
+      if (e.target === this) closeDeployModal();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeReportModal(); closeDeployModal(); } });
 
     // ── REMINDERS SYSTEM ──
     const SCHEDULE_SHEET_ID = '1h-GMxdT2z3MC-somIq8sX3iV6KfjaoCffIIfeBQezRk';
