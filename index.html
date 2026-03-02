@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Чек-лист дежурного инженера</title>
-  <meta name="theme-color" content="#2979FF">
+  <meta name="theme-color" content="#2196F3">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
     /* ===== AUTH OVERLAY ===== */
     #authOverlay {
       position: fixed; inset: 0; z-index: 99999;
-      background: linear-gradient(135deg, #1565C0 0%, #2979FF 100%);
+      background: linear-gradient(135deg, #1565C0 0%, #1976D2 50%, #2196F3 100%);
       display: flex; align-items: center; justify-content: center;
       padding: 20px;
       transition: opacity 0.3s ease;
@@ -26,46 +26,46 @@
     }
     .auth-logo {
       font-family: 'Oswald', sans-serif; font-size: 1.1em; font-weight: 600;
-      color: #1A1F36; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #37474F; letter-spacing: 0.1em; text-transform: uppercase;
     }
     .auth-title {
       font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 500;
-      letter-spacing: 0.12em; text-transform: uppercase; color: #6B7280;
+      letter-spacing: 0.12em; text-transform: uppercase; color: #78909C;
       margin-top: -10px;
     }
     .auth-input {
       width: 100%; padding: 11px 14px; border: 1.5px solid #E5E7EB;
       border-radius: 9px; font-size: 15px; font-family: 'Source Sans 3', sans-serif;
-      color: #1A1F36; background: #F9FAFB; transition: border-color 0.2s;
+      color: #37474F; background: #F9FAFB; transition: border-color 0.2s;
       text-align: center; letter-spacing: 0.08em;
     }
-    .auth-input:focus { outline: none; border-color: #2979FF; background: #fff; }
+    .auth-input:focus { outline: none; border-color: #2196F3; background: #fff; }
     .auth-btn {
       width: 100%; font-family: 'Oswald', sans-serif; font-size: 0.95em;
       letter-spacing: 0.07em; text-transform: uppercase; font-weight: 600;
       padding: 12px; border-radius: 999px; border: none;
-      background: #2979FF; color: #fff; cursor: pointer;
-      transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(41,121,255,0.3);
+      background: #2196F3; color: #fff; cursor: pointer;
+      transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(33,150,243,0.3);
     }
-    .auth-btn:hover { background: #448AFF; transform: translateY(-1px); }
+    .auth-btn:hover { background: #1E88E5; transform: translateY(-1px); }
     .auth-error {
-      font-size: 13px; color: #ef4444; text-align: center;
+      font-size: 13px; color: #EF5350; text-align: center;
       min-height: 18px; font-family: 'Source Sans 3', sans-serif;
     }
 
     :root {
-      --primary: #1A1F36;
-      --secondary: #2979FF;
-      --accent: #2979FF;
+      --primary: #1565C0;
+      --secondary: #1976D2;
+      --accent: #2196F3;
       --bg-main: #F5F7FA;
       --card-bg: #ffffff;
-      --muted: #6B7280;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --progress-bg: #E5E7EB;
+      --muted: #78909C;
+      --success: #43A047;
+      --warning: #FFA726;
+      --progress-bg: #E3F2FD;
       --glass-bg: rgba(255,255,255,0.96);
       --border: #E8EDF2;
-      --danger: #ef4444;
+      --danger: #EF5350;
     }
 
     * { box-sizing: border-box; }
@@ -75,15 +75,15 @@
       background: var(--bg-main);
       margin: 0; padding: 0; min-height: 100vh;
       overscroll-behavior: none;
-      color: #1A1F36;
+      color: #37474F;
     }
 
     header {
       background: #fff;
       padding: 0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      box-shadow: 0 1px 3px rgba(21,101,192,0.06);
       position: sticky; top: 0; z-index: 100;
-      border-bottom: 2px solid #2979FF;
+      border-bottom: 2px solid #2196F3;
     }
     .header-inner {
       max-width: 900px; margin: 0 auto;
@@ -92,7 +92,7 @@
     header img { height: 36px; width: auto; max-width: 160px; object-fit: contain; }
     .header-title {
       font-family: 'Oswald', sans-serif; font-size: 0.75em; font-weight: 500;
-      letter-spacing: 0.12em; text-transform: uppercase; color: #6B7280;
+      letter-spacing: 0.12em; text-transform: uppercase; color: #78909C;
       border-left: 1px solid #E8EDF2; padding-left: 16px;
     }
 
@@ -112,7 +112,7 @@
     .intro input {
       padding: 7px 11px; border: 1px solid var(--border); border-radius: 7px;
       font-size: 14px; font-family: 'Source Sans 3', sans-serif;
-      background: #F9FAFB; color: #1A1F36; transition: border-color 0.2s;
+      background: #F9FAFB; color: #37474F; transition: border-color 0.2s;
     }
     .intro input:focus { outline: none; border-color: var(--accent); background: #fff; }
     .intro input::placeholder { color: #a0b0c0; }
@@ -122,23 +122,23 @@
     .reminders-container { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
     .reminder-banner {
       display: flex; align-items: center; gap: 12px; padding: 14px 18px;
-      border-radius: 10px; background: #EFF6FF;
+      border-radius: 10px; background: #E3F2FD;
       border: 1px solid #BFDBFE; border-left: 4px solid var(--accent);
-      box-shadow: 0 1px 4px rgba(41,121,255,0.08); animation: reminderSlideIn 0.4s ease-out;
+      box-shadow: 0 1px 4px rgba(33,150,243,0.08); animation: reminderSlideIn 0.4s ease-out;
     }
     @keyframes reminderSlideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
     .reminder-icon { flex-shrink: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
     .reminder-icon svg { width: 20px; height: 20px; }
     .reminder-content { flex: 1; display: flex; flex-direction: column; gap: 2px; }
     .reminder-title { font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--primary); }
-    .reminder-text { font-size: 13.5px; color: #374151; line-height: 1.4; }
+    .reminder-text { font-size: 13.5px; color: #546E7A; line-height: 1.4; }
     .reminder-close {
       width: 28px; height: 28px; border-radius: 50%; border: none;
-      background: rgba(41,121,255,0.08); color: var(--primary); font-size: 16px;
+      background: rgba(33,150,243,0.08); color: var(--primary); font-size: 16px;
       cursor: pointer; display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; transition: background 0.15s; line-height: 1; padding: 0;
     }
-    .reminder-close:hover { background: rgba(41,121,255,0.18); }
+    .reminder-close:hover { background: rgba(33,150,243,0.18); }
     .reminder-banner.hidden { display: none; }
 
     .task-group {
@@ -146,7 +146,7 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.04); border: 1px solid var(--border);
       overflow: hidden; transition: box-shadow 0.25s ease, border-color 0.25s ease;
     }
-    .task-group:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); border-color: rgba(41,121,255,0.25); }
+    .task-group:hover { box-shadow: 0 4px 16px rgba(21,101,192,0.05); border-color: rgba(33,150,243,0.25); }
     .group-header {
       padding: 16px 20px 14px; cursor: pointer; user-select: none;
       display: flex; flex-direction: column; gap: 10px; transition: background 0.2s;
@@ -163,7 +163,7 @@
     .task-group.open .group-chevron { transform: rotate(180deg); }
     .progress-container { height: 4px; background: var(--progress-bg); border-radius: 999px; overflow: hidden; }
     .progress-bar {
-      height: 100%; background: linear-gradient(90deg, #2979FF 0%, #42A5F5 100%);
+      height: 100%; background: linear-gradient(90deg, #2196F3 0%, #43A047 100%);
       width: 0%; transition: width 0.4s ease; border-radius: 999px;
     }
 
@@ -175,22 +175,22 @@
       border-radius: 9px; border-left: 3px solid transparent; cursor: pointer;
       transition: all 0.18s ease; gap: 12px;
     }
-    .subtask:hover { background: #EFF6FF; border-left-color: var(--accent); }
-    .subtask.completed { background: #F0FDF4; border-left-color: var(--success); }
+    .subtask:hover { background: #E3F2FD; border-left-color: var(--accent); }
+    .subtask.completed { background: #E8F5E9; border-left-color: var(--success); }
     .subtask input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
-    .subtask span { font-size: 14px; color: #374151; flex: 1; line-height: 1.4; font-weight: 400; }
+    .subtask span { font-size: 14px; color: #546E7A; flex: 1; line-height: 1.4; font-weight: 400; }
     .subtask.completed span { text-decoration: line-through; color: #94a3b8; }
     .subtask img { width: 40px; height: 40px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); flex-shrink: 0; }
     .task-count {
       width: 68px; padding: 5px 8px; border-radius: 7px; border: 1px solid var(--border);
       font-size: 14px; font-family: 'Source Sans 3', sans-serif; background: #fff;
-      color: #1A1F36; text-align: center; flex-shrink: 0; transition: border-color 0.2s;
+      color: #37474F; text-align: center; flex-shrink: 0; transition: border-color 0.2s;
     }
     .task-count:focus { outline: none; border-color: var(--accent); }
     .task-count::placeholder { color: #a0b0c0; }
     .inet-time-row {
       display: flex; align-items: center; gap: 6px; padding: 6px 10px;
-      background: #EFF6FF; border-radius: 7px; border: 1px solid var(--border);
+      background: #E3F2FD; border-radius: 7px; border: 1px solid var(--border);
     }
     .inet-time-row .inet-label {
       font-family: 'Oswald', sans-serif; font-size: 0.72em; font-weight: 600;
@@ -198,7 +198,7 @@
     }
     .inet-time-row input[type="time"] {
       width: 100px; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border);
-      font-size: 13px; font-family: 'Source Sans 3', sans-serif; background: #fff; color: #1A1F36;
+      font-size: 13px; font-family: 'Source Sans 3', sans-serif; background: #fff; color: #37474F;
     }
     .inet-time-row input[type="time"]:focus { outline: none; border-color: var(--accent); }
 
@@ -206,17 +206,17 @@
     @media (max-width: 540px) { .tag-events { grid-template-columns: 1fr; } }
     .tag-event-block { border-radius: 10px; border: 1px solid var(--border); padding: 12px 14px; background: #F9FAFB; display: flex; flex-direction: column; gap: 10px; }
     .tag-event-new { border-left: 3px solid var(--success); }
-    .tag-event-lost { border-left: 3px solid #f87171; }
+    .tag-event-lost { border-left: 3px solid #EF5350; }
     .tag-event-header { display: flex; align-items: center; gap: 8px; }
     .tag-event-icon { font-size: 15px; font-weight: 700; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'Oswald', sans-serif; }
-    .tag-event-new .tag-event-icon { background: rgba(16,185,129,0.15); color: var(--success); }
-    .tag-event-lost .tag-event-icon { background: rgba(248,113,113,0.15); color: #e11d48; }
+    .tag-event-new .tag-event-icon { background: rgba(67,160,71,0.15); color: var(--success); }
+    .tag-event-lost .tag-event-icon { background: rgba(248,113,113,0.15); color: #E53935; }
     .tag-event-title { font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--primary); flex: 1; }
     .tag-event-counter { display: flex; align-items: center; gap: 6px; }
     .tag-event-counter span { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.15em; min-width: 24px; text-align: center; color: var(--primary); }
     .counter-btn { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--border); background: #fff; color: var(--primary); font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; line-height: 1; padding: 0; }
-    .counter-btn:hover { background: #EFF6FF; border-color: var(--accent); }
-    .tag-event-notes { width: 100%; min-height: 56px; resize: vertical; padding: 8px 10px; border: 1px solid var(--border); border-radius: 7px; font-size: 13px; font-family: 'Source Sans 3', sans-serif; background: #fff; color: #1A1F36; transition: border-color 0.2s; line-height: 1.4; }
+    .counter-btn:hover { background: #E3F2FD; border-color: var(--accent); }
+    .tag-event-notes { width: 100%; min-height: 56px; resize: vertical; padding: 8px 10px; border: 1px solid var(--border); border-radius: 7px; font-size: 13px; font-family: 'Source Sans 3', sans-serif; background: #fff; color: #37474F; transition: border-color 0.2s; line-height: 1.4; }
     .tag-event-notes:focus { outline: none; border-color: var(--accent); }
     .tag-event-notes::placeholder { color: #a0b0c0; }
 
@@ -226,7 +226,7 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.04); border: 1px solid var(--border);
       overflow: hidden; transition: box-shadow 0.25s ease, border-color 0.25s ease;
     }
-    .deployment-block:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); border-color: rgba(41,121,255,0.25); }
+    .deployment-block:hover { box-shadow: 0 4px 16px rgba(21,101,192,0.05); border-color: rgba(33,150,243,0.25); }
     .deployment-header {
       padding: 16px 20px 14px; cursor: pointer; user-select: none;
       display: flex; flex-direction: column; gap: 10px; transition: background 0.2s;
@@ -251,7 +251,7 @@
       margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
     }
     .pool-count {
-      background: rgba(41,121,255,0.12); color: var(--accent); border-radius: 999px;
+      background: rgba(33,150,243,0.12); color: var(--accent); border-radius: 999px;
       padding: 1px 8px; font-size: 0.85em; font-weight: 700;
     }
 
@@ -262,7 +262,7 @@
       transition: border-color 0.2s, background 0.2s;
       margin-bottom: 16px;
     }
-    .pool-zone.drag-over { border-color: var(--accent); background: #EFF6FF; }
+    .pool-zone.drag-over { border-color: var(--accent); background: #E3F2FD; }
     .pool-zone.empty-hint::before {
       content: attr(data-hint); color: #b0c0d0; font-size: 13px;
       display: flex; align-items: center; width: 100%;
@@ -282,15 +282,15 @@
       background: #F9FAFB; overflow: hidden;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .zone-card.drag-over { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(41,121,255,0.15); }
+    .zone-card.drag-over { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(33,150,243,0.15); }
 
     .zone-header {
       padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;
       border-bottom: 1px solid var(--border);
     }
-    .zone-spg1 .zone-header { background: linear-gradient(135deg, #1565C0 0%, #2979FF 100%); }
-    .zone-spg2 .zone-header { background: linear-gradient(135deg, #00796B 0%, #26A69A 100%); }
-    .zone-spg3 .zone-header { background: linear-gradient(135deg, #D32F2F 0%, #EF5350 100%); }
+    .zone-spg1 .zone-header { background: linear-gradient(135deg, #1565C0 0%, #1976D2 50%, #2196F3 100%); }
+    .zone-spg2 .zone-header { background: linear-gradient(135deg, #00897B 0%, #009688 100%); }
+    .zone-spg3 .zone-header { background: linear-gradient(135deg, #E53935 0%, #EF5350 100%); }
     .zone-spg4 .zone-header { background: linear-gradient(135deg, #5E35B1 0%, #7E57C2 100%); }
 
     .zone-title {
@@ -306,7 +306,7 @@
       min-height: 80px; padding: 8px; display: flex; flex-direction: column; gap: 5px;
       transition: background 0.2s;
     }
-    .zone-card.drag-over .zone-drop { background: rgba(41,121,255,0.03); }
+    .zone-card.drag-over .zone-drop { background: rgba(33,150,243,0.03); }
 
     .zone-empty {
       color: #b0c0d0; font-size: 12.5px; text-align: center;
@@ -318,12 +318,12 @@
     .person-chip {
       display: flex; align-items: center; gap: 7px;
       padding: 7px 10px; border-radius: 7px; cursor: grab;
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid rgba(21,101,192,0.05);
       font-size: 13px; font-family: 'Source Sans 3', sans-serif;
       user-select: none; transition: all 0.15s ease;
       white-space: nowrap;
-      background: #fff; color: #1A1F36;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      background: #fff; color: #37474F;
+      box-shadow: 0 1px 3px rgba(21,101,192,0.06);
     }
     .person-chip:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.12); transform: translateY(-1px); }
     .person-chip.dragging { opacity: 0.4; cursor: grabbing; transform: scale(0.97); }
@@ -337,8 +337,8 @@
     }
 
     .zone-drop .person-chip { background: #fff; }
-    .zone-spg1 .zone-drop .person-chip { border-left: 3px solid #2979FF; }
-    .zone-spg2 .zone-drop .person-chip { border-left: 3px solid #26A69A; }
+    .zone-spg1 .zone-drop .person-chip { border-left: 3px solid #2196F3; }
+    .zone-spg2 .zone-drop .person-chip { border-left: 3px solid #009688; }
     .zone-spg3 .zone-drop .person-chip { border-left: 3px solid #EF5350; }
     .zone-spg4 .zone-drop .person-chip { border-left: 3px solid #7E57C2; }
 
@@ -369,18 +369,18 @@
       font-family: 'Oswald', sans-serif; font-size: 0.8em; letter-spacing: 0.07em;
       text-transform: uppercase; cursor: pointer; transition: all 0.15s;
     }
-    .btn-reset-deployment:hover { background: #FEE2E2; color: var(--danger); border-color: #FCA5A5; }
+    .btn-reset-deployment:hover { background: #FFEBEE; color: var(--danger); border-color: #FCA5A5; }
 
     .btn-copy-deploy {
       padding: 7px 18px; border-radius: 999px;
       border: none; background: var(--accent); color: #fff;
       font-family: 'Oswald', sans-serif; font-size: 0.8em; letter-spacing: 0.07em;
       text-transform: uppercase; cursor: pointer; transition: all 0.2s ease;
-      box-shadow: 0 3px 10px rgba(41,121,255,0.25);
+      box-shadow: 0 3px 10px rgba(33,150,243,0.25);
       display: flex; align-items: center; gap: 7px;
     }
-    .btn-copy-deploy:hover { background: #448AFF; transform: translateY(-1px); }
-    .btn-copy-deploy.copied { background: var(--success); box-shadow: 0 3px 10px rgba(16,185,129,0.28); }
+    .btn-copy-deploy:hover { background: #1E88E5; transform: translateY(-1px); }
+    .btn-copy-deploy.copied { background: var(--success); box-shadow: 0 3px 10px rgba(67,160,71,0.28); }
 
     .report-section {
       background: #fff; border-radius: 12px; border: 1px solid var(--border);
@@ -396,9 +396,9 @@
       font-family: 'Oswald', sans-serif; font-size: 0.95em; letter-spacing: 0.06em;
       text-transform: uppercase; font-weight: 600; padding: 11px 28px; border-radius: 999px;
       border: none; background: var(--accent); color: #fff; cursor: pointer;
-      transition: all 0.2s ease; white-space: nowrap; box-shadow: 0 4px 14px rgba(41,121,255,0.25);
+      transition: all 0.2s ease; white-space: nowrap; box-shadow: 0 4px 14px rgba(33,150,243,0.25);
     }
-    .btn-report:hover { background: #448AFF; box-shadow: 0 6px 20px rgba(41,121,255,0.35); transform: translateY(-1px); }
+    .btn-report:hover { background: #1E88E5; box-shadow: 0 6px 20px rgba(33,150,243,0.35); transform: translateY(-1px); }
 
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     #confetti { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1000; }
@@ -436,13 +436,13 @@
       background: #F3F4F6; color: var(--muted); font-size: 16px; cursor: pointer;
       display: flex; align-items: center; justify-content: center; transition: all 0.15s;
     }
-    .modal-close:hover { background: #FEE2E2; color: var(--danger); }
+    .modal-close:hover { background: #FFEBEE; color: var(--danger); }
     .modal-body { padding: 16px 20px; flex: 1; overflow-y: auto; }
     .modal-body textarea {
       width: 100%; min-height: 220px; resize: vertical;
       padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px;
       font-size: 14px; font-family: 'Source Sans 3', sans-serif;
-      line-height: 1.6; color: #1A1F36; background: #F9FAFB;
+      line-height: 1.6; color: #37474F; background: #F9FAFB;
       transition: border-color 0.2s;
     }
     .modal-body textarea:focus { outline: none; border-color: var(--accent); background: #fff; }
@@ -454,11 +454,11 @@
       font-family: 'Oswald', sans-serif; font-size: 0.9em; letter-spacing: 0.06em;
       text-transform: uppercase; font-weight: 600; padding: 10px 22px; border-radius: 999px;
       border: none; background: var(--accent); color: #fff; cursor: pointer;
-      transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(41,121,255,0.25);
+      transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(33,150,243,0.25);
       display: flex; align-items: center; gap: 8px;
     }
-    .btn-copy:hover { background: #448AFF; transform: translateY(-1px); }
-    .btn-copy.copied { background: var(--success); box-shadow: 0 4px 14px rgba(16,185,129,0.3); }
+    .btn-copy:hover { background: #1E88E5; transform: translateY(-1px); }
+    .btn-copy.copied { background: var(--success); box-shadow: 0 4px 14px rgba(67,160,71,0.3); }
     .btn-cancel {
       font-family: 'Oswald', sans-serif; font-size: 0.9em; letter-spacing: 0.06em;
       text-transform: uppercase; font-weight: 600; padding: 10px 18px; border-radius: 999px;
@@ -519,7 +519,7 @@
     <div class="task-group" data-group="morning">
       <div class="group-header">
         <div class="group-title-row">
-          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2979FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg></span> Утро (6:00–8:00)</h2>
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg></span> Утро (6:00–8:00)</h2>
           <span class="group-chevron">▼</span>
         </div>
         <div class="progress-container"><div class="progress-bar" data-group="morning"></div></div>
@@ -552,7 +552,7 @@
         <div class="deployment-header-row">
           <h2>
             <span class="icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2979FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px">
                 <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
                 <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
               </svg>
@@ -637,7 +637,7 @@
     <div class="task-group" data-group="front">
       <div class="group-header">
         <div class="group-title-row">
-          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2979FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> День: Фронт (новенькие, бот, табель)</h2>
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> День: Фронт (новенькие, бот, табель)</h2>
           <span class="group-chevron">▼</span>
         </div>
         <div class="progress-container"><div class="progress-bar" data-group="front"></div></div>
@@ -670,7 +670,7 @@
     <div class="task-group" data-group="tags">
       <div class="group-header">
         <div class="group-title-row">
-          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2979FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> День: Метки</h2>
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> День: Метки</h2>
           <span class="group-chevron">▼</span>
         </div>
         <div class="progress-container"><div class="progress-bar" data-group="tags"></div></div>
@@ -701,7 +701,7 @@
     <div class="task-group" data-group="tag-events-block">
       <div class="group-header">
         <div class="group-title-row">
-          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2979FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span> Изменения по меткам</h2>
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span> Изменения по меткам</h2>
           <span class="group-chevron">▼</span>
         </div>
         <div class="progress-container"><div class="progress-bar" data-group="tag-events-block" style="width:0%"></div></div>
@@ -740,7 +740,7 @@
     <div class="task-group" data-group="evening">
       <div class="group-header">
         <div class="group-title-row">
-          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2979FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span> Вечер (18:00–19:30)</h2>
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span> Вечер (18:00–19:30)</h2>
           <span class="group-chevron">▼</span>
         </div>
         <div class="progress-container"><div class="progress-bar" data-group="evening"></div></div>
@@ -967,7 +967,7 @@
     ];
 
     const AVATAR_COLORS = [
-      '#1565C0','#00796B','#D32F2F','#5E35B1','#0277BD',
+      '#1565C0','#00897B','#E53935','#5E35B1','#0277BD',
       '#00695C','#BF360C','#6A1B9A','#01579B','#004D40',
       '#B71C1C','#4527A0','#006064','#E65100','#1B5E20'
     ];
@@ -1262,7 +1262,7 @@
       const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth; canvas.height = window.innerHeight;
       const pieces = [];
-      const colors = ['#2979FF','#42A5F5','#26A69A','#EF5350','#7E57C2'];
+      const colors = ['#2196F3','#43A047','#FFA726','#EF5350','#7E57C2'];
       for (let i = 0; i < 120; i++) {
         pieces.push({ x: Math.random() * canvas.width, y: -10, vx: (Math.random()-0.5)*8, vy: Math.random()*5+3, color: colors[Math.floor(Math.random()*colors.length)], size: Math.random()*7+3, rot: Math.random()*360, rotV: (Math.random()-0.5)*8 });
       }
@@ -1380,11 +1380,11 @@
     }
 
     const SVG_ICONS = {
-      package: '<svg viewBox="0 0 24 24" fill="none" stroke="#2979FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4l-9-5.19"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
-      truck: '<svg viewBox="0 0 24 24" fill="none" stroke="#2979FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
-      sync: '<svg viewBox="0 0 24 24" fill="none" stroke="#2979FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>',
-      building: '<svg viewBox="0 0 24 24" fill="none" stroke="#2979FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/><path d="M9 18h6"/></svg>',
-      people: '<svg viewBox="0 0 24 24" fill="none" stroke="#2979FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>'
+      package: '<svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4l-9-5.19"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
+      truck: '<svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+      sync: '<svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>',
+      building: '<svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/><path d="M9 18h6"/></svg>',
+      people: '<svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>'
     };
 
     const REMINDERS = [
@@ -1393,7 +1393,7 @@
       { id: 'sync-ww-dev', days: [2], icon: SVG_ICONS.sync, title: 'Встреча', text: 'Сегодня еженедельный синк ITS WW dev' },
       { id: 'meeting-deploy', days: [3], icon: SVG_ICONS.building, title: 'Встреча', text: 'Сегодня встреча площадок отдела внедрения' },
       { id: 'meetup-friday', days: [5], icon: SVG_ICONS.people, title: 'Meet-up', text: 'Сегодня meet-up!' },
-      { id: 'delete-test-shifts', monthly: { fromDay: 25 }, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#2979FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>', title: 'Напоминание', text: 'Необходимо удалить тестовые смены' }
+      { id: 'delete-test-shifts', monthly: { fromDay: 25 }, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>', title: 'Напоминание', text: 'Необходимо удалить тестовые смены' }
     ];
 
     async function checkReminders() {
@@ -1408,7 +1408,7 @@
         if (dayOffNames.length > 0) {
           const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
           const dateStr = tomorrow.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
-          dayOffHtml = `<div class="reminder-banner" data-reminder-id="day-off-tomorrow"><span class="reminder-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2979FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><div class="reminder-content"><span class="reminder-title">Выходные завтра (${dateStr})</span><span class="reminder-text">${dayOffNames.join(', ')}</span></div><button class="reminder-close" onclick="dismissReminder('day-off-tomorrow')" title="Скрыть">✕</button></div>`;
+          dayOffHtml = `<div class="reminder-banner" data-reminder-id="day-off-tomorrow"><span class="reminder-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><div class="reminder-content"><span class="reminder-title">Выходные завтра (${dateStr})</span><span class="reminder-text">${dayOffNames.join(', ')}</span></div><button class="reminder-close" onclick="dismissReminder('day-off-tomorrow')" title="Скрыть">✕</button></div>`;
         }
       }
       if (active.length === 0 && !dayOffHtml) { container.style.display = 'none'; return; }
