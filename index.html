@@ -1278,7 +1278,7 @@
     async function fetchBleCount() {
       try {
         const SHEET_ID = '1CU56AZdWC9dCvkf_z6CWMtrgfuWRCG3HYx7hp79vI_c';
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent('Свод_журналов_СПГ+ТСБ')}&range=J22&headers=0&t=${Date.now()}`;
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent('Свод_журналов_СПГ+ТСБ')}&range=J23&headers=0&t=${Date.now()}`;
         const res = await fetch(url); const text = await res.text();
         const json = JSON.parse(text.substring(47).slice(0, -2));
         const val = json?.table?.rows?.[0]?.c?.[0]?.v;
