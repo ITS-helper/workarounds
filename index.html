@@ -12,12 +12,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <style>
-    :root {
-      --primary: #1565C0; --secondary: #1976D2; --accent: #2196F3;
-      --bg-main: #F5F7FA; --card-bg: #ffffff; --muted: #78909C;
-      --success: #43A047; --warning: #FFA726; --progress-bg: #E3F2FD;
-      --border: #E8EDF2; --danger: #EF5350;
-    }
+    :root { --primary: #1565C0; --secondary: #1976D2; --accent: #2196F3; --bg-main: #F5F7FA; --card-bg: #ffffff; --muted: #78909C; --success: #43A047; --warning: #FFA726; --progress-bg: #E3F2FD; --border: #E8EDF2; --danger: #EF5350; }
     * { box-sizing: border-box; }
     body { font-family: 'Source Sans 3', sans-serif; background: var(--bg-main); margin: 0; padding: 0; min-height: 100vh; color: #37474F; }
     #authOverlay { position: fixed; inset: 0; z-index: 99999; background: linear-gradient(135deg, #1565C0 0%, #1976D2 50%, #2196F3 100%); display: flex; align-items: center; justify-content: center; padding: 20px; transition: opacity 0.3s ease; }
@@ -41,17 +36,14 @@
     .nav-tab svg { flex-shrink: 0; }
     .page { display: none; }
     .page.active { display: block; }
-    @media (max-width: 600px) { .topnav-logo { padding: 0 10px 0 8px; } .topnav-tabs { padding: 5px 6px; gap: 3px; } .nav-tab { padding: 6px 10px; font-size: 0.72em; letter-spacing: 0.04em; } .nav-tab svg { display: none; } }
+    @media (max-width: 600px) { .topnav-logo { padding: 0 10px 0 8px; } .topnav-tabs { padding: 5px 6px; gap: 3px; } .nav-tab { padding: 6px 10px; font-size: 0.72em; } .nav-tab svg { display: none; } }
 </style>
   <style>
     .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background-clip: padding-box; border-radius: 50%; }
-    .marker-cluster-small { background-color: rgba(33,150,243,0.25); }
-    .marker-cluster-small div { background-color: rgba(33,150,243,0.7); }
-    .marker-cluster-medium { background-color: rgba(245,158,11,0.25); }
-    .marker-cluster-medium div { background-color: rgba(245,158,11,0.7); }
-    .marker-cluster-large { background-color: rgba(239,68,68,0.25); }
-    .marker-cluster-large div { background-color: rgba(239,68,68,0.7); }
-    .marker-cluster div { width: 30px; height: 30px; margin-left: 5px; margin-top: 5px; text-align: center; border-radius: 50%; font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: center; }
+    .marker-cluster-small { background-color: rgba(33,150,243,0.25); } .marker-cluster-small div { background-color: rgba(33,150,243,0.7); }
+    .marker-cluster-medium { background-color: rgba(245,158,11,0.25); } .marker-cluster-medium div { background-color: rgba(245,158,11,0.7); }
+    .marker-cluster-large { background-color: rgba(239,68,68,0.25); } .marker-cluster-large div { background-color: rgba(239,68,68,0.7); }
+    .marker-cluster div { width:30px;height:30px;margin-left:5px;margin-top:5px;text-align:center;border-radius:50%;font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center; }
     .marker-cluster span { line-height: 1; }
 </style>
   <style>/* SPRAVKA */
@@ -747,22 +739,18 @@ header {
 </style>
 </head>
 <body>
-
   <div id="authOverlay">
     <div class="auth-box">
       <span class="auth-logo">ITSSupport</span>
       <span class="auth-title">Портал инженера</span>
-      <input class="auth-input" type="password" id="authInput" placeholder="Введите пароль"
-             autocomplete="current-password" onkeydown="if(event.key==='Enter') doAuth()">
+      <input class="auth-input" type="password" id="authInput" placeholder="Введите пароль" autocomplete="current-password" onkeydown="if(event.key==='Enter') doAuth()">
       <button class="auth-btn" onclick="doAuth()">Войти</button>
       <span class="auth-error" id="authError"></span>
     </div>
   </div>
-
   <nav class="topnav">
     <div class="topnav-logo">
-      <img src="./images/ITS_logo_horizont.png" alt="ITSSupport"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <img src="./images/ITS_logo_horizont.png" alt="ITSSupport" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="topnav-logo-text">ITS</span>
     </div>
     <div class="topnav-tabs">
@@ -780,10 +768,8 @@ header {
       </button>
     </div>
   </nav>
-
   <div id="page-checklist" class="page">
-    <div class="container">
-<div class="intro">
+    <div class="container"><div class="intro">
       <div class="intro-field">
         <label>Дата</label>
         <input type="date" id="workDate">
@@ -1096,13 +1082,10 @@ header {
         <button class="btn-cancel" onclick="closeReportModal()">Закрыть</button>
         <button class="btn-copy" id="btnCopy" onclick="copyReport()">📋 Скопировать</button>
       </div>
-    </div>
-    </div>
+    </div></div>
   </div>
-
   <div id="page-shifts" class="page">
-    <div class="container">
-    <div class="intro">
+    <div class="container">    <div class="intro">
       <div class="intro-field"><label>Дата</label><input type="date" id="sh_workDate"></div>
       <div class="intro-field"><label>Команда</label><input type="text" id="sh_workerName" placeholder="Введите название команды"></div>
       <p class="intro-hint">Нажмите на заголовок блока чтобы раскрыть задачи · Отметьте выполненные пункты кликом</p>
@@ -1111,14 +1094,14 @@ header {
     <div class="reminders-container" id="sh_remindersContainer"></div>
 
     <div class="task-group" data-group="sh-morning">
-      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg></span> Утро (6:00–8:00)</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-morning"></div></div></div>
+      <div class="group-header" onclick="this.parentElement.classList.toggle('open');try{shSaveState();}catch(e){}"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg></span> Утро (6:00–8:00)</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-morning"></div></div></div>
       <div class="subtasks"><div class="subtasks-inner">
         <div class="subtask"><input type="checkbox" data-task-id="sh-morning-2"><span>Выдача часов в окне 6:00–8:00. Уборка полок с часами</span></div>
       </div></div>
     </div>
 
     <div class="task-group" data-group="sh-prep">
-      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span> Подготовка к обходу</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-prep"></div></div></div>
+      <div class="group-header" onclick="this.parentElement.classList.toggle('open');try{shSaveState();}catch(e){}"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span> Подготовка к обходу</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-prep"></div></div></div>
       <div class="subtasks"><div class="subtasks-inner">
         <div class="subtask"><input type="checkbox" data-task-id="sh-prep-1"><span>Запуск смены на часах, получение отладочного устройства</span></div>
         <div class="subtask"><input type="checkbox" data-task-id="sh-prep-2"><span>Обновление меток в мобильном приложении</span></div>
@@ -1128,7 +1111,7 @@ header {
     </div>
 
     <div class="table-group" data-tgroup="lines">
-      <div class="table-group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> Обход по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" id="sh_linesProgressBar"></div></div></div>
+      <div class="table-group-header" onclick="this.parentElement.classList.toggle('open');if(this.parentElement.classList.contains('open')){['1','2','kns','night'].forEach(k=>{if(!lineData[k])loadLine(k)});loadStatusBox();}try{shSaveState();}catch(e){}"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> Обход по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" id="sh_linesProgressBar"></div></div></div>
       <div class="table-body"><div class="table-inner">
         <div class="line-tabs">
           <button class="line-tab active" data-line="1">Линия 1 <span class="tab-badge" id="sh_badge1">—</span></button>
@@ -1144,7 +1127,7 @@ header {
     </div>
 
           <div class="map-section" data-map-section="ble">
-      <div class="map-section-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Карта BLE-меток</h2><span class="group-chevron">▼</span></div></div>
+      <div class="map-section-header" onclick="var s=this.closest('.map-section');s.classList.toggle('open');if(s.classList.contains('open')&&!bleMapInitialized)loadBleMap();if(s.classList.contains('open')&&bleMap)setTimeout(()=>bleMap.invalidateSize(),300);try{shSaveState();}catch(e){}"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Карта BLE-меток</h2><span class="group-chevron">▼</span></div></div>
       <div class="map-body"><div class="map-inner">
         <div id="sh_mapAuthBlock" class="map-auth-bar" style="display:none"></div>
         <div id="sh_mapMsg" class="map-msg" style="display:none"></div>
@@ -1171,7 +1154,7 @@ header {
     </div>
 
     <div class="task-group" data-group="sh-tag-events">
-      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span> Изменения по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-tag-events" style="width:0%"></div></div></div>
+      <div class="group-header" onclick="this.parentElement.classList.toggle('open');try{shSaveState();}catch(e){}"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span> Изменения по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-tag-events" style="width:0%"></div></div></div>
       <div class="subtasks"><div class="subtasks-inner">
         <div class="tag-events">
           <div class="tag-event-block tag-event-new"><div class="tag-event-header"><span class="tag-event-icon">＋</span><span class="tag-event-title">Новые метки</span><div class="tag-event-counter"><button class="counter-btn" onclick="shChangeCount('new',-1)">−</button><span id="sh_countNew">0</span><button class="counter-btn" onclick="shChangeCount('new',1)">＋</button></div></div><textarea id="sh_notesNew" class="tag-event-notes" placeholder="Номера новых меток: 101, 205..."></textarea></div>
@@ -1181,7 +1164,7 @@ header {
     </div>
 
     <div class="task-group" data-group="sh-evening">
-      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span> Вечер (18:00–19:30)</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-evening"></div></div></div>
+      <div class="group-header" onclick="this.parentElement.classList.toggle('open');try{shSaveState();}catch(e){}"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span> Вечер (18:00–19:30)</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-evening"></div></div></div>
       <div class="subtasks"><div class="subtasks-inner">
         <div class="subtask"><input type="checkbox" data-task-id="sh-evening-1"><span>Отчет о нарушениях</span></div>
         <div class="subtask"><input type="checkbox" data-task-id="sh-evening-2"><span>Закрытие смены / перекличка</span></div>
@@ -1226,13 +1209,10 @@ header {
       </div>
       <div id="sh_bleMapFS" style="flex:1;width:100%;min-height:0;"></div>
     </div>
-
-    </div>
+</div>
   </div>
-
   <div id="page-spravka" class="page active">
-    <div class="container">
-<div class="search-bar">
+    <div class="container"><div class="search-bar">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input type="text" id="searchInput" placeholder="Поиск по шпаргалке..." oninput="handleSearch(this.value)" autocomplete="off" spellcheck="false">
       <span class="search-count" id="searchCount"></span>
@@ -1760,19 +1740,14 @@ header {
       <button class="img-modal-nav img-modal-next" onclick="navModal(1); event.stopPropagation()">›</button>
       <img id="imgModalImg" src="" alt="">
       <div class="img-modal-caption" id="imgModalCaption"></div>
-    </div>
-    </div>
+    </div></div>
   </div>
-
   <canvas id="confetti"></canvas>
-
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script>
-
     const AUTH_SESSION_KEY = 'portal_auth';
     const AUTH_PASSWORDS = ['VELES_2024', 'impl_dept'];
-
     function doAuth() {
       const val = document.getElementById('authInput').value;
       const err = document.getElementById('authError');
@@ -1789,36 +1764,25 @@ header {
         setTimeout(() => { err.textContent = ''; }, 2500);
       }
     }
-
     (function checkAuth() {
       if (sessionStorage.getItem(AUTH_SESSION_KEY) === '1') {
-        document.addEventListener('DOMContentLoaded', () => {
-          document.getElementById('authOverlay')?.remove();
-          portalInit();
-        });
+        document.addEventListener('DOMContentLoaded', () => { document.getElementById('authOverlay')?.remove(); portalInit(); });
       } else {
         window.addEventListener('load', () => document.getElementById('authInput')?.focus());
       }
     })();
-
     let cl_Init = false, sh_Init = false;
-
     function showPage(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
       document.getElementById('page-' + pageId)?.classList.add('active');
       document.querySelector('.nav-tab[data-page="' + pageId + '"]')?.classList.add('active');
-      if (pageId === 'checklist' && !cl_Init) { cl_Init = true; try { clInitPage(); } catch(e) { console.error('clInitPage error:', e); } }
-      if (pageId === 'shifts'    && !sh_Init) { sh_Init = true; try { shInitPage(); } catch(e) { console.error('shInitPage error:', e); } }
+      if (pageId === 'checklist' && !cl_Init) { cl_Init = true; try { clInitPage(); } catch(e) { console.error('clInitPage:', e); } }
+      if (pageId === 'shifts'    && !sh_Init) { sh_Init = true; try { shInitPage(); } catch(e) { console.error('shInitPage:', e); } }
     }
-
-    function portalInit() {
-      try { spInitPage(); } catch(e) { console.error('spInitPage error:', e); }
-    }
-
-  </script>
-  <script>
-const SCREENSHOTS = [
+    function portalInit() { try { spInitPage(); } catch(e) { console.error('spInitPage:', e); } }
+</script>
+  <script>const SCREENSHOTS = [
       ['./images/ble-screen-1.jpg', 'Скрин 1 — Отправка данных на сервер'],
       ['./images/ble-screen-2.jpg', 'Скрин 2 — Настройки метки (тип, зона, период)'],
       ['./images/ble-screen-3.jpg', 'Скрин 3 — BackEnd: поставлена на учёт'],
@@ -2015,10 +1979,8 @@ const SCREENSHOTS = [
     function spInitPage() {
       loadState();
     }
-
-  </script>
+</script>
   <script>
-
     
 const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     const SCHEDULE_SHEET_ID = '1h-GMxdT2z3MC-somIq8sX3iV6KfjaoCffIIfeBQezRk';
@@ -2740,10 +2702,8 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
 
     window.addEventListener('beforeunload', clSaveState);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) clSaveState(); });
-  
   </script>
-  <script>
-        const SHEET_ID = "1CU56AZdWC9dCvkf_z6CWMtrgfuWRCG3HYx7hp79vI_c";
+  <script>        const SHEET_ID = "1CU56AZdWC9dCvkf_z6CWMtrgfuWRCG3HYx7hp79vI_c";
     const SHEET_NAME = "Для печати🖨️";
     const STATUS_SHEET_NAME = "Свод_журналов_СПГ+ТСБ";
     const STATUS_RANGE = "Q1:R2";
@@ -2755,7 +2715,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     const STATUS_DONE = "Данные зафиксированы";
     const STORAGE_KEY = 'itssupport_cl2_v1';
 
-    function shSaveState() { const state = { tasks: Array.from(document.querySelectorAll('#page-shifts input[type="checkbox"]')).map(cb => ({ id: cb.dataset.taskId, checked: cb.checked })), date: document.getElementById('sh_workDate').value, name: document.getElementById('sh_workerName').value, groups: Array.from(document.querySelectorAll('#page-shifts .task-group')).map(g => ({ id: g.dataset.group, open: g.classList.contains('open') })), tableOpen: document.querySelector('#page-shifts [data-tgroup="lines"]').classList.contains('open'), mapOpen: document.querySelector('#page-shifts [data-map-section="ble"]').classList.contains('open'), currentLine, countNew: document.getElementById('sh_countNew').textContent, countLost: document.getElementById('sh_countLost').textContent, notesNew: document.getElementById('sh_notesNew').value, notesLost: document.getElementById('sh_notesLost').value }; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function shSaveState() { const state = { tasks: Array.from(document.querySelectorAll('#page-shifts input[type="checkbox"]')).map(cb => ({ id: cb.dataset.taskId, checked: cb.checked })), date: document.getElementById('sh_workDate').value, name: document.getElementById('sh_workerName').value, groups: Array.from(document.querySelectorAll('#page-shifts .task-group')).map(g => ({ id: g.dataset.group, open: g.classList.contains('open') })), tableOpen: document.querySelector('#page-shifts [data-tgroup="lines"]')?.classList.contains('open'), mapOpen: document.querySelector('#page-shifts [data-map-section="ble"]')?.classList.contains('open'), currentLine, countNew: document.getElementById('sh_countNew').textContent, countLost: document.getElementById('sh_countLost').textContent, notesNew: document.getElementById('sh_notesNew').value, notesLost: document.getElementById('sh_notesLost').value }; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
     function shLoadState() { try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (saved) { saved.tasks?.forEach(({ id, checked }) => { const cb = document.querySelector(`[data-task-id="${id}"]`); if (cb) { cb.checked = checked; cb.closest('.subtask').classList.toggle('completed', checked); } }); if (saved.date) document.getElementById('sh_workDate').value = saved.date; if (saved.name) document.getElementById('sh_workerName').value = saved.name; saved.groups?.forEach(({ id, open }) => { const group = document.querySelector(`#page-shifts [data-group="${id}"]`); if (group && open) group.classList.add('open'); }); if (saved.tableOpen) document.querySelector('#page-shifts [data-tgroup="lines"]').classList.add('open'); if (saved.mapOpen) document.querySelector('#page-shifts [data-map-section="ble"]').classList.add('open'); if (saved.currentLine) currentLine = saved.currentLine; if (saved.countNew) document.getElementById('sh_countNew').textContent = saved.countNew; if (saved.countLost) document.getElementById('sh_countLost').textContent = saved.countLost; if (saved.notesNew) document.getElementById('sh_notesNew').value = saved.notesNew; if (saved.notesLost) document.getElementById('sh_notesLost').value = saved.notesLost; } } catch (e) {} shUpdateAllProgress(); }
 
@@ -2852,9 +2812,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
       document.getElementById('sh_workDate').valueAsDate = new Date();
       checkReminders();
       shLoadState();
-      document.querySelectorAll('#page-shifts .group-header').forEach(header => {
-        header.addEventListener('click', () => { header.parentElement.classList.toggle('open'); shSaveState(); });
-      });
+      // group-header clicks handled via inline onclick attributes
       document.querySelectorAll('#page-shifts .subtask').forEach(subtask => {
         subtask.addEventListener('click', function(e) {
           const checkbox = this.querySelector('input[type="checkbox"]');
@@ -2862,14 +2820,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
           shSaveState(); shUpdateAllProgress();
         });
       });
-      const tableGroupHeader = document.querySelector('#page-shifts .table-group-header');
-      const tableGroup = document.querySelector('#page-shifts [data-tgroup="lines"]');
-      if (tableGroupHeader) tableGroupHeader.addEventListener('click', () => {
-        const wasOpen = tableGroup.classList.contains('open');
-        tableGroup.classList.toggle('open');
-        if (!wasOpen) { ["1","2","kns","night"].forEach(k => { if (!lineData[k]) loadLine(k); }); loadStatusBox(); }
-        shSaveState();
-      });
+      // table-group-header click handled via inline onclick attribute
       document.querySelectorAll('#page-shifts .line-tab').forEach(tab => {
         tab.addEventListener('click', () => switchLine(tab.dataset.line));
       });
@@ -2915,7 +2866,6 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
 
     window.addEventListener('beforeunload', saveState);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) shSaveState(); });
-
-  </script>
+</script>
 </body>
 </html>
