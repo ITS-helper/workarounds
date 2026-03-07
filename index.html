@@ -2590,7 +2590,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
       { id: 'delete-test-shifts',monthly: { fromDay: 25 }, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>', title: 'Напоминание', text: 'Необходимо удалить тестовые смены' }
     ];
 
-    async function checkReminders() {
+    async function clCheckReminders() {
       const container = document.getElementById('remindersContainer');
       const now = new Date();
       const dayOfWeek  = now.getDay();
@@ -2618,7 +2618,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
               <span class="reminder-title">Выходные завтра (${dateStr})</span>
               <span class="reminder-text">${dayOffNames.join(', ')}</span>
             </div>
-            <button class="reminder-close" onclick="dismissReminder('day-off-tomorrow')" title="Скрыть">✕</button>
+            <button class="reminder-close" onclick="clDismissReminder('day-off-tomorrow')" title="Скрыть">✕</button>
           </div>`;
         }
       }
@@ -2643,7 +2643,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
               <span class="reminder-title">Отпуск через 2 недели</span>
               <span class="reminder-text">${lines}</span>
             </div>
-            <button class="reminder-close" onclick="dismissReminder('vacation-starting')" title="Скрыть">✕</button>
+            <button class="reminder-close" onclick="clDismissReminder('vacation-starting')" title="Скрыть">✕</button>
           </div>`;
         }
       }
@@ -2656,7 +2656,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
             <span class="reminder-title">${r.title}</span>
             <span class="reminder-text">${r.text}</span>
           </div>
-          <button class="reminder-close" onclick="dismissReminder('${r.id}')" title="Скрыть">✕</button>
+          <button class="reminder-close" onclick="clDismissReminder('${r.id}')" title="Скрыть">✕</button>
         </div>`
       ).join('');
 
@@ -2667,7 +2667,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
       container.innerHTML = allHtml;
     }
 
-    function dismissReminder(id) {
+    function clDismissReminder(id) {
       const dismissed = JSON.parse(sessionStorage.getItem('dismissed_reminders') || '[]');
       dismissed.push(id);
       sessionStorage.setItem('dismissed_reminders', JSON.stringify(dismissed));
@@ -2679,7 +2679,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
 
     function clInitPage() {
       document.getElementById('workDate').valueAsDate = new Date();
-      checkReminders();
+      clCheckReminders();
       clLoadState();
       document.querySelectorAll('#page-checklist .group-header').forEach(header => {
         header.addEventListener('click', () => { header.parentElement.classList.toggle('open'); clSaveState(); });
@@ -2812,7 +2812,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
       document.getElementById('sh_workDate').valueAsDate = new Date();
       checkReminders();
       shLoadState();
-      // group-header clicks handled via inline onclick attributes
+      // group-header: inline onclick in HTML
       document.querySelectorAll('#page-shifts .subtask').forEach(subtask => {
         subtask.addEventListener('click', function(e) {
           const checkbox = this.querySelector('input[type="checkbox"]');
@@ -2820,15 +2820,18 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
           shSaveState(); shUpdateAllProgress();
         });
       });
-      // table-group-header click handled via inline onclick attribute
+      // table-group-header: inline onclick in HTML
       document.querySelectorAll('#page-shifts .line-tab').forEach(tab => {
         tab.addEventListener('click', () => switchLine(tab.dataset.line));
       });
-      document.getElementById('sh_notesNew').addEventListener('input', saveState);
-      document.getElementById('sh_notesLost').addEventListener('input', saveState);
-      if (tableGroup && tableGroup.classList.contains('open')) { ["1","2","kns","night"].forEach(k => loadLine(k)); loadStatusBox(); }
-      document.getElementById('sh_workDate').addEventListener('change', saveState);
-      document.getElementById('sh_workerName').addEventListener('input', saveState);
+      document.getElementById('sh_notesNew').addEventListener('input', shSaveState);
+      document.getElementById('sh_notesLost').addEventListener('input', shSaveState);
+      const tableGroup2 = document.querySelector('#page-shifts [data-tgroup="lines"]');
+      if (tableGroup2 && tableGroup2.classList.contains('open')) { ["1","2","kns","night"].forEach(k => { if (!lineData[k]) loadLine(k); }); loadStatusBox(); }
+      const mapSection2 = document.querySelector('#page-shifts [data-map-section="ble"]');
+      if (mapSection2 && mapSection2.classList.contains('open') && !bleMapInitialized) { loadBleMap(); }
+      document.getElementById('sh_workDate').addEventListener('change', shSaveState);
+      document.getElementById('sh_workerName').addEventListener('input', shSaveState);
       document.getElementById('sh_tableSearch').addEventListener('input', () => renderLine(currentLine));
       document.getElementById('sh_reportModal')?.addEventListener('click', function(e) { if (e.target === this) closeReportModal(); });
 
@@ -2843,18 +2846,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
       if (mapBleSearchEl) mapBleSearchEl.addEventListener('input', () => { const raw = mapBleSearchEl.value; mapSearchClearEl.style.display = raw ? 'block' : 'none'; renderBleMarkers(); const q = raw.trim().toLowerCase().replace(/^ble/i, ''); if (!q) return; const found = bleMapData.find(p => p.ble.toLowerCase() === q); if (found && found.lat && found.lng && bleClusterGroup) { bleClusterGroup.eachLayer(m => { if (m.getLatLng().lat === found.lat && m.getLatLng().lng === found.lng) { bleClusterGroup.zoomToShowLayer(m, () => m.openPopup()); } }); } });
       if (mapSearchClearEl) mapSearchClearEl.addEventListener('click', () => { mapBleSearchEl.value = ''; mapSearchClearEl.style.display = 'none'; renderBleMarkers(); mapBleSearchEl.focus(); });
 
-      const mapSection = document.querySelector('#page-shifts [data-map-section="ble"]');
-      if (mapSection) {
-        const mapSectionHeader = mapSection.querySelector('.map-section-header');
-        if (mapSectionHeader) mapSectionHeader.addEventListener('click', () => {
-          const wasOpen = mapSection.classList.contains('open');
-          mapSection.classList.toggle('open');
-          if (!wasOpen && !bleMapInitialized) { loadBleMap(); }
-          if (!wasOpen && bleMap) { setTimeout(() => bleMap.invalidateSize(), 300); }
-          shSaveState();
-        });
-        if (mapSection.classList.contains('open') && !bleMapInitialized) loadBleMap();
-      }
+      // map-section-header: inline onclick in HTML
       document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
           closeReportModal();
