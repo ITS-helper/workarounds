@@ -39,7 +39,7 @@
     .auth-btn:hover { background: #1E88E5; transform: translateY(-1px); }
     .auth-error { font-size: 13px; color: #EF5350; text-align: center; min-height: 18px; }
 
-    /* TOP NAV BAR */
+    /* TOP NAV */
     .topnav {
       background: #fff;
       border-bottom: 2px solid var(--accent);
@@ -54,34 +54,17 @@
     }
     .topnav-logo img { height: 28px; width: auto; max-width: 120px; object-fit: contain; }
     .topnav-logo-text { font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 700; color: var(--primary); letter-spacing: 0.1em; text-transform: uppercase; display: none; }
-    .topnav-tabs {
-      display: flex; align-items: center; gap: 4px;
-      padding: 6px 12px; flex: 1;
-    }
+    .topnav-tabs { display: flex; align-items: center; gap: 4px; padding: 6px 12px; flex: 1; }
     .nav-tab {
       display: flex; align-items: center; gap: 7px;
-      padding: 7px 18px;
-      border-radius: 8px;
-      border: 1.5px solid transparent;
-      cursor: pointer;
-      font-family: 'Oswald', sans-serif;
-      font-size: 0.8em; font-weight: 600;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      color: var(--muted);
-      transition: all 0.18s ease;
-      user-select: none;
-      background: transparent;
+      padding: 7px 18px; border-radius: 8px;
+      border: 1.5px solid transparent; cursor: pointer;
+      font-family: 'Oswald', sans-serif; font-size: 0.8em;
+      font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted); transition: all 0.18s ease; user-select: none; background: transparent;
     }
-    .nav-tab:hover {
-      background: #EEF6FF; color: var(--primary);
-      border-color: rgba(33,150,243,0.2);
-    }
-    .nav-tab.active {
-      background: #EEF6FF; color: var(--primary);
-      border-color: rgba(33,150,243,0.35);
-      box-shadow: 0 1px 4px rgba(33,150,243,0.12);
-    }
-    .nav-tab.active svg { stroke: var(--accent); }
+    .nav-tab:hover { background: #EEF6FF; color: var(--primary); border-color: rgba(33,150,243,0.2); }
+    .nav-tab.active { background: #EEF6FF; color: var(--primary); border-color: rgba(33,150,243,0.35); box-shadow: 0 1px 4px rgba(33,150,243,0.12); }
     .nav-tab svg { flex-shrink: 0; }
 
     /* PAGES */
@@ -95,6 +78,16 @@
       .nav-tab svg { display: none; }
     }
 
+    /* Cluster styling */
+    .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background-clip: padding-box; border-radius: 50%; }
+    .marker-cluster-small { background-color: rgba(33,150,243,0.25); }
+    .marker-cluster-small div { background-color: rgba(33,150,243,0.7); }
+    .marker-cluster-medium { background-color: rgba(245,158,11,0.25); }
+    .marker-cluster-medium div { background-color: rgba(245,158,11,0.7); }
+    .marker-cluster-large { background-color: rgba(239,68,68,0.25); }
+    .marker-cluster-large div { background-color: rgba(239,68,68,0.7); }
+    .marker-cluster div { width: 30px; height: 30px; margin-left: 5px; margin-top: 5px; text-align: center; border-radius: 50%; font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: center; }
+    .marker-cluster span { line-height: 1; }
   </style>
   <style>/* SPRAVKA */
 header { background: #fff; padding: 0; box-shadow: 0 1px 3px rgba(21,101,192,0.06); position: sticky; top: 0; z-index: 100; border-bottom: 2px solid #2196F3; }
@@ -813,7 +806,6 @@ header {
       <span class="topnav-logo-text">ITS</span>
     </div>
     <div class="topnav-tabs">
-      <!-- Order: Чек-лист → Обходы → Шпаргалка -->
       <button class="nav-tab" data-page="checklist" onclick="showPage('checklist')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Чек-лист дежурного
@@ -1176,7 +1168,7 @@ header {
       </div></div>
     </div>
 
-    <div class="table-group" data-tgroup="sh-lines">
+    <div class="table-group" data-tgroup="lines">
       <div class="table-group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> Обход по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" id="sh_linesProgressBar"></div></div></div>
       <div class="table-body"><div class="table-inner">
         <div class="line-tabs">
@@ -1192,32 +1184,30 @@ header {
       </div></div>
     </div>
 
-    <div class="map-section" data-map-section="sh-ble">
+          <div class="map-section" data-map-section="ble">
       <div class="map-section-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Карта BLE-меток</h2><span class="group-chevron">▼</span></div></div>
       <div class="map-body"><div class="map-inner">
+        <div id="sh_mapAuthBlock" class="map-auth-bar" style="display:none"></div>
         <div id="sh_mapMsg" class="map-msg" style="display:none"></div>
-        <div style="margin-bottom:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-          <button class="refresh-btn" onclick="shLoadBleData()">↺ Обновить BLE</button>
-          <button class="refresh-btn" onclick="shDiagnoseAPI()" style="color:#E65100;border-color:#FF9800;">🔍 Диагностика API</button>
-        </div>
+        <div style="text-align:center;margin-bottom:10px;" id="sh_mapRetryBtnWrap"><button class="map-auth-btn" id="sh_mapRetryBtn" onclick="retryBleMap()" style="display:none">↺ Обновить карту</button></div>
         <div id="sh_mapFiltersBlock" class="map-filters" style="display:none">
-          <button class="map-filter-btn filter-all active" data-shfilter="all">Все <span class="filter-count" id="sh_fcAll">0</span></button>
-          <button class="map-filter-btn filter-ok" data-shfilter="ok">Норма <span class="filter-count" id="sh_fcOk">0</span></button>
-          <button class="map-filter-btn filter-battery" data-shfilter="battery">Батарея <span class="filter-count" id="sh_fcBat">0</span></button>
-          <button class="map-filter-btn filter-inspection" data-shfilter="inspection">Не пройдено <span class="filter-count" id="sh_fcInsp">0</span></button>
+          <button class="map-filter-btn filter-all active" data-filter="all">Все <span class="filter-count" id="sh_fcAll">0</span></button>
+          <button class="map-filter-btn filter-ok" data-filter="ok">Норма <span class="filter-count" id="sh_fcOk">0</span></button>
+          <button class="map-filter-btn filter-battery" data-filter="battery">Батарея <span class="filter-count" id="sh_fcBat">0</span></button>
+          <button class="map-filter-btn filter-inspection" data-filter="inspection">Не пройдено <span class="filter-count" id="sh_fcInsp">0</span></button>
         </div>
         <div id="sh_mapBottomControls" style="display:none;flex-wrap:wrap;gap:4px;margin-bottom:10px;align-items:center;">
-          <button class="map-fullscreen-btn" onclick="shOpenFullscreenMap()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg> Полный экран</button>
-          <div id="sh_mapLayerToggle" class="map-layer-toggle">
-            <button class="map-layer-btn" id="sh_btnSatellite" data-shlayer="satellite">Спутник</button>
-            <button class="map-layer-btn active" id="sh_btnStreet" data-shlayer="street">Схема</button>
+          <button class="map-fullscreen-btn" onclick="openFullscreenMap()" style="margin-bottom:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg> Полный экран</button>
+          <div id="sh_mapLayerToggle" class="map-layer-toggle" style="margin-bottom:0;">
+            <button class="map-layer-btn" id="sh_btnSatellite" data-layer="satellite">Спутник</button>
+            <button class="map-layer-btn active" id="sh_btnStreet" data-layer="street">Схема</button>
           </div>
-          <div class="map-search-bar" style="flex:1;min-width:120px;">
-            <input type="text" id="sh_mapBleSearch" placeholder="№ метки" inputmode="numeric">
+          <div class="map-search-bar" style="flex:1;min-width:120px;margin-bottom:0;">
+            <input type="text" id="sh_mapBleSearch" placeholder="№ метки" inputmode="numeric" style="padding:6px 28px 6px 10px;font-size:13px;border-width:1.5px;border-radius:8px;box-shadow:none;">
             <button class="map-search-clear" id="sh_mapSearchClear" title="Очистить">✕</button>
           </div>
         </div>
-        <div id="sh_bleMap"><div class="map-placeholder">Раскройте блок для загрузки карты…</div></div>
+        <div id="sh_bleMap"><div class="map-placeholder" id="sh_mapPlaceholder">Раскройте блок для загрузки карты…</div></div>
       </div></div>
     </div>
 
@@ -1852,7 +1842,6 @@ header {
       }
     })();
 
-    const PAGE_TITLES = { checklist: 'Чек-лист дежурного', shifts: 'Обходы', spravka: 'Шпаргалка' };
     let cl_Init = false, sh_Init = false;
 
     function showPage(pageId) {
@@ -2795,507 +2784,184 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
   
   </script>
   <script>
-// ===== SHIFTS PAGE SCRIPT (Линии и КНС) =====
-const CL2_SHEET_ID = "1CU56AZdWC9dCvkf_z6CWMtrgfuWRCG3HYx7hp79vI_c";
-const CL2_SHEET_NAME_PRINT = "Для печати🖨️";
-const CL2_STATUS_SHEET = "Свод_журналов_СПГ+ТСБ";
-const CL2_SCHEDULE_SHEET_ID = "1h-GMxdT2z3MC-somIq8sX3iV6KfjaoCffIIfeBQezRk";
-const CL2_SCHEDULE_SHEET = "график 2026";
-const CL2_TRIGGER_URL = "https://script.google.com/macros/s/AKfycbzU7wYhYZxJu8_QvJMq174aPZ6lPeHu5PY6jqfyGbE1QgxZv0KwFVvgsDt_A2-wXUWA/exec";
-const CL2_TRIGGER_TOKEN = "12345";
-const CL2_BLE_PROXY = "https://raspy-sound-6f18.kejexu8hem1.workers.dev/proxy";
-const CL2_BLE_USER = "impl_dept";
-const CL2_BLE_PASS = "impl_dept_vsm_2024";
-const CL2_STORAGE_KEY = 'itssupport_cl2_v1';
-const CL2_DISMISSED_KEY = 'dismissed_reminders_cl2';
-const CL2_REPORT_PREFIX = "@NURLAN_MURZABAEV @Ruslanburangulovv";
-const CL2_GROUPS = { "1": "D2:M200", "2": "R2:Z200", "kns": "AD2:AM200", "night": "AQ2:AZ200" };
-const CL2_STATUS_COL = "Статус обхода";
-const CL2_STATUS_WAIT = "Ожидание получения данных";
-const CL2_STATUS_DONE = "Данные зафиксированы";
-const CL2_ALL_PERSONS = ["НУРЛАН","РУСЛАН","ВАСЯ","ЖЕНЯ","МАКСИМ","ИСЛАМ","ДИМА Ч","ИГОРЬ","ИЛЬЯ","ДЕНИС","ЕВГЕНИЙ","АЛЕКСЕЙ","АНДРЕЙ","ДИМА Б","ВИКТОР"];
+    // ===== AUTH =====
+    const AUTH_SESSION_KEY = 'admin';
+    const AUTH_PASSWORDS = ['VELES_2024', 'impl_dept'];
+    function doAuth() { const val = document.getElementById('authInput').value; const err = document.getElementById('authError'); if (AUTH_PASSWORDS.includes(val)) { sessionStorage.setItem(AUTH_SESSION_KEY, '1'); const overlay = document.getElementById('authOverlay'); overlay.classList.add('hidden'); setTimeout(() => overlay.remove(), 350); } else { err.textContent = 'Неверный пароль'; document.getElementById('authInput').value = ''; document.getElementById('authInput').focus(); setTimeout(() => { err.textContent = ''; }, 2500); } }
+    (function checkAuth() { if (sessionStorage.getItem(AUTH_SESSION_KEY) === '1') { document.getElementById('authOverlay').remove(); } else { window.addEventListener('load', () => { document.getElementById('authInput')?.focus(); }); } })();
 
-let cl2State = {
-  tasks: {}, countNew: 0, countLost: 0, notesNew: '', notesLost: '',
-  activeTab: '1', mapFilter: 'all', mapLayer: 'street'
-};
-let cl2Map = null, cl2MapFS = null, cl2Markers = [], cl2MarkerLayer = null, cl2MarkerLayerFS = null;
-let cl2TableData = {}, cl2BleData = [], cl2CurrentLine = '1';
-let cl2Initialized = false;
+    const SHEET_ID = "1CU56AZdWC9dCvkf_z6CWMtrgfuWRCG3HYx7hp79vI_c";
+    const SHEET_NAME = "Для печати🖨️";
+    const STATUS_SHEET_NAME = "Свод_журналов_СПГ+ТСБ";
+    const STATUS_RANGE = "Q1:R2";
+    const GROUPS = { "1": "D2:M200", "2": "R2:Z200", "kns": "AD2:AM200", "night": "AQ2:AZ200" };
+    const TRIGGER_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzU7wYhYZxJu8_QvJMq174aPZ6lPeHu5PY6jqfyGbE1QgxZv0KwFVvgsDt_A2-wXUWA/exec";
+    const TRIGGER_TOKEN = "12345";
+    const STATUS_COL_NAME = "Статус обхода";
+    const STATUS_WAIT = "Ожидание получения данных";
+    const STATUS_DONE = "Данные зафиксированы";
+    const STORAGE_KEY = 'itssupport_cl2_v1';
 
-function shInitPage() {
-  if (cl2Initialized) return;
-  cl2Initialized = true;
+    function saveState() { const state = { tasks: Array.from(document.querySelectorAll('input[type="checkbox"]')).map(cb => ({ id: cb.dataset.taskId, checked: cb.checked })), date: document.getElementById('workDate').value, name: document.getElementById('workerName').value, groups: Array.from(document.querySelectorAll('.task-group')).map(g => ({ id: g.dataset.group, open: g.classList.contains('open') })), tableOpen: document.querySelector('[data-tgroup="lines"]').classList.contains('open'), mapOpen: document.querySelector('[data-map-section="ble"]').classList.contains('open'), currentLine, countNew: document.getElementById('countNew').textContent, countLost: document.getElementById('countLost').textContent, notesNew: document.getElementById('notesNew').value, notesLost: document.getElementById('notesLost').value }; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
-  const dateEl = document.getElementById('sh_workDate');
-  if (dateEl) dateEl.valueAsDate = new Date();
+    function loadState() { try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (saved) { saved.tasks?.forEach(({ id, checked }) => { const cb = document.querySelector(`[data-task-id="${id}"]`); if (cb) { cb.checked = checked; cb.closest('.subtask').classList.toggle('completed', checked); } }); if (saved.date) document.getElementById('workDate').value = saved.date; if (saved.name) document.getElementById('workerName').value = saved.name; saved.groups?.forEach(({ id, open }) => { const group = document.querySelector(`[data-group="${id}"]`); if (group && open) group.classList.add('open'); }); if (saved.tableOpen) document.querySelector('[data-tgroup="lines"]').classList.add('open'); if (saved.mapOpen) document.querySelector('[data-map-section="ble"]').classList.add('open'); if (saved.currentLine) currentLine = saved.currentLine; if (saved.countNew) document.getElementById('countNew').textContent = saved.countNew; if (saved.countLost) document.getElementById('countLost').textContent = saved.countLost; if (saved.notesNew) document.getElementById('notesNew').value = saved.notesNew; if (saved.notesLost) document.getElementById('notesLost').value = saved.notesLost; } } catch (e) {} updateAllProgress(); }
 
-  // Task checkboxes
-  document.querySelectorAll('#page-shifts .subtask').forEach(sub => {
-    const cb = sub.querySelector('input[type=checkbox]');
-    if (!cb) return;
-    sub.addEventListener('click', function(e) {
-      if (e.target === cb) return;
-      cb.checked = !cb.checked;
-      cb.dispatchEvent(new Event('change'));
-    });
-    cb.addEventListener('change', function() {
-      sub.classList.toggle('checked', this.checked);
-      cl2SaveState(); shUpdateAllProgress();
-    });
-  });
+    function updateGroupProgress(groupId) { const group = document.querySelector(`[data-group="${groupId}"]`); const tasks = group.querySelectorAll('input[type="checkbox"]'); const checked = group.querySelectorAll('input[type="checkbox"]:checked').length; const percent = tasks.length ? Math.round((checked / tasks.length) * 100) : 0; group.querySelector('.progress-bar').style.width = percent + '%'; return { checked, total: tasks.length }; }
+    function updateAllProgress() { document.querySelectorAll('.task-group').forEach(group => { if (group.dataset.group === 'tag-events-block') return; updateGroupProgress(group.dataset.group); }); }
+    function changeCount(type, delta) { const el = document.getElementById(type === 'new' ? 'countNew' : 'countLost'); const current = parseInt(el.textContent) || 0; el.textContent = Math.max(0, current + delta); saveState(); }
+    function formatTagNumbers(raw) { if (!raw) return ''; return raw.split(/[,;\s]+/).map(s => s.trim()).filter(Boolean).join(', '); }
 
-  // Group headers toggle
-  document.querySelectorAll('#page-shifts .group-header').forEach(h => {
-    h.addEventListener('click', () => {
-      const g = h.closest('.task-group,.table-group,.map-section');
-      if (g) { g.classList.toggle('open'); cl2SaveState(); }
-    });
-  });
+    function updateReportSection() { const info = labelCounts[currentLine]; const infoEl = document.getElementById("reportLineInfo"); const btn = document.getElementById("reportBtn"); if (!info || info.total === 0) { infoEl.innerHTML = `Откройте блок «Обход по меткам» и выберите маршрут`; btn.disabled = true; return; } const pct = Math.round((info.done / info.total) * 100); const lineLabel = currentLine === "kns" ? "КНС" : currentLine === "2" ? "Линия 3" : currentLine === "night" ? "Ночь" : `Линия ${currentLine}`; const isDone = pct === 100; infoEl.innerHTML = `<span class="pct ${isDone ? 'pct-done' : ''}">${pct}%</span> <strong>${lineLabel}</strong> — выполнено ${info.done} из ${info.total} меток`; btn.disabled = false; }
 
-  // Line tabs
-  document.querySelectorAll('#page-shifts .line-tab').forEach(tab => {
-    tab.addEventListener('click', function() {
-      document.querySelectorAll('#page-shifts .line-tab').forEach(t => t.classList.remove('active'));
-      this.classList.add('active');
-      cl2CurrentLine = this.dataset.line;
-      cl2State.activeTab = cl2CurrentLine;
-      shRenderTable(cl2CurrentLine);
-      cl2SaveState();
-    });
-  });
+    let currentLine = "1"; let lineData = { "1": null, "2": null, "kns": null, "night": null }; let labelCounts = { "1": { total: 0, done: 0 }, "2": { total: 0, done: 0 }, "kns": { total: 0, done: 0 }, "night": { total: 0, done: 0 } };
+    function norm(s) { return String(s ?? "").toLowerCase().replace(/\s/g, ""); }
+    function cellText(v) { return (v === null || v === undefined) ? "" : String(v); }
+    function isIntLike(s) { return /^[0-9]+$/.test(String(s).trim()); }
+    function esc(str) { return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
 
-  // Table search
-  const tSearch = document.getElementById('sh_tableSearch');
-  if (tSearch) tSearch.addEventListener('input', () => shRenderTable(cl2CurrentLine));
+    function updateBadges() { ["1","2","kns","night"].forEach(k => { const id = k === "kns" ? "badgeKns" : k === "night" ? "badgeNight" : "badge" + k; const el = document.getElementById(id); const info = labelCounts[k]; el.textContent = info.total > 0 ? `${info.done}/${info.total}` : "—"; }); let total = 0, done = 0; Object.values(labelCounts).forEach(v => { total += v.total; done += v.done; }); const pct = total > 0 ? Math.round((done / total) * 100) : 0; document.getElementById("linesProgressBar").style.width = pct + '%'; }
 
-  // Map filter buttons
-  document.querySelectorAll('[data-shfilter]').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('[data-shfilter]').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      cl2State.mapFilter = this.dataset.shfilter;
-      shApplyMapFilter(cl2State.mapFilter);
-      cl2SaveState();
-    });
-  });
+    async function loadLine(lineKey, force = false) { if (lineData[lineKey] && !force) { renderLine(lineKey); return; } setTableContent(`<tr><td class="table-loading" colspan="99">Загрузка…</td></tr>`); const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_NAME)}&range=${encodeURIComponent(GROUPS[lineKey])}&headers=1&t=${Date.now()}`; try { const res = await fetch(url); const text = await res.text(); const json = JSON.parse(text.substring(47).slice(0, -2)); const table = json.table; const headers = table.cols.map(c => cellText(c.label || "")); let rows = table.rows.map(r => (r.c || []).map(c => cellText(c ? c.v : ""))).filter(row => row.some(c => c.trim() !== "")); const labelIdx = headers.findIndex(h => norm(h).includes("метк")); const statusIdx = headers.findIndex(h => norm(h) === norm(STATUS_COL_NAME)); if (statusIdx !== -1) { rows.sort((a, b) => { const rank = v => { const s = v.trim(); if (s === STATUS_WAIT || s === '') return 0; if (s === STATUS_DONE) return 2; return 1; }; return rank(a[statusIdx]) - rank(b[statusIdx]); }); } labelCounts[lineKey] = { total: rows.filter(r => labelIdx !== -1 && isIntLike(r[labelIdx])).length, done: rows.filter(r => statusIdx !== -1 && r[statusIdx].trim() === STATUS_DONE).length }; lineData[lineKey] = { headers, rows, labelIdx, statusIdx }; updateBadges(); updateReportSection(); renderLine(lineKey); } catch(e) { setTableContent(`<tr><td class="table-error" colspan="99">Ошибка загрузки данных</td></tr>`); } }
 
-  // Fullscreen map filter
-  document.querySelectorAll('[data-shfsfilter]').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('[data-shfsfilter]').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      document.querySelectorAll('[data-shfilter]').forEach(b => { if (b.dataset.shfilter === this.dataset.shfsfilter) b.classList.add('active'); else b.classList.remove('active'); });
-      cl2State.mapFilter = this.dataset.shfsfilter;
-      shApplyMapFilter(cl2State.mapFilter, true);
-      cl2SaveState();
-    });
-  });
+    function renderLine(lineKey) { const data = lineData[lineKey]; if (!data) return; const { headers, rows, labelIdx, statusIdx } = data; const q = document.getElementById("sh_tableSearch").value.trim().toLowerCase(); const filtered = rows.filter(r => !q || (labelIdx !== -1 && r[labelIdx].toLowerCase().includes(q))); const colMatchers = [ { label: '№ метки', match: h => norm(h).includes('метк') }, { label: 'Наименование зоны исходя из типа', match: h => norm(h).includes('наим') && (norm(h).includes('зон') || norm(h).includes('тип')) }, { label: 'Описание', match: h => norm(h).includes('опис') }, { label: 'Статус обхода', match: h => norm(h) === norm(STATUS_COL_NAME) || norm(h).includes('стат') }, ]; const colIdxs = colMatchers.map(m => { const idx = headers.findIndex(m.match); return { label: m.label, idx }; }).filter(c => c.idx !== -1); const displayCols = colIdxs.length >= 2 ? colIdxs : headers.map((h, i) => ({ label: h || '—', idx: i })); document.getElementById("sh_dataThead").innerHTML = `<tr>${displayCols.map(c => `<th>${esc(c.label)}</th>`).join('')}</tr>`; if (filtered.length === 0) { setTableContent(`<tr><td class="table-empty" colspan="${displayCols.length}">Нет данных</td></tr>`); } else { document.getElementById("sh_dataTbody").innerHTML = filtered.map(row => { const isDone = statusIdx !== -1 && row[statusIdx].trim() === STATUS_DONE; const isWait = statusIdx !== -1 && (row[statusIdx].trim() === STATUS_WAIT || row[statusIdx].trim() === ''); return `<tr class="${isDone ? 'row-done' : (isWait ? 'row-wait' : '')}">${displayCols.map(c => `<td>${esc(row[c.idx] ?? '')}</td>`).join('')}</tr>`; }).join(''); } const info = labelCounts[lineKey]; document.getElementById("sh_chipTotal").textContent = `Всего: ${info.total}`; document.getElementById("sh_chipDone").textContent = `Выполнено: ${info.done}`; }
+    function setTableContent(html) { document.getElementById("sh_dataTbody").innerHTML = html; document.getElementById("sh_dataThead").innerHTML = ""; }
 
-  // Map layer buttons
-  document.querySelectorAll('[data-shlayer]').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('[data-shlayer]').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      document.querySelectorAll('[data-shfslayer]').forEach(b => { if (b.dataset.shfslayer === this.dataset.shlayer) b.classList.add('active'); else b.classList.remove('active'); });
-      cl2State.mapLayer = this.dataset.shlayer;
-      shApplyMapLayer(cl2State.mapLayer);
-      cl2SaveState();
-    });
-  });
-  document.querySelectorAll('[data-shfslayer]').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('[data-shfslayer]').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      document.querySelectorAll('[data-shlayer]').forEach(b => { if (b.dataset.shlayer === this.dataset.shfslayer) b.classList.add('active'); else b.classList.remove('active'); });
-      cl2State.mapLayer = this.dataset.shfslayer;
-      shApplyMapLayer(cl2State.mapLayer);
-      cl2SaveState();
-    });
-  });
+    async function loadStatusBox() { try { const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(STATUS_SHEET_NAME)}&range=${encodeURIComponent(STATUS_RANGE)}&headers=0&t=${Date.now()}`; const res = await fetch(url); const text = await res.text(); const json = JSON.parse(text.substring(47).slice(0, -2)); const lines = json.table.rows.map(r => r.c.map(c => cellText(c?.v)).filter(Boolean).join(" ")).filter(Boolean); const box = document.getElementById("sh_statusBox"); if (lines.length) { document.getElementById("sh_statusText").textContent = lines.join(" · "); box.style.display = "flex"; } else box.style.display = "none"; } catch { document.getElementById("sh_statusBox").style.display = "none"; } }
 
-  // Map search
-  const ms = document.getElementById('sh_mapBleSearch');
-  const msc = document.getElementById('sh_mapSearchClear');
-  if (ms) ms.addEventListener('input', function() {
-    if (msc) msc.style.display = this.value ? 'block' : 'none';
-    shSearchMapMarker(this.value, false);
-  });
-  if (msc) msc.addEventListener('click', function() {
-    const inp = document.getElementById('sh_mapBleSearch');
-    if (inp) { inp.value = ''; this.style.display = 'none'; shSearchMapMarker('', false); }
-  });
-  const mfs = document.getElementById('sh_mapFsSearch');
-  const mfsc = document.getElementById('sh_mapFsSearchClear');
-  if (mfs) mfs.addEventListener('input', function() {
-    if (mfsc) mfsc.style.display = this.value ? 'block' : 'none';
-    shSearchMapMarker(this.value, true);
-  });
-  if (mfsc) mfsc.addEventListener('click', function() {
-    const inp = document.getElementById('sh_mapFsSearch');
-    if (inp) { inp.value = ''; this.style.display = 'none'; shSearchMapMarker('', true); }
-  });
+    async function refreshData() { const btn = document.getElementById("sh_refreshBtn"); btn.disabled = true; btn.textContent = "⌛"; (new Image()).src = `${TRIGGER_WEBAPP_URL}?token=${TRIGGER_TOKEN}&t=${Date.now()}`; lineData[currentLine] = null; setTimeout(async () => { await loadLine(currentLine, true); await loadStatusBox(); btn.disabled = false; btn.textContent = "↺ Обновить"; }, 3000); }
+    function switchLine(lineKey) { currentLine = lineKey; document.querySelectorAll('#page-shifts .line-tab').forEach(t => t.classList.toggle('active', t.dataset.line === lineKey)); document.getElementById("sh_tableSearch").value = ""; loadLine(lineKey); updateReportSection(); saveState(); }
 
-  // Map section open → init map
-  const mapSec = document.querySelector('[data-map-section="sh-ble"]');
-  if (mapSec) {
-    const obs = new MutationObserver(() => {
-      if (mapSec.classList.contains('open') && !cl2Map) shInitMap();
-    });
-    obs.observe(mapSec, { attributes: true });
-  }
+    function exportReport() { const name = document.getElementById('sh_workerName').value || 'Команда'; const date = document.getElementById('sh_workDate').value || new Date().toLocaleDateString('ru-RU'); const info = labelCounts[currentLine]; const lineLabel = currentLine === "kns" ? "КНС" : currentLine === "2" ? "Линия 3" : currentLine === "night" ? "Ночь" : `Линия ${currentLine}`; const pct = info.total > 0 ? Math.round((info.done / info.total) * 100) : 0; let report = `@NURLAN_MURZABAEV @Ruslanburangulovv\n📅 ${date}\nОтчёт по обходу:\n${name}\nМаршрут: ${lineLabel}\nВыполнено: ${info.done}/${info.total} меток (${pct}%)\n`; const countNew = parseInt(document.getElementById('sh_countNew').textContent) || 0; const countLost = parseInt(document.getElementById('sh_countLost').textContent) || 0; const notesNew = formatTagNumbers(document.getElementById('sh_notesNew').value.trim()); const notesLost = formatTagNumbers(document.getElementById('sh_notesLost').value.trim()); if (countNew > 0) { report += `\nНовые метки: ${countNew} шт.`; if (notesNew) report += `\nНомера: ${notesNew}`; report += `\n`; } if (countLost > 0) { report += `\nПотерянные метки: ${countLost} шт.`; if (notesLost) report += `\nНомера: ${notesLost}`; report += `\n`; } openReportModal(report); }
+    function openReportModal(text) { document.getElementById('sh_reportTextarea').value = text; document.getElementById('sh_reportModal').classList.add('open'); const btn = document.getElementById('sh_btnCopy'); btn.textContent = '📋 Скопировать'; btn.classList.remove('copied'); }
+    function closeReportModal() { document.getElementById('sh_reportModal').classList.remove('open'); }
+    function copyReport() { const text = document.getElementById('sh_reportTextarea').value; const btn = document.getElementById('sh_btnCopy'); navigator.clipboard.writeText(text).then(() => { btn.textContent = '✅ Скопировано!'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = '📋 Скопировать'; btn.classList.remove('copied'); }, 2500); }).catch(() => { document.getElementById('sh_reportTextarea').select(); document.execCommand('copy'); btn.textContent = '✅ Скопировано!'; btn.classList.add('copied'); }); }
 
-  // Text areas
-  ['sh_notesNew','sh_notesLost'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', cl2SaveState);
-  });
+    // ===== BLE MAP =====
+    const BLE_API_BASE = 'https://raspy-sound-6f18.kejexu8hem1.workers.dev/proxy';
+    const BLE_TOKEN_KEY = 'accessToken';
+    const BLE_AUTO_USER = 'impl_dept';
+    const BLE_AUTO_PASS = 'impl_dept_vsm_2024';
+    let bleMap = null; let bleMapMarkers = []; let bleMapData = []; let bleMapFilter = 'all'; let bleMapInitialized = false; let bleZoneData = [];
 
-  cl2LoadState();
-  shUpdateAllProgress();
-  shLoadReminders();
-  shLoadTableData();
-  shLoadBleData();
+    function drawZones(targetMap) { if (!targetMap || !bleZoneData.length) return; bleZoneData.forEach(z => { L.polygon(z.pts, { color: z.color, opacity: 0.35, fillOpacity: 0.15, weight: 1.5 }).bindTooltip(z.name, { permanent: false, className: 'zone-label' }).addTo(targetMap); }); }
+    function getBleToken() { return localStorage.getItem(BLE_TOKEN_KEY); }
+    function showMapMsg(text, type = '') { const el = document.getElementById('sh_mapMsg'); el.textContent = text; el.className = 'map-msg' + (type ? ' ' + type : ''); el.style.display = 'block'; }
+    function hideMapMsg() { document.getElementById('sh_mapMsg').style.display = 'none'; }
 
-  window.addEventListener('beforeunload', cl2SaveState);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) cl2SaveState(); });
-}
+    async function bleApiFetch(path, retried = false) { let token = getBleToken(); if (!token) { if (retried) throw new Error('auth_failed'); await bleAutoLogin(); return bleApiFetch(path, true); } const res = await fetch(BLE_API_BASE + path, { headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` } }); if (res.status === 401 || res.status === 500) { if (retried) throw new Error(`HTTP ${res.status}`); localStorage.removeItem(BLE_TOKEN_KEY); await bleAutoLogin(); return bleApiFetch(path, true); } if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); }
 
-function cl2SaveState() {
-  const tasks = {};
-  document.querySelectorAll('#page-shifts input[type=checkbox][data-task-id]').forEach(cb => {
-    tasks[cb.dataset.taskId] = cb.checked;
-  });
-  const state = {
-    tasks,
-    countNew: parseInt(document.getElementById('sh_countNew')?.textContent) || 0,
-    countLost: parseInt(document.getElementById('sh_countLost')?.textContent) || 0,
-    notesNew: document.getElementById('sh_notesNew')?.value || '',
-    notesLost: document.getElementById('sh_notesLost')?.value || '',
-    activeTab: cl2CurrentLine,
-    mapFilter: cl2State.mapFilter,
-    mapLayer: cl2State.mapLayer,
-    date: document.getElementById('sh_workDate')?.value || '',
-    worker: document.getElementById('sh_workerName')?.value || '',
-    openGroups: Array.from(document.querySelectorAll('#page-shifts .task-group.open,.table-group.open,.map-section.open')).map(g => g.dataset.group || g.dataset.tgroup || g.dataset.mapSection)
-  };
-  try { localStorage.setItem(CL2_STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
-}
+    async function bleAutoLogin() { const res = await fetch(BLE_API_BASE + '/api/v1/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: `username=${encodeURIComponent(BLE_AUTO_USER)}&password=${encodeURIComponent(BLE_AUTO_PASS)}` }); if (!res.ok) throw new Error('auto_auth_failed'); const data = await res.json(); const token = data.accessToken || data.access_token || data.token; if (!token) throw new Error('no_token_in_response'); localStorage.setItem(BLE_TOKEN_KEY, token); return token; }
 
-function cl2LoadState() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(CL2_STORAGE_KEY));
-    if (!saved) return;
-    if (saved.tasks) {
-      Object.entries(saved.tasks).forEach(([id, checked]) => {
-        const cb = document.querySelector(`#page-shifts [data-task-id="${id}"]`);
-        if (cb) { cb.checked = checked; cb.closest('.subtask')?.classList.toggle('checked', checked); }
+    function initBleMap(center, zoom) { if (bleMap) return; const placeholder = document.getElementById('sh_mapPlaceholder'); if (placeholder) placeholder.remove(); bleMap = L.map('sh_bleMap', { attributionControl: false, zoomControl: true }).setView(center, zoom); const tileLayers = { satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri' }), street: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png') }; tileLayers.street.addTo(bleMap); let currentTileLayer = 'street'; document.querySelectorAll('#page-shifts .map-layer-btn').forEach(btn => { btn.addEventListener('click', () => { const layer = btn.dataset.layer; if (layer === currentTileLayer) return; bleMap.removeLayer(tileLayers[currentTileLayer]); tileLayers[layer].addTo(bleMap); currentTileLayer = layer; document.querySelectorAll('#page-shifts .map-layer-btn').forEach(b => b.classList.toggle('active', b.dataset.layer === layer)); }); }); setTimeout(() => bleMap.invalidateSize(), 200); }
+
+    function classifyBle(point) { const LOW = 15; const inspectionDays = 1; const now = new Date(); const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())); let isInspected = false; let recordDt = 'Не обходилась'; if (point.record_dt) { const d = new Date(point.record_dt); const inspDate = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())); isInspected = (today - inspDate) / 86400000 <= inspectionDays; recordDt = inspDate.toISOString().slice(0, 10); } const isLowBattery = point.charge_value != null && point.charge_value <= LOW; let status = 'ok'; if (isLowBattery) status = 'battery'; else if (!isInspected) status = 'inspection'; return { id: point.id, ble: String(point.ble_number || ''), name: point.name_extended || '', lat: point.latitude, lng: point.longitude, charge: point.charge_value, locationDesc: point.location_desc || '', bleType: point.ble_type_desc || '', mac: point.mac_address || '', isInspected, isLowBattery, recordDt, status, photoTag: point.ble_image_url || '', photoPlace: point.location_image_url || '' }; }
+
+    function createBleIcon(point) { const cls = `ble-dot ble-dot-${point.status}`; return L.divIcon({ className: '', html: `<div class="${cls}">${point.ble}</div>`, iconSize: [22, 22], iconAnchor: [11, 11] }); }
+
+    let bleClusterGroup = null;
+    function makePopup(pt) { const photos = [pt.photoTag, pt.photoPlace].filter(Boolean); const photoHtml = photos.length ? `<div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">${photos.map((url, i) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" onclick="event.preventDefault();openPhotoViewer('${esc(url)}')" style="display:block;flex:1;min-width:120px;cursor:zoom-in;"><img src="${esc(url)}" style="width:100%;height:113px;object-fit:cover;border-radius:6px;display:block;border:1px solid #E8EDF2;" onerror="this.parentElement.style.display='none'"></a>`).join('')}</div>` : ''; return `<div style="font-size:13px;line-height:1.5;min-width:160px;max-width:260px;"><div style="font-family:'Oswald',sans-serif;font-size:1em;font-weight:700;color:#37474F;margin-bottom:2px;">Метка #${esc(pt.ble)}</div>${pt.bleType ? `<div style="color:#00897b;font-size:12px;font-weight:600;margin-bottom:3px;">${esc(pt.bleType.replace(/^\d+ - /, ''))}</div>` : ''}${pt.locationDesc ? `<div style="color:#546E7A;font-size:12px;margin-bottom:2px;">${esc(pt.locationDesc)}</div>` : ''}${photoHtml}</div>`; }
+
+    function makeClusterGroup() { return L.markerClusterGroup({ maxClusterRadius: function(zoom) { if (zoom < 17) return 120; if (zoom < 18) return 40; return 1; }, disableClusteringAtZoom: 18, spiderfyOnMaxZoom: false, showCoverageOnHover: false, animate: true, animateAddingMarkers: false, iconCreateFunction: function(cluster) { const count = cluster.getChildCount(); const size = count < 10 ? 'small' : count < 50 ? 'medium' : 'large'; return L.divIcon({ html: `<div><span>${count}</span></div>`, className: `marker-cluster marker-cluster-${size}`, iconSize: L.point(40, 40) }); } }); }
+
+    function renderBleMarkers() { if (bleClusterGroup) { bleMap.removeLayer(bleClusterGroup); } bleClusterGroup = makeClusterGroup(); const q = (document.getElementById('sh_mapBleSearch').value || '').trim().toLowerCase(); bleMapData.forEach(pt => { if (!pt.lat || !pt.lng) return; if (bleMapFilter !== 'all' && pt.status !== bleMapFilter) return; if (q && !pt.ble.toLowerCase().includes(q)) return; L.marker([pt.lat, pt.lng], { icon: createBleIcon(pt) }).bindPopup(makePopup(pt), { maxWidth: 280 }).addTo(bleClusterGroup); }); bleMap.addLayer(bleClusterGroup); }
+
+    function updateMapStats() { const all = bleMapData.length; const ok = bleMapData.filter(p => p.status === 'ok').length; const bat = bleMapData.filter(p => p.status === 'battery').length; const insp = bleMapData.filter(p => p.status === 'inspection').length; document.getElementById('sh_fcAll').textContent = all; document.getElementById('sh_fcOk').textContent = ok; document.getElementById('sh_fcBat').textContent = bat; document.getElementById('sh_fcInsp').textContent = insp; }
+
+    async function loadBleMap() { try { let center = [53.038, 39.011]; let zoom = 15; try { const cfg = await bleApiFetch('/api/v1/map/config'); if (cfg.defaultView?.latitude) center = [cfg.defaultView.latitude, cfg.defaultView.longitude]; if (cfg.defaultZoom) zoom = cfg.defaultZoom; } catch {} initBleMap(center, zoom); let companyId; try { const ud = await bleApiFetch('/api/v1/user/me/'); companyId = ud.companyId || ud.company_id; } catch { try { const ud2 = await bleApiFetch('/api/v1/user/data'); companyId = ud2.companyId || ud2.company_id; } catch {} } if (!companyId) { showMapMsg('Не удалось определить companyId', 'error'); return; } const rawBle = await bleApiFetch(`/api/v1/map/ble/${companyId}`); bleMapData = rawBle.map(classifyBle); updateMapStats(); renderBleMarkers(); try { const mapData = await bleApiFetch(`/api/v1/map/${companyId}/map_data`); if (mapData.zones && mapData.points) { const pointsByZone = {}; mapData.points.forEach(p => { if (!pointsByZone[p.zoneId]) pointsByZone[p.zoneId] = []; pointsByZone[p.zoneId].push([p.latitude, p.longitude]); }); bleZoneData = mapData.zones.map(z => ({ name: z.name || '', color: z.color || '#0088cc', pts: pointsByZone[z.id] || [] })).filter(z => z.pts.length > 2); drawZones(bleMap); } } catch {} const validPts = bleMapData.filter(p => p.lat && p.lng); if (validPts.length > 1) { bleMap.fitBounds(L.latLngBounds(validPts.map(p => [p.lat, p.lng])), { padding: [30, 30] }); } document.getElementById('sh_mapLayerToggle').style.display = 'flex'; document.getElementById('sh_mapFiltersBlock').style.display = 'flex'; document.getElementById('sh_mapBottomControls').style.display = 'flex'; document.getElementById('sh_mapRetryBtn').style.display = 'none'; hideMapMsg(); bleMapInitialized = true; } catch (e) { localStorage.removeItem(BLE_TOKEN_KEY); showMapMsg('Ошибка загрузки карты: ' + e.message + '. Нажмите «Обновить» для повторной попытки.', 'error'); document.getElementById('sh_mapRetryBtn').style.display = 'inline-flex'; } }
+
+    async function retryBleMap() { const btn = document.getElementById('sh_mapRetryBtn'); btn.disabled = true; btn.textContent = '⌛ Загрузка...'; localStorage.removeItem(BLE_TOKEN_KEY); bleMapInitialized = false; hideMapMsg(); await loadBleMap(); btn.disabled = false; btn.textContent = '↺ Обновить карту'; }
+
+    // ===== REMINDERS =====
+    const SCHEDULE_SHEET_ID = '1h-GMxdT2z3MC-somIq8sX3iV6KfjaoCffIIfeBQezRk';
+    const SCHEDULE_SHEET_NAME = 'график 2026';
+    const MONTH_NAMES = ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
+    async function fetchDayOff() { try { const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1); const tMonth = MONTH_NAMES[tomorrow.getMonth()]; const tDay = tomorrow.getDate(); const url = `https://docs.google.com/spreadsheets/d/${SCHEDULE_SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SCHEDULE_SHEET_NAME)}&range=E1:PZ50&headers=0&t=${Date.now()}`; const res = await fetch(url); const text = await res.text(); const json = JSON.parse(text.substring(47).slice(0, -2)); const rows = json.table.rows; const monthRow = (rows[0]?.c || []).map(c => c ? String(c.v || '').trim().toLowerCase() : ''); const dayRow = (rows[1]?.c || []).map(c => c ? String(c.v ?? '').trim() : ''); let targetCol = -1, lastMonth = ''; for (let i = 1; i < monthRow.length; i++) { if (monthRow[i]) lastMonth = monthRow[i]; if (lastMonth === tMonth && dayRow[i] === String(tDay)) { targetCol = i; break; } } if (targetCol === -1) return []; const dayOffNames = []; for (let r = 2; r < rows.length; r++) { const cells = rows[r]?.c || []; const name = cells[0] ? String(cells[0].v || '').trim() : ''; const value = cells[targetCol] ? String(cells[targetCol].v || '').trim().toUpperCase() : ''; if (name && value === 'ВХ') dayOffNames.push(name); } return dayOffNames; } catch (e) { return []; } }
+
+    const SVG_ICONS = { package: '<svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4l-9-5.19"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>', truck: '<svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>', sync: '<svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>', building: '<svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/><path d="M9 18h6"/></svg>', people: '<svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>' };
+    const REMINDERS = [ { id: 'ozon-cdek-prep', days: [0, 3], icon: SVG_ICONS.package, title: 'Напоминание', text: 'Сегодня необходимо подготовить заказы для размещения в OZON до 13:00' }, { id: 'ozon-cdek-place', days: [1, 4], icon: SVG_ICONS.truck, title: 'Напоминание', text: 'Сегодня необходимо разместить заказы в OZON до 13:00' }, { id: 'sync-ww-dev', days: [2], icon: SVG_ICONS.sync, title: 'Встреча', text: 'Сегодня еженедельный синк ITS WW dev' }, { id: 'meeting-deploy', days: [3], icon: SVG_ICONS.building, title: 'Встреча', text: 'Сегодня встреча площадок отдела внедрения' }, { id: 'meetup-friday', days: [5], icon: SVG_ICONS.people, title: 'Meet-up', text: 'Сегодня meet-up!' }, { id: 'delete-test-shifts', monthly: { fromDay: 25 }, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>', title: 'Напоминание', text: 'Необходимо удалить тестовые смены' } ];
+
+    async function checkReminders() { const container = document.getElementById('sh_remindersContainer'); const now = new Date(); const dayOfWeek = now.getDay(); const dayOfMonth = now.getDate(); const dismissed = JSON.parse(sessionStorage.getItem('dismissed_reminders_cl2') || '[]'); const active = REMINDERS.filter(r => { if (dismissed.includes(r.id)) return false; if (r.days && r.days.includes(dayOfWeek)) return true; if (r.monthly && dayOfMonth >= r.monthly.fromDay) return true; return false; }); let dayOffHtml = ''; if (!dismissed.includes('day-off-tomorrow')) { const dayOffNames = await fetchDayOff(); if (dayOffNames.length > 0) { const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1); const dateStr = tomorrow.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }); dayOffHtml = `<div class="reminder-banner" data-reminder-id="day-off-tomorrow"><span class="reminder-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><div class="reminder-content"><span class="reminder-title">Выходные завтра (${dateStr})</span><span class="reminder-text">${dayOffNames.join(', ')}</span></div><button class="reminder-close" onclick="dismissReminder('day-off-tomorrow')" title="Скрыть">✕</button></div>`; } } if (active.length === 0 && !dayOffHtml) { container.style.display = 'none'; return; } container.style.display = 'flex'; container.innerHTML = dayOffHtml + active.map(r => `<div class="reminder-banner" data-reminder-id="${r.id}"><span class="reminder-icon">${r.icon}</span><div class="reminder-content"><span class="reminder-title">${r.title}</span><span class="reminder-text">${r.text}</span></div><button class="reminder-close" onclick="dismissReminder('${r.id}')" title="Скрыть">✕</button></div>`).join(''); }
+    function dismissReminder(id) { const dismissed = JSON.parse(sessionStorage.getItem('dismissed_reminders_cl2') || '[]'); dismissed.push(id); sessionStorage.setItem('dismissed_reminders_cl2', JSON.stringify(dismissed)); const banner = document.querySelector(`[data-reminder-id="${id}"]`); if (banner) banner.classList.add('hidden'); const container = document.getElementById('sh_remindersContainer'); if (!container.querySelector('.reminder-banner:not(.hidden)')) container.style.display = 'none'; }
+
+    // ===== FULLSCREEN MAP =====
+    let bleMapFS = null; let bleMapFSMarkers = []; let bleMapFSFilter = 'all'; let bleMapFSInitialized = false; let fsTileLayers = null; let fsTileLayerCurrent = 'street';
+    function syncFsStats() { const el = id => document.getElementById(id); if (el('sh_fcFsAll')) el('sh_fcFsAll').textContent = bleMapData.length; if (el('sh_fcFsOk')) el('sh_fcFsOk').textContent = bleMapData.filter(p => p.status === 'ok').length; if (el('sh_fcFsBat')) el('sh_fcFsBat').textContent = bleMapData.filter(p => p.status === 'battery').length; if (el('sh_fcFsInsp')) el('sh_fcFsInsp').textContent = bleMapData.filter(p => p.status === 'inspection').length; }
+    let bleClusterGroupFS = null;
+    function renderFsMarkers() { if (!bleMapFS) return; if (bleClusterGroupFS) { bleMapFS.removeLayer(bleClusterGroupFS); } bleClusterGroupFS = makeClusterGroup(); const q = (document.getElementById('sh_mapFsSearch').value || '').trim().toLowerCase().replace(/^ble/i,''); bleMapData.forEach(pt => { if (!pt.lat || !pt.lng) return; if (bleMapFSFilter !== 'all' && pt.status !== bleMapFSFilter) return; if (q && !pt.ble.toLowerCase().includes(q)) return; L.marker([pt.lat, pt.lng], { icon: createBleIcon(pt) }).bindPopup(makePopup(pt), { maxWidth: 280 }).addTo(bleClusterGroupFS); }); bleMapFS.addLayer(bleClusterGroupFS); }
+
+    function openFullscreenMap() { const overlay = document.getElementById('sh_mapFullscreenOverlay'); overlay.classList.add('open'); document.body.style.overflow = 'hidden'; if (!bleMapFSInitialized) { bleMapFS = L.map('sh_bleMapFS', { attributionControl: false, zoomControl: true }); fsTileLayers = { satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri' }), street: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png') }; fsTileLayers.street.addTo(bleMapFS); if (bleMap) { bleMapFS.setView(bleMap.getCenter(), bleMap.getZoom()); } else if (bleMapData.length) { const validPts = bleMapData.filter(p => p.lat && p.lng); if (validPts.length > 1) { bleMapFS.fitBounds(L.latLngBounds(validPts.map(p => [p.lat, p.lng])), { padding: [30, 30] }); } else { bleMapFS.setView([53.038, 39.011], 15); } } else { bleMapFS.setView([53.038, 39.011], 15); } document.querySelectorAll('[data-fslayer]').forEach(btn => { btn.addEventListener('click', () => { const layer = btn.dataset.fslayer; if (layer === fsTileLayerCurrent) return; bleMapFS.removeLayer(fsTileLayers[fsTileLayerCurrent]); fsTileLayers[layer].addTo(bleMapFS); fsTileLayerCurrent = layer; document.querySelectorAll('[data-fslayer]').forEach(b => b.classList.toggle('active', b.dataset.fslayer === layer)); }); }); document.querySelectorAll('[data-fsfilter]').forEach(btn => { btn.addEventListener('click', () => { document.querySelectorAll('[data-fsfilter]').forEach(b => b.classList.remove('active')); btn.classList.add('active'); bleMapFSFilter = btn.dataset.fsfilter; renderFsMarkers(); }); }); const fsSearchEl = document.getElementById('sh_mapFsSearch'); const fsSearchClear = document.getElementById('sh_mapFsSearchClear'); fsSearchEl.addEventListener('input', () => { fsSearchClear.style.display = fsSearchEl.value ? 'block' : 'none'; renderFsMarkers(); const q = fsSearchEl.value.trim().toLowerCase().replace(/^ble/i,''); if (!q) return; const found = bleMapData.find(p => p.ble.toLowerCase() === q); if (found && found.lat && found.lng && bleClusterGroupFS) { bleClusterGroupFS.eachLayer(m => { if (m.getLatLng().lat === found.lat && m.getLatLng().lng === found.lng) { bleClusterGroupFS.zoomToShowLayer(m, () => m.openPopup()); } }); } }); fsSearchClear.addEventListener('click', () => { fsSearchEl.value = ''; fsSearchClear.style.display = 'none'; renderFsMarkers(); fsSearchEl.focus(); }); drawZones(bleMapFS); bleMapFSInitialized = true; } syncFsStats(); renderFsMarkers(); setTimeout(() => bleMapFS.invalidateSize(), 150); }
+    function closeFullscreenMap() { document.getElementById('sh_mapFullscreenOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+    function openPhotoViewer(url) { document.getElementById('sh_photoViewerImg').src = url; document.getElementById('sh_photoViewerOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closePhotoViewer() { document.getElementById('sh_photoViewerOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+
+    // ===== INIT =====
+    function shInitPage() {
+      document.getElementById('sh_workDate').valueAsDate = new Date();
+      checkReminders();
+      loadState();
+      document.querySelectorAll('#page-shifts .group-header').forEach(header => {
+        header.addEventListener('click', () => { header.parentElement.classList.toggle('open'); saveState(); });
       });
-    }
-    ['sh_countNew','sh_countLost'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = saved[id.replace('sh_count','count').toLowerCase()] || 0;
-    });
-    const nNew = document.getElementById('sh_notesNew');
-    const nLost = document.getElementById('sh_notesLost');
-    if (nNew && saved.notesNew) nNew.value = saved.notesNew;
-    if (nLost && saved.notesLost) nLost.value = saved.notesLost;
-    if (saved.date) { const d = document.getElementById('sh_workDate'); if (d) d.value = saved.date; }
-    if (saved.worker) { const w = document.getElementById('sh_workerName'); if (w) w.value = saved.worker; }
-    if (saved.activeTab) cl2CurrentLine = saved.activeTab;
-    if (saved.mapFilter) cl2State.mapFilter = saved.mapFilter;
-    if (saved.mapLayer) cl2State.mapLayer = saved.mapLayer;
-    if (saved.openGroups) {
-      saved.openGroups.forEach(id => {
-        const g = document.querySelector(`#page-shifts [data-group="${id}"], #page-shifts [data-tgroup="${id}"], #page-shifts [data-map-section="${id}"]`);
-        if (g) g.classList.add('open');
+      document.querySelectorAll('#page-shifts .subtask').forEach(subtask => {
+        subtask.addEventListener('click', function(e) {
+          const checkbox = this.querySelector('input[type="checkbox"]');
+          if (e.target !== checkbox && checkbox) { checkbox.checked = !checkbox.checked; this.classList.toggle('completed', checkbox.checked); }
+          saveState(); updateAllProgress();
+        });
       });
-    }
-    // Restore active tab
-    document.querySelectorAll('#page-shifts .line-tab').forEach(t => {
-      t.classList.toggle('active', t.dataset.line === cl2CurrentLine);
-    });
-    // Restore map filter button state
-    document.querySelectorAll('[data-shfilter]').forEach(b => b.classList.toggle('active', b.dataset.shfilter === cl2State.mapFilter));
-    document.querySelectorAll('[data-shlayer]').forEach(b => b.classList.toggle('active', b.dataset.shlayer === cl2State.mapLayer));
-  } catch(e) {}
-}
+      const tableGroupHeader = document.querySelector('#page-shifts .table-group-header');
+      const tableGroup = document.querySelector('#page-shifts [data-tgroup="lines"]');
+      if (tableGroupHeader) tableGroupHeader.addEventListener('click', () => {
+        const wasOpen = tableGroup.classList.contains('open');
+        tableGroup.classList.toggle('open');
+        if (!wasOpen) { ["1","2","kns","night"].forEach(k => { if (!lineData[k]) loadLine(k); }); loadStatusBox(); }
+        saveState();
+      });
+      document.querySelectorAll('#page-shifts .line-tab').forEach(tab => {
+        tab.addEventListener('click', () => switchLine(tab.dataset.line));
+      });
+      document.getElementById('sh_notesNew').addEventListener('input', saveState);
+      document.getElementById('sh_notesLost').addEventListener('input', saveState);
+      if (tableGroup && tableGroup.classList.contains('open')) { ["1","2","kns","night"].forEach(k => loadLine(k)); loadStatusBox(); }
+      document.getElementById('sh_workDate').addEventListener('change', saveState);
+      document.getElementById('sh_workerName').addEventListener('input', saveState);
+      document.getElementById('sh_tableSearch').addEventListener('input', () => renderLine(currentLine));
+      document.getElementById('sh_reportModal')?.addEventListener('click', function(e) { if (e.target === this) closeReportModal(); });
 
-function shUpdateAllProgress() {
-  document.querySelectorAll('#page-shifts [data-group]').forEach(grpEl => {
-    const grpId = grpEl.dataset.group;
-    const bar = document.querySelector(`#page-shifts .progress-bar[data-group="${grpId}"]`);
-    if (!bar) return;
-    const allCbs = grpEl.querySelectorAll('input[type=checkbox]');
-    if (!allCbs.length) return;
-    const done = Array.from(allCbs).filter(c => c.checked).length;
-    const pct = Math.round((done / allCbs.length) * 100);
-    bar.style.width = pct + '%';
-    bar.style.background = pct === 100 ? 'var(--success)' : 'var(--accent)';
-  });
-  shUpdateReportBtn();
-}
+      document.querySelectorAll('#page-shifts .map-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#page-shifts .map-filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active'); bleMapFilter = btn.dataset.filter; renderBleMarkers();
+        });
+      });
+      const mapBleSearchEl = document.getElementById('sh_mapBleSearch');
+      const mapSearchClearEl = document.getElementById('sh_mapSearchClear');
+      if (mapBleSearchEl) mapBleSearchEl.addEventListener('input', () => { const raw = mapBleSearchEl.value; mapSearchClearEl.style.display = raw ? 'block' : 'none'; renderBleMarkers(); const q = raw.trim().toLowerCase().replace(/^ble/i, ''); if (!q) return; const found = bleMapData.find(p => p.ble.toLowerCase() === q); if (found && found.lat && found.lng && bleClusterGroup) { bleClusterGroup.eachLayer(m => { if (m.getLatLng().lat === found.lat && m.getLatLng().lng === found.lng) { bleClusterGroup.zoomToShowLayer(m, () => m.openPopup()); } }); } });
+      if (mapSearchClearEl) mapSearchClearEl.addEventListener('click', () => { mapBleSearchEl.value = ''; mapSearchClearEl.style.display = 'none'; renderBleMarkers(); mapBleSearchEl.focus(); });
 
-function shChangeCount(type, delta) {
-  const id = type === 'new' ? 'sh_countNew' : 'sh_countLost';
-  const el = document.getElementById(id);
-  if (!el) return;
-  const v = Math.max(0, (parseInt(el.textContent) || 0) + delta);
-  el.textContent = v;
-  cl2SaveState();
-}
-
-function shUpdateReportBtn() {
-  const btn = document.getElementById('sh_reportBtn');
-  if (btn) btn.disabled = false;
-}
-
-async function shLoadTableData() {
-  const apiBase = `https://sheets.googleapis.com/v4/spreadsheets/${CL2_SHEET_ID}/values`;
-  const key = "AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY";
-  const ranges = Object.entries(CL2_GROUPS);
-  try {
-    for (const [line, range] of ranges) {
-      const url = `${apiBase}/${encodeURIComponent(CL2_SHEET_NAME_PRINT + '!' + range)}?key=${key}`;
-      const resp = await fetch(url);
-      if (!resp.ok) continue;
-      const data = await resp.json();
-      cl2TableData[line] = data.values || [];
-      // Update badge
-      const badgeIds = {1:'sh_badge1',2:'sh_badge2',kns:'sh_badgeKns',night:'sh_badgeNight'};
-      const badge = document.getElementById(badgeIds[line]);
-      const rows = (data.values || []).filter(r => r && r[0]);
-      if (badge) badge.textContent = rows.length;
-      if (line === '1') {
-        const tabBadge = document.querySelector('[data-line="1"] .tab-badge');
-        if (tabBadge) tabBadge.textContent = rows.length;
+      const mapSection = document.querySelector('#page-shifts [data-map-section="ble"]');
+      if (mapSection) {
+        const mapSectionHeader = mapSection.querySelector('.map-section-header');
+        if (mapSectionHeader) mapSectionHeader.addEventListener('click', () => {
+          const wasOpen = mapSection.classList.contains('open');
+          mapSection.classList.toggle('open');
+          if (!wasOpen && !bleMapInitialized) { loadBleMap(); }
+          if (!wasOpen && bleMap) { setTimeout(() => bleMap.invalidateSize(), 300); }
+          saveState();
+        });
+        if (mapSection.classList.contains('open') && !bleMapInitialized) loadBleMap();
       }
-    }
-    shRenderTable(cl2CurrentLine);
-    // Status box
-    shLoadStatusBox();
-  } catch(e) {
-    const tbody = document.getElementById('sh_dataTbody');
-    if (tbody) tbody.innerHTML = `<tr><td class="table-error" colspan="99">Ошибка загрузки данных. Проверьте соединение.</td></tr>`;
-  }
-}
-
-async function shLoadStatusBox() {
-  try {
-    const key = "AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY";
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${CL2_SHEET_ID}/values/${encodeURIComponent(CL2_STATUS_SHEET + '!' + 'Q1:R2')}?key=${key}`;
-    const resp = await fetch(url);
-    if (!resp.ok) return;
-    const data = await resp.json();
-    const val = data.values?.[0]?.[1] || '';
-    const box = document.getElementById('sh_statusBox');
-    const txt = document.getElementById('sh_statusText');
-    if (box && txt && val) {
-      box.style.display = 'flex';
-      txt.textContent = val;
-      box.style.background = val === CL2_STATUS_DONE ? '#E8F5E9' : '#FFF3E0';
-      box.style.borderColor = val === CL2_STATUS_DONE ? '#A7F3D0' : '#FDE68A';
-      box.style.color = val === CL2_STATUS_DONE ? '#065F46' : '#78350F';
-      const dot = box.querySelector('.status-dot');
-      if (dot) dot.style.background = val === CL2_STATUS_DONE ? 'var(--success)' : 'var(--warning)';
-    }
-  } catch(e) {}
-}
-
-function shRenderTable(line) {
-  const tbody = document.getElementById('sh_dataTbody');
-  const thead = document.getElementById('sh_dataThead');
-  if (!tbody || !thead) return;
-  const rows = cl2TableData[line] || [];
-  if (!rows.length) {
-    tbody.innerHTML = '<tr><td class="table-empty" colspan="99">Нет данных</td></tr>';
-    thead.innerHTML = '';
-    return;
-  }
-  const headers = rows[0] || [];
-  const dataRows = rows.slice(1);
-  const search = (document.getElementById('sh_tableSearch')?.value || '').trim();
-  const statusIdx = headers.findIndex(h => h === CL2_STATUS_COL);
-
-  thead.innerHTML = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
-  
-  let filtered = dataRows;
-  if (search) {
-    filtered = filtered.filter(r => r.some(c => c && String(c).includes(search)));
-  }
-
-  let total = filtered.length, done = 0;
-  tbody.innerHTML = filtered.map(r => {
-    const status = statusIdx >= 0 ? (r[statusIdx] || '') : '';
-    const isDone = status === CL2_STATUS_DONE;
-    const isWait = status === CL2_STATUS_WAIT;
-    if (isDone) done++;
-    const cls = isDone ? 'row-done' : isWait ? 'row-wait' : '';
-    return `<tr class="${cls}">${headers.map((_,i) => `<td>${r[i] || ''}</td>`).join('')}</tr>`;
-  }).join('') || '<tr><td class="table-empty" colspan="99">Нет результатов</td></tr>';
-
-  const chipTotal = document.getElementById('sh_chipTotal');
-  const chipDone = document.getElementById('sh_chipDone');
-  if (chipTotal) chipTotal.textContent = `Всего: ${total}`;
-  if (chipDone) chipDone.textContent = `Выполнено: ${done}`;
-
-  // Update progress bar for lines block
-  const bar = document.getElementById('sh_linesProgressBar');
-  if (bar && total > 0) {
-    const pct = Math.round((done / total) * 100);
-    bar.style.width = pct + '%';
-    bar.style.background = pct === 100 ? 'var(--success)' : 'var(--accent)';
-  }
-
-  // Report info
-  const info = document.getElementById('sh_reportLineInfo');
-  if (info) {
-    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-    const pctCls = pct === 100 ? 'pct pct-done' : 'pct';
-    info.innerHTML = `<span class="${pctCls}">${pct}%</span> Линия ${line === 'kns' ? 'КНС' : line === 'night' ? 'Ночь' : line}: ${done} из ${total} обходов выполнено`;
-  }
-  shUpdateReportBtn();
-}
-
-function shRefreshData() {
-  const btn = document.getElementById('sh_refreshBtn');
-  if (btn) { btn.disabled = true; btn.textContent = '…'; }
-  shLoadTableData().finally(() => {
-    if (btn) { btn.disabled = false; btn.textContent = '↺ Обновить'; }
-  });
-}
-
-// ── BLE Map ──────────────────────────────────────────────────────────────────
-
-
-async function shLoadBleData() {
-  const msgEl = document.getElementById('sh_mapMsg');
-  const showMsg = (text, type) => {
-    if (!msgEl) return;
-    msgEl.className = 'map-msg ' + (type || '');
-    msgEl.innerHTML = text;
-    msgEl.style.display = 'flex';
-  };
-
-  const BASE = CL2_BLE_PROXY; // https://raspy-sound-6f18.kejexu8hem1.workers.dev/proxy
-  // Worker strips /proxy → forwards to https://front-api.vsm.workwatch.pro
-  // Backend is FastAPI → OAuth2 password flow
-
-  showMsg('Авторизация…', '');
-
-  // ── Step 1: Login (FastAPI OAuth2 password flow) ─────────────────────────
-  // FastAPI typically uses POST /token with x-www-form-urlencoded
-  const loginAttempts = [
-    // OAuth2 form-urlencoded (most common FastAPI pattern)
-    { path: '/token',             ct: 'form', body: `grant_type=password&username=${encodeURIComponent(CL2_BLE_USER)}&password=${encodeURIComponent(CL2_BLE_PASS)}` },
-    { path: '/auth/token',        ct: 'form', body: `grant_type=password&username=${encodeURIComponent(CL2_BLE_USER)}&password=${encodeURIComponent(CL2_BLE_PASS)}` },
-    { path: '/api/token',         ct: 'form', body: `grant_type=password&username=${encodeURIComponent(CL2_BLE_USER)}&password=${encodeURIComponent(CL2_BLE_PASS)}` },
-    { path: '/api/auth/token',    ct: 'form', body: `grant_type=password&username=${encodeURIComponent(CL2_BLE_USER)}&password=${encodeURIComponent(CL2_BLE_PASS)}` },
-    { path: '/api/v1/token',      ct: 'form', body: `grant_type=password&username=${encodeURIComponent(CL2_BLE_USER)}&password=${encodeURIComponent(CL2_BLE_PASS)}` },
-    // JSON variants
-    { path: '/api/v1/auth/login', ct: 'json', body: JSON.stringify({ username: CL2_BLE_USER, password: CL2_BLE_PASS }) },
-    { path: '/api/auth/login',    ct: 'json', body: JSON.stringify({ username: CL2_BLE_USER, password: CL2_BLE_PASS }) },
-    { path: '/auth/login',        ct: 'json', body: JSON.stringify({ username: CL2_BLE_USER, password: CL2_BLE_PASS }) },
-  ];
-
-  let token = null;
-  let lastErr = '';
-
-  for (const ep of loginAttempts) {
-    try {
-      const ct = ep.ct === 'form' ? 'application/x-www-form-urlencoded' : 'application/json';
-      const r = await fetch(BASE + ep.path, {
-        method: 'POST', headers: { 'Content-Type': ct }, body: ep.body
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          closeReportModal();
+          closePhotoViewer();
+          if (document.getElementById('sh_mapFullscreenOverlay')?.classList.contains('open')) closeFullscreenMap();
+        }
       });
-      if (!r.ok) { lastErr = `${ep.path}: HTTP ${r.status}`; continue; }
-      const d = await r.json();
-      token = d.access_token || d.token || d.accessToken
-              || d.data?.access_token || d.data?.token
-              || (d.tokens && (d.tokens.access_token || d.tokens.access)) || null;
-      if (token) { console.log('[BLE] Login OK via', ep.path); break; }
-      lastErr = `${ep.path}: no token (keys: ${Object.keys(d).join(',')})`;
-    } catch(e) { lastErr = `${ep.path}: ${e.message}`; }
-  }
-
-  if (!token) {
-    showMsg(`<strong>Ошибка авторизации.</strong><br><small>${lastErr}</small>`, 'error');
-    return;
-  }
-
-  // ── Step 2: Get BLE tags ─────────────────────────────────────────────────
-  showMsg('Загрузка меток…', '');
-
-  const tagAttempts = [
-    '/beacons', '/api/beacons', '/api/v1/beacons',
-    '/tags', '/api/tags', '/api/v1/tags',
-    '/devices', '/api/devices', '/api/v1/devices',
-    '/ble/tags', '/api/ble/tags', '/api/v1/ble',
-    '/organization/ble', '/api/organization/ble',
-  ];
-
-  let bleArr = null;
-  let tagErr = '';
-
-  for (const ep of tagAttempts) {
-    try {
-      const r = await fetch(BASE + ep, { headers: { 'Authorization': 'Bearer ' + token } });
-      if (!r.ok) { tagErr = `${ep}: HTTP ${r.status}`; continue; }
-      const d = await r.json();
-      const arr = Array.isArray(d) ? d
-                : (d.data || d.items || d.results || d.beacons || d.tags || d.devices || []);
-      if (arr.length > 0) {
-        bleArr = arr;
-        console.log('[BLE] Tags OK via', ep, '(' + arr.length + ' items)');
-        break;
-      }
-      tagErr = `${ep}: пусто (keys: ${Object.keys(d).join(',')})`;
-    } catch(e) { tagErr = `${ep}: ${e.message}`; }
-  }
-
-  if (!bleArr || !bleArr.length) {
-    showMsg(`<strong>Авторизация OK, метки не найдены.</strong><br><small>${tagErr}</small>`, 'error');
-    return;
-  }
-
-  cl2BleData = bleArr;
-  if (cl2Map && cl2MarkerLayer) shPopulateMap(cl2Map, cl2MarkerLayer, false);
-  if (cl2MapFS && cl2MarkerLayerFS) shPopulateMap(cl2MapFS, cl2MarkerLayerFS, true);
-  shUpdateFilterCounts();
-  const fb = document.getElementById('sh_mapFiltersBlock');
-  if (fb) fb.style.display = 'flex';
-  const bc = document.getElementById('sh_mapBottomControls');
-  if (bc) bc.style.display = 'flex';
-  showMsg(`✓ Меток загружено: ${cl2BleData.length}`, 'ok');
-  setTimeout(() => { if (msgEl) msgEl.style.display = 'none'; }, 3000);
-}
-
-
-async function shDiagnoseAPI() {
-  const log = (msg) => { console.log('[BLE Diag]', msg); };
-  const PROXY = CL2_BLE_PROXY;
-  log('=== BLE API ДИАГНОСТИКА ===');
-  log('URL: ' + PROXY);
-
-  const formats = [
-    { name: 'POST JSON {action:login}', method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({action:'login',username:CL2_BLE_USER,password:CL2_BLE_PASS}) },
-    { name: 'POST JSON {login:true}', method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({login:true,user:CL2_BLE_USER,password:CL2_BLE_PASS}) },
-    { name: 'GET /proxy', method: 'GET' },
-    { name: 'POST form-data', method: 'POST', headers: {'Content-Type':'application/x-www-form-urlencoded'}, body: `username=${CL2_BLE_USER}&password=${CL2_BLE_PASS}` },
-  ];
-
-  for (const fmt of formats) {
-    try {
-      log('Тест: ' + fmt.name);
-      const resp = await fetch(PROXY, { method: fmt.method, headers: fmt.headers, body: fmt.body });
-      const text = await resp.text();
-      log('HTTP ' + resp.status + ' → ' + text.substring(0, 300));
-    } catch(e) {
-      log('ERROR: ' + e.message);
     }
-  }
-  log('=== КОНЕЦ ДИАГНОСТИКИ - скопируй консоль ===');
-  alert('Диагностика завершена. Открой DevTools (F12) → Console и скопируй результаты [BLE Diag]');
-}
+
+    window.addEventListener('beforeunload', saveState);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) saveState(); });
 
   </script>
 </body>
