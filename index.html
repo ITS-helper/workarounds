@@ -1110,7 +1110,7 @@ header {
       </div></div>
     </div>
 
-    <div class="table-group" data-tgroup="lines">
+    <div class="table-group open" data-tgroup="lines">
       <div class="table-group-header" onclick="this.parentElement.classList.toggle('open');if(this.parentElement.classList.contains('open')){['1','2','kns','night'].forEach(k=>{if(!lineData[k])loadLine(k)});loadStatusBox();}try{shSaveState();}catch(e){}"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> Обход по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" id="sh_linesProgressBar"></div></div></div>
       <div class="table-body"><div class="table-inner">
         <div class="line-tabs">
@@ -1120,7 +1120,7 @@ header {
           <button class="line-tab" data-line="night">Ночь <span class="tab-badge" id="sh_badgeNight">—</span></button>
         </div>
         <div class="status-box" id="sh_statusBox" style="display:none"><div class="status-dot"></div><span id="sh_statusText"></span></div>
-        <div class="table-search"><input type="number" inputmode="numeric" id="sh_tableSearch" placeholder="Поиск по № метки..."><button class="refresh-btn" id="sh_refreshBtn" onclick="shRefreshData()">↺ Обновить</button></div>
+        <div class="table-search"><input type="number" inputmode="numeric" id="sh_tableSearch" placeholder="Поиск по № метки..."><button class="refresh-btn" id="sh_refreshBtn" onclick="refreshData()">↺ Обновить</button></div>
         <div class="data-table-wrap"><table class="data-table"><thead id="sh_dataThead"></thead><tbody id="sh_dataTbody"><tr><td class="table-loading" colspan="99">Загрузка данных…</td></tr></tbody></table></div>
         <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center"><span class="count-chip" id="sh_chipTotal">Всего: —</span><span class="count-chip done" id="sh_chipDone">Выполнено: —</span></div>
       </div></div>
@@ -1157,8 +1157,8 @@ header {
       <div class="group-header" onclick="this.parentElement.classList.toggle('open');try{shSaveState();}catch(e){}"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span> Изменения по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-tag-events" style="width:0%"></div></div></div>
       <div class="subtasks"><div class="subtasks-inner">
         <div class="tag-events">
-          <div class="tag-event-block tag-event-new"><div class="tag-event-header"><span class="tag-event-icon">＋</span><span class="tag-event-title">Новые метки</span><div class="tag-event-counter"><button class="counter-btn" onclick="shChangeCount('new',-1)">−</button><span id="sh_countNew">0</span><button class="counter-btn" onclick="shChangeCount('new',1)">＋</button></div></div><textarea id="sh_notesNew" class="tag-event-notes" placeholder="Номера новых меток: 101, 205..."></textarea></div>
-          <div class="tag-event-block tag-event-lost"><div class="tag-event-header"><span class="tag-event-icon">−</span><span class="tag-event-title">Потерянные метки</span><div class="tag-event-counter"><button class="counter-btn" onclick="shChangeCount('lost',-1)">−</button><span id="sh_countLost">0</span><button class="counter-btn" onclick="shChangeCount('lost',1)">＋</button></div></div><textarea id="sh_notesLost" class="tag-event-notes" placeholder="Номера потерянных меток: 42, 77..."></textarea></div>
+          <div class="tag-event-block tag-event-new"><div class="tag-event-header"><span class="tag-event-icon">＋</span><span class="tag-event-title">Новые метки</span><div class="tag-event-counter"><button class="counter-btn" onclick="changeCount('new',-1)">−</button><span id="sh_countNew">0</span><button class="counter-btn" onclick="changeCount('new',1)">＋</button></div></div><textarea id="sh_notesNew" class="tag-event-notes" placeholder="Номера новых меток: 101, 205..."></textarea></div>
+          <div class="tag-event-block tag-event-lost"><div class="tag-event-header"><span class="tag-event-icon">−</span><span class="tag-event-title">Потерянные метки</span><div class="tag-event-counter"><button class="counter-btn" onclick="changeCount('lost',-1)">−</button><span id="sh_countLost">0</span><button class="counter-btn" onclick="changeCount('lost',1)">＋</button></div></div><textarea id="sh_notesLost" class="tag-event-notes" placeholder="Номера потерянных меток: 42, 77..."></textarea></div>
         </div>
       </div></div>
     </div>
@@ -1173,17 +1173,17 @@ header {
 
     <div class="report-section">
       <div class="report-line-info" id="sh_reportLineInfo">Выберите маршрут в блоке «Обход по меткам»</div>
-      <button class="btn-report" id="sh_reportBtn" onclick="shExportReport()" disabled>↗ Сформировать отчёт</button>
+      <button class="btn-report" id="sh_reportBtn" onclick="exportReport()" disabled>↗ Сформировать отчёт</button>
     </div>
 
     <!-- SHIFTS REPORT MODAL -->
     <div class="modal-overlay" id="sh_reportModal">
-      <div class="modal"><div class="modal-header"><h3>✉️ Отчёт смены</h3><button class="modal-close" onclick="document.getElementById('sh_reportModal').classList.remove('open')">✕</button></div><div class="modal-body"><textarea id="sh_reportTextarea" spellcheck="false"></textarea></div><div class="modal-footer"><button class="btn-cancel" onclick="document.getElementById('sh_reportModal').classList.remove('open')">Закрыть</button><button class="btn-copy" id="sh_btnCopy" onclick="shCopyReport()">📋 Скопировать</button></div></div>
+      <div class="modal"><div class="modal-header"><h3>✉️ Отчёт смены</h3><button class="modal-close" onclick="document.getElementById('sh_reportModal').classList.remove('open')">✕</button></div><div class="modal-body"><textarea id="sh_reportTextarea" spellcheck="false"></textarea></div><div class="modal-footer"><button class="btn-cancel" onclick="document.getElementById('sh_reportModal').classList.remove('open')">Закрыть</button><button class="btn-copy" id="sh_btnCopy" onclick="copyReport()">📋 Скопировать</button></div></div>
     </div>
 
     <!-- SHIFTS PHOTO VIEWER -->
-    <div class="photo-viewer-overlay" id="sh_photoViewerOverlay" onclick="shClosePhotoViewer()">
-      <button class="photo-viewer-close" onclick="shClosePhotoViewer()">✕</button>
+    <div class="photo-viewer-overlay" id="sh_photoViewerOverlay" onclick="closePhotoViewer()">
+      <button class="photo-viewer-close" onclick="closePhotoViewer()">✕</button>
       <img id="sh_photoViewerImg" src="" alt="">
     </div>
 
@@ -1191,7 +1191,7 @@ header {
     <div class="map-fullscreen-overlay" id="sh_mapFullscreenOverlay">
       <div class="map-fullscreen-header">
         <span class="map-fullscreen-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Карта BLE-меток</span>
-        <button class="map-fullscreen-close" onclick="shCloseFullscreenMap()">✕ Закрыть</button>
+        <button class="map-fullscreen-close" onclick="closeFullscreenMap()">✕ Закрыть</button>
       </div>
       <div class="map-fullscreen-controls">
         <button class="map-filter-btn filter-all active" data-shfsfilter="all">Все <span class="filter-count" id="sh_fcFsAll">0</span></button>
@@ -2734,7 +2734,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
 
     function updateBadges() { ["1","2","kns","night"].forEach(k => { const id = k === "kns" ? "sh_badgeKns" : k === "night" ? "sh_badgeNight" : "badge" + k; const el = document.getElementById(id); const info = labelCounts[k]; el.textContent = info.total > 0 ? `${info.done}/${info.total}` : "—"; }); let total = 0, done = 0; Object.values(labelCounts).forEach(v => { total += v.total; done += v.done; }); const pct = total > 0 ? Math.round((done / total) * 100) : 0; document.getElementById("sh_linesProgressBar").style.width = pct + '%'; }
 
-    async function loadLine(lineKey, force = false) { if (lineData[lineKey] && !force) { renderLine(lineKey); return; } setTableContent(`<tr><td class="table-loading" colspan="99">Загрузка…</td></tr>`); const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_NAME)}&range=${encodeURIComponent(GROUPS[lineKey])}&headers=1&t=${Date.now()}`; try { const res = await fetch(url); const text = await res.text(); const json = JSON.parse(text.substring(47).slice(0, -2)); const table = json.table; const headers = table.cols.map(c => cellText(c.label || "")); let rows = table.rows.map(r => (r.c || []).map(c => cellText(c ? c.v : ""))).filter(row => row.some(c => c.trim() !== "")); const labelIdx = headers.findIndex(h => norm(h).includes("метк")); const statusIdx = headers.findIndex(h => norm(h) === norm(STATUS_COL_NAME)); if (statusIdx !== -1) { rows.sort((a, b) => { const rank = v => { const s = v.trim(); if (s === STATUS_WAIT || s === '') return 0; if (s === STATUS_DONE) return 2; return 1; }; return rank(a[statusIdx]) - rank(b[statusIdx]); }); } labelCounts[lineKey] = { total: rows.filter(r => labelIdx !== -1 && isIntLike(r[labelIdx])).length, done: rows.filter(r => statusIdx !== -1 && r[statusIdx].trim() === STATUS_DONE).length }; lineData[lineKey] = { headers, rows, labelIdx, statusIdx }; updateBadges(); updateReportSection(); renderLine(lineKey); } catch(e) { setTableContent(`<tr><td class="table-error" colspan="99">Ошибка загрузки данных</td></tr>`); } }
+    async function loadLine(lineKey, force = false) { if (lineData[lineKey] && !force) { renderLine(lineKey); return; } setTableContent(`<tr><td class="table-loading" colspan="99">Загрузка…</td></tr>`); const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_NAME)}&range=${encodeURIComponent(GROUPS[lineKey])}&headers=1&t=${Date.now()}`; try { const res = await fetch(url); const text = await res.text(); const json = JSON.parse(text.substring(47).slice(0, -2)); const table = json.table; const headers = table.cols.map(c => cellText(c.label || "")); let rows = table.rows.map(r => (r.c || []).map(c => cellText(c ? c.v : ""))).filter(row => row.some(c => c.trim() !== "")); const labelIdx = headers.findIndex(h => norm(h).includes("метк")); const statusIdx = headers.findIndex(h => norm(h) === norm(STATUS_COL_NAME)); if (statusIdx !== -1) { rows.sort((a, b) => { const rank = v => { const s = v.trim(); if (s === STATUS_WAIT || s === '') return 0; if (s === STATUS_DONE) return 2; return 1; }; return rank(a[statusIdx]) - rank(b[statusIdx]); }); } labelCounts[lineKey] = { total: rows.filter(r => labelIdx !== -1 && isIntLike(r[labelIdx])).length, done: rows.filter(r => statusIdx !== -1 && r[statusIdx].trim() === STATUS_DONE).length }; lineData[lineKey] = { headers, rows, labelIdx, statusIdx }; updateBadges(); updateReportSection(); renderLine(lineKey); } catch(e) { console.error("loadLine error:", e); setTableContent(`<tr><td class="table-error" colspan="99">Ошибка загрузки: ${e.message}</td></tr>`); } }
 
     function renderLine(lineKey) { const data = lineData[lineKey]; if (!data) return; const { headers, rows, labelIdx, statusIdx } = data; const q = document.getElementById("sh_tableSearch").value.trim().toLowerCase(); const filtered = rows.filter(r => !q || (labelIdx !== -1 && r[labelIdx].toLowerCase().includes(q))); const colMatchers = [ { label: '№ метки', match: h => norm(h).includes('метк') }, { label: 'Наименование зоны исходя из типа', match: h => norm(h).includes('наим') && (norm(h).includes('зон') || norm(h).includes('тип')) }, { label: 'Описание', match: h => norm(h).includes('опис') }, { label: 'Статус обхода', match: h => norm(h) === norm(STATUS_COL_NAME) || norm(h).includes('стат') }, ]; const colIdxs = colMatchers.map(m => { const idx = headers.findIndex(m.match); return { label: m.label, idx }; }).filter(c => c.idx !== -1); const displayCols = colIdxs.length >= 2 ? colIdxs : headers.map((h, i) => ({ label: h || '—', idx: i })); document.getElementById("sh_dataThead").innerHTML = `<tr>${displayCols.map(c => `<th>${esc(c.label)}</th>`).join('')}</tr>`; if (filtered.length === 0) { setTableContent(`<tr><td class="table-empty" colspan="${displayCols.length}">Нет данных</td></tr>`); } else { document.getElementById("sh_dataTbody").innerHTML = filtered.map(row => { const isDone = statusIdx !== -1 && row[statusIdx].trim() === STATUS_DONE; const isWait = statusIdx !== -1 && (row[statusIdx].trim() === STATUS_WAIT || row[statusIdx].trim() === ''); return `<tr class="${isDone ? 'row-done' : (isWait ? 'row-wait' : '')}">${displayCols.map(c => `<td>${esc(row[c.idx] ?? '')}</td>`).join('')}</tr>`; }).join(''); } const info = labelCounts[lineKey]; document.getElementById("sh_chipTotal").textContent = `Всего: ${info.total}`; document.getElementById("sh_chipDone").textContent = `Выполнено: ${info.done}`; }
     function setTableContent(html) { document.getElementById("sh_dataTbody").innerHTML = html; document.getElementById("sh_dataThead").innerHTML = ""; }
@@ -2826,8 +2826,9 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
       });
       document.getElementById('sh_notesNew').addEventListener('input', shSaveState);
       document.getElementById('sh_notesLost').addEventListener('input', shSaveState);
-      const tableGroup2 = document.querySelector('#page-shifts [data-tgroup="lines"]');
-      if (tableGroup2 && tableGroup2.classList.contains('open')) { ["1","2","kns","night"].forEach(k => { if (!lineData[k]) loadLine(k); }); loadStatusBox(); }
+      // Table is open by default - always load data on init
+      ["1","2","kns","night"].forEach(k => { if (!lineData[k]) loadLine(k); });
+      loadStatusBox();
       // Map is always open - load BLE map on init
       if (!bleMapInitialized) { loadBleMap(); }
       document.getElementById('sh_workDate').addEventListener('change', shSaveState);
