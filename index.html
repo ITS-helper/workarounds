@@ -113,8 +113,7 @@
   </style>
   <style>
   </style>
-  <style>
-    /* === SPRAVKA CSS === */
+  <style>/* SPRAVKA */
 header { background: #fff; padding: 0; box-shadow: 0 1px 3px rgba(21,101,192,0.06); position: sticky; top: 0; z-index: 100; border-bottom: 2px solid #2196F3; }
     .header-inner { max-width: 900px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 16px; }
     header img { height: 36px; width: auto; max-width: 160px; object-fit: contain; }
@@ -290,10 +289,8 @@ header { background: #fff; padding: 0; box-shadow: 0 1px 3px rgba(21,101,192,0.0
     .glossary-def { padding: 10px 13px; font-size: 13.5px; color: #37474F; line-height: 1.5; flex: 1; background: #fff; }
     .glossary-example { background: #F9FAFB; border-top: 1px solid var(--border); padding: 8px 13px 9px; font-size: 12.5px; color: #5D7A8A; line-height: 1.45; }
     .glossary-example em { font-style: normal; color: #37474F; font-weight: 600; }
-    @media (max-width: 560px) { .glossary-term { min-width: 120px; max-width: 120px; font-size: 0.74em; } }
-  </style>
-  <style>
-    /* === CHECKLIST CSS === */
+    @media (max-width: 560px) { .glossary-term { min-width: 120px; max-width: 120px; font-size: 0.74em; } }</style>
+  <style>/* CHECKLIST */
 header {
       background: #fff;
       padding: 0;
@@ -690,10 +687,8 @@ header {
       .modal { max-height: 95vh; border-radius: 12px; }
       .modal-footer { flex-direction: column; }
       .btn-copy, .btn-cancel { width: 100%; justify-content: center; }
-    }
-  </style>
-  <style>
-    /* === SHIFTS CSS === */
+    }</style>
+  <style>/* SHIFTS */
 
     /* Cluster styling */
     .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background-clip: padding-box; border-radius: 50%; }
@@ -808,12 +803,10 @@ header {
     .leaflet-popup-content-wrapper { border-radius: 10px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important; }
     .leaflet-popup-content { margin: 12px 14px !important; }
     .leaflet-popup-close-button { top: 6px !important; right: 8px !important; font-size: 18px !important; color: #78909C !important; }
-
-  </style>
+</style>
 </head>
 <body>
 
-  <!-- AUTH -->
   <div id="authOverlay">
     <div class="auth-box">
       <span class="auth-logo">ITSSupport</span>
@@ -861,7 +854,6 @@ header {
   </div>
 
   <div class="main-content">
-
     <div class="page active" id="page-spravka">
       <div class="page-header">
         <img src="./images/ITS_logo_horizont.png" alt="ITSSupport" onerror="this.style.display='none'">
@@ -870,8 +862,7 @@ header {
           <span class="page-header-sub">Гайды и инструкции</span>
         </div>
       </div>
-      <div class="container">
-<div class="search-bar">
+      <div class="container"><div class="search-bar">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input type="text" id="searchInput" placeholder="Поиск по шпаргалке..." oninput="handleSearch(this.value)" autocomplete="off" spellcheck="false">
       <span class="search-count" id="searchCount"></span>
@@ -1399,8 +1390,7 @@ header {
       <button class="img-modal-nav img-modal-next" onclick="navModal(1); event.stopPropagation()">›</button>
       <img id="imgModalImg" src="" alt="">
       <div class="img-modal-caption" id="imgModalCaption"></div>
-    </div>
-      </div>
+    </div></div>
     </div>
 
     <div class="page" id="page-checklist">
@@ -1411,8 +1401,7 @@ header {
           <span class="page-header-sub">Ежедневные задачи и расстановка</span>
         </div>
       </div>
-      <div class="container">
-<div class="intro">
+      <div class="container"><div class="intro">
       <div class="intro-field">
         <label>Дата</label>
         <input type="date" id="workDate">
@@ -1725,8 +1714,7 @@ header {
         <button class="btn-cancel" onclick="closeReportModal()">Закрыть</button>
         <button class="btn-copy" id="btnCopy" onclick="copyReport()">📋 Скопировать</button>
       </div>
-    </div>
-      </div>
+    </div></div>
     </div>
 
     <div class="page" id="page-shifts">
@@ -1737,8 +1725,7 @@ header {
           <span class="page-header-sub">Обход меток по маршрутам</span>
         </div>
       </div>
-      <div class="container">
-    <div class="intro">
+      <div class="container">    <div class="intro">
       <div class="intro-field"><label>Дата</label><input type="date" id="sh_workDate"></div>
       <div class="intro-field"><label>Команда</label><input type="text" id="sh_workerName" placeholder="Введите название команды"></div>
       <p class="intro-hint">Нажмите на заголовок блока чтобы раскрыть задачи · Отметьте выполненные пункты кликом</p>
@@ -1783,6 +1770,10 @@ header {
       <div class="map-section-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Карта BLE-меток</h2><span class="group-chevron">▼</span></div></div>
       <div class="map-body"><div class="map-inner">
         <div id="sh_mapMsg" class="map-msg" style="display:none"></div>
+        <div style="margin-bottom:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <button class="refresh-btn" onclick="shLoadBleData()">↺ Обновить BLE</button>
+          <button class="refresh-btn" onclick="shDiagnoseAPI()" style="color:#E65100;border-color:#FF9800;">🔍 Диагностика API</button>
+        </div>
         <div id="sh_mapFiltersBlock" class="map-filters" style="display:none">
           <button class="map-filter-btn filter-all active" data-shfilter="all">Все <span class="filter-count" id="sh_fcAll">0</span></button>
           <button class="map-filter-btn filter-ok" data-shfilter="ok">Норма <span class="filter-count" id="sh_fcOk">0</span></button>
@@ -1860,19 +1851,14 @@ header {
       </div>
       <div id="sh_bleMapFS" style="flex:1;width:100%;min-height:0;"></div>
     </div>
-
-      </div>
+</div>
     </div>
-
   </div>
 
   <canvas id="confetti"></canvas>
-
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-
-  <script>
-    // ===== PORTAL AUTH =====
+  <script>// ===== PORTAL AUTH =====
     const AUTH_SESSION_KEY = 'portal_auth';
     const AUTH_PASSWORDS = ['VELES_2024', 'impl_dept'];
 
@@ -1937,12 +1923,8 @@ header {
 
     function portalInit() {
       try { spInitPage(); } catch(e) { console.error('SP init error:', e); }
-    }
-  </script>
-
-  <script>
-    /* SPRAVKA */
-const SCREENSHOTS = [
+    }</script>
+  <script>const SCREENSHOTS = [
       ['./images/ble-screen-1.jpg', 'Скрин 1 — Отправка данных на сервер'],
       ['./images/ble-screen-2.jpg', 'Скрин 2 — Настройки метки (тип, зона, период)'],
       ['./images/ble-screen-3.jpg', 'Скрин 3 — BackEnd: поставлена на учёт'],
@@ -2139,12 +2121,8 @@ const SCREENSHOTS = [
     function spInitPage() {
       loadState();
     }
-
-  </script>
-
+</script>
   <script>
-    /* CHECKLIST */
-
     // ===== AUTH =====const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     const SCHEDULE_SHEET_ID = '1h-GMxdT2z3MC-somIq8sX3iV6KfjaoCffIIfeBQezRk';
     const SCHEDULE_SHEET_NAME = 'график 2026';
@@ -2866,12 +2844,8 @@ const SCREENSHOTS = [
 
     window.addEventListener('beforeunload', clSaveState);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) clSaveState(); });
-  
   </script>
-
-  <script>
-    /* SHIFTS */
-// ===== SHIFTS PAGE SCRIPT (Линии и КНС) =====
+  <script>// ===== SHIFTS PAGE SCRIPT (Линии и КНС) =====
 const CL2_SHEET_ID = "1CU56AZdWC9dCvkf_z6CWMtrgfuWRCG3HYx7hp79vI_c";
 const CL2_SHEET_NAME_PRINT = "Для печати🖨️";
 const CL2_STATUS_SHEET = "Свод_журналов_СПГ+ТСБ";
@@ -3243,274 +3217,140 @@ function shRefreshData() {
 
 // ── BLE Map ──────────────────────────────────────────────────────────────────
 
+
 async function shLoadBleData() {
-  try {
-    // Auto login
-    const loginResp = await fetch(CL2_BLE_PROXY, {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ action: 'login', username: CL2_BLE_USER, password: CL2_BLE_PASS })
-    });
-    if (!loginResp.ok) throw new Error('Login failed');
-    const loginData = await loginResp.json();
-    const token = loginData.token || loginData.accessToken || '';
-    if (!token) throw new Error('No token');
-    const tagsResp = await fetch(CL2_BLE_PROXY, {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ action: 'tags', token })
-    });
-    if (!tagsResp.ok) throw new Error('Tags failed');
-    const tagsData = await tagsResp.json();
-    cl2BleData = Array.isArray(tagsData) ? tagsData : (tagsData.data || tagsData.tags || []);
-    if (cl2Map) shPopulateMap(cl2Map, cl2MarkerLayer, false);
-    if (cl2MapFS) shPopulateMap(cl2MapFS, cl2MarkerLayerFS, true);
-    shUpdateFilterCounts();
-    const msg = document.getElementById('sh_mapMsg');
-    if (msg) { msg.className = 'map-msg ok'; msg.textContent = `Загружено меток: ${cl2BleData.length}`; msg.style.display = 'flex'; setTimeout(() => { msg.style.display = 'none'; }, 3000); }
-    const fb = document.getElementById('sh_mapFiltersBlock');
-    if (fb) fb.style.display = 'flex';
-    const bc = document.getElementById('sh_mapBottomControls');
-    if (bc) bc.style.display = 'flex';
-  } catch(e) {
-    const msg = document.getElementById('sh_mapMsg');
-    if (msg) { msg.className = 'map-msg error'; msg.textContent = 'Ошибка загрузки BLE-данных: ' + e.message; msg.style.display = 'flex'; }
-    const fb = document.getElementById('sh_mapFiltersBlock');
-    if (fb) fb.style.display = 'none';
-  }
-}
-
-function shInitMap() {
-  if (cl2Map) return;
-  if (typeof L === 'undefined') { setTimeout(shInitMap, 500); return; }
-  const mapEl = document.getElementById('sh_bleMap');
-  if (!mapEl) return;
-  mapEl.innerHTML = '';
-  mapEl.style.display = 'block';
-  cl2Map = L.map(mapEl).setView([55.75, 37.62], 10);
-  shSetMapLayer(cl2Map, cl2State.mapLayer);
-  cl2MarkerLayer = L.markerClusterGroup({ maxClusterRadius: 40 });
-  cl2Map.addLayer(cl2MarkerLayer);
-  if (cl2BleData.length) shPopulateMap(cl2Map, cl2MarkerLayer, false);
-  cl2Map.invalidateSize();
-}
-
-function shInitMapFS() {
-  if (cl2MapFS) return;
-  if (typeof L === 'undefined') return;
-  const mapEl = document.getElementById('sh_bleMapFS');
-  if (!mapEl) return;
-  cl2MapFS = L.map(mapEl).setView([55.75, 37.62], 10);
-  shSetMapLayer(cl2MapFS, cl2State.mapLayer);
-  cl2MarkerLayerFS = L.markerClusterGroup({ maxClusterRadius: 40 });
-  cl2MapFS.addLayer(cl2MarkerLayerFS);
-  if (cl2BleData.length) shPopulateMap(cl2MapFS, cl2MarkerLayerFS, true);
-  cl2MapFS.invalidateSize();
-}
-
-let _shTileLayer = null, _shTileLayerFS = null;
-function shSetMapLayer(map, type) {
-  const tileUrls = {
-    street: ['https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', '© OpenStreetMap'],
-    satellite: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', '© Esri']
+  const msgEl = document.getElementById('sh_mapMsg');
+  const showMsg = (text, type) => {
+    if (!msgEl) return;
+    msgEl.className = 'map-msg ' + (type || '');
+    msgEl.innerHTML = text;
+    msgEl.style.display = 'flex';
   };
-  const [url, attr] = tileUrls[type] || tileUrls.street;
-  if (map === cl2Map) {
-    if (_shTileLayer) map.removeLayer(_shTileLayer);
-    _shTileLayer = L.tileLayer(url, { attribution: attr, maxZoom: 19 }).addTo(map);
-  } else {
-    if (_shTileLayerFS) map.removeLayer(_shTileLayerFS);
-    _shTileLayerFS = L.tileLayer(url, { attribution: attr, maxZoom: 19 }).addTo(map);
+
+  const BASE = CL2_BLE_PROXY; // https://raspy-sound-6f18.kejexu8hem1.workers.dev/proxy
+  // Worker strips /proxy prefix → forwards to https://front-api.vsm.workwatch.pro
+
+  showMsg('Авторизация в WorkWatch…', '');
+
+  // ── Step 1: Login ────────────────────────────────────────────────────────
+  const loginEndpoints = [
+    { path: '/api/v1/auth/login',  body: { username: CL2_BLE_USER, password: CL2_BLE_PASS } },
+    { path: '/api/auth/login',     body: { username: CL2_BLE_USER, password: CL2_BLE_PASS } },
+    { path: '/api/v1/auth/signin', body: { username: CL2_BLE_USER, password: CL2_BLE_PASS } },
+    { path: '/api/auth/signin',    body: { username: CL2_BLE_USER, password: CL2_BLE_PASS } },
+    { path: '/api/login',          body: { username: CL2_BLE_USER, password: CL2_BLE_PASS } },
+    { path: '/api/v1/login',       body: { username: CL2_BLE_USER, password: CL2_BLE_PASS } },
+    { path: '/api/auth/login',     body: { login: CL2_BLE_USER, password: CL2_BLE_PASS } },
+  ];
+
+  let token = null;
+  let loginError = '';
+
+  for (const ep of loginEndpoints) {
+    try {
+      const r = await fetch(BASE + ep.path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(ep.body)
+      });
+      if (!r.ok) { loginError = `${ep.path}: HTTP ${r.status}`; continue; }
+      const data = await r.json();
+      token = data.token || data.accessToken || data.access_token
+              || data.data?.token || data.data?.accessToken
+              || (data.tokens && (data.tokens.access || data.tokens.accessToken))
+              || null;
+      if (token) { console.log('[BLE] Login OK via', ep.path); break; }
+      loginError = `${ep.path}: no token in response: ${JSON.stringify(data).substring(0, 100)}`;
+    } catch(e) {
+      loginError = `${ep.path}: ${e.message}`;
+    }
   }
-}
 
-function shApplyMapLayer(type) {
-  if (cl2Map) shSetMapLayer(cl2Map, type);
-  if (cl2MapFS) shSetMapLayer(cl2MapFS, type);
-}
+  if (!token) {
+    showMsg(`<strong>Ошибка авторизации BLE.</strong><br><small>${loginError}</small><br><small>Прокси: ${BASE}</small>`, 'error');
+    return;
+  }
 
-function shGetTagStatus(tag) {
-  const bat = parseFloat(tag.battery_level ?? tag.batteryLevel ?? 100);
-  const inspected = tag.inspected ?? tag.last_inspected ?? null;
-  if (bat < 20) return 'battery';
-  if (!inspected) return 'inspection';
-  return 'ok';
-}
+  // ── Step 2: Get tags ─────────────────────────────────────────────────────
+  showMsg('Загрузка меток…', '');
 
-function shPopulateMap(map, layer, isFS) {
-  if (!layer) return;
-  layer.clearLayers();
-  cl2Markers = [];
-  const activeFilter = cl2State.mapFilter;
-  const colors = { ok: '#43A047', battery: '#FFA726', inspection: '#FB8C00' };
-  cl2BleData.forEach(tag => {
-    const lat = parseFloat(tag.latitude ?? tag.lat ?? 0);
-    const lng = parseFloat(tag.longitude ?? tag.lng ?? 0);
-    if (!lat || !lng) return;
-    const status = shGetTagStatus(tag);
-    if (activeFilter !== 'all' && status !== activeFilter) return;
-    const color = colors[status] || colors.ok;
-    const id = tag.id ?? tag.tag_id ?? '?';
-    const icon = L.divIcon({
-      className: '',
-      html: `<div class="ble-dot ble-dot-${status}" title="${id}">${String(id).slice(-2)}</div>`,
-      iconSize: [22, 22], iconAnchor: [11, 11], popupAnchor: [0, -14]
-    });
-    const marker = L.marker([lat, lng], { icon });
-    marker.bindPopup(`
-      <strong>Метка #${id}</strong><br>
-      Статус: <strong>${status === 'ok' ? 'Норма' : status === 'battery' ? 'Низкий заряд' : 'Не пройдена'}</strong><br>
-      ${tag.battery_level != null ? `Заряд: ${tag.battery_level}%<br>` : ''}
-      ${tag.last_seen ? `Последний сигнал: ${tag.last_seen}<br>` : ''}
-      ${tag.photo_url ? `<img src="${tag.photo_url}" onclick="shOpenPhotoViewer('${tag.photo_url}')" style="width:100%;max-width:180px;border-radius:6px;margin-top:8px;cursor:pointer;">` : ''}
-    `);
-    marker._shTagId = String(id);
-    marker._shStatus = status;
-    layer.addLayer(marker);
-    cl2Markers.push(marker);
-  });
-}
+  const tagEndpoints = [
+    '/api/v1/beacons',
+    '/api/v1/tags',
+    '/api/beacons',
+    '/api/tags',
+    '/api/v1/ble/tags',
+    '/api/v1/devices',
+  ];
 
-function shUpdateFilterCounts() {
-  const counts = { all: cl2BleData.length, ok: 0, battery: 0, inspection: 0 };
-  cl2BleData.forEach(t => { const s = shGetTagStatus(t); counts[s]++; });
-  ['All','Ok','Bat','Insp'].forEach((k,i) => {
-    const status = ['all','ok','battery','inspection'][i];
-    const v = counts[status] || 0;
-    ['sh_fc'+k, 'sh_fcFs'+k].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = v; });
-  });
-}
+  let bleRaw = null;
+  let tagError = '';
 
-function shApplyMapFilter(filter, isFS) {
-  cl2State.mapFilter = filter;
+  for (const ep of tagEndpoints) {
+    try {
+      const r = await fetch(BASE + ep, {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!r.ok) { tagError = `${ep}: HTTP ${r.status}`; continue; }
+      const data = await r.json();
+      const arr = Array.isArray(data) ? data
+                : (data.data || data.items || data.beacons || data.tags || data.results || []);
+      if (arr.length > 0) {
+        bleRaw = arr;
+        console.log('[BLE] Tags OK via', ep, '→', arr.length, 'items');
+        break;
+      }
+      tagError = `${ep}: empty array in response`;
+    } catch(e) {
+      tagError = `${ep}: ${e.message}`;
+    }
+  }
+
+  if (!bleRaw || !bleRaw.length) {
+    showMsg(`<strong>Авторизация OK, но метки не найдены.</strong><br><small>${tagError}</small>`, 'error');
+    return;
+  }
+
+  cl2BleData = bleRaw;
   if (cl2Map && cl2MarkerLayer) shPopulateMap(cl2Map, cl2MarkerLayer, false);
   if (cl2MapFS && cl2MarkerLayerFS) shPopulateMap(cl2MapFS, cl2MarkerLayerFS, true);
+  shUpdateFilterCounts();
+
+  const fb = document.getElementById('sh_mapFiltersBlock');
+  if (fb) fb.style.display = 'flex';
+  const bc = document.getElementById('sh_mapBottomControls');
+  if (bc) bc.style.display = 'flex';
+
+  showMsg(`✓ Загружено меток: ${cl2BleData.length}`, 'ok');
+  setTimeout(() => { if (msgEl) msgEl.style.display = 'none'; }, 3000);
 }
 
-function shSearchMapMarker(query, isFS) {
-  const q = query.trim();
-  const map = isFS ? cl2MapFS : cl2Map;
-  if (!map) return;
-  if (!q) { cl2Markers.forEach(m => { if (m._icon) m._icon.style.opacity = '1'; }); return; }
-  let found = null;
-  cl2Markers.forEach(m => {
-    const match = m._shTagId && m._shTagId.includes(q);
-    if (m._icon) m._icon.style.opacity = match ? '1' : '0.3';
-    if (match && !found) found = m;
-  });
-  if (found) { const pos = found.getLatLng(); map.flyTo(pos, 17, { duration: 0.8 }); }
+async function shDiagnoseAPI() {
+  const log = (msg) => { console.log('[BLE Diag]', msg); };
+  const PROXY = CL2_BLE_PROXY;
+  log('=== BLE API ДИАГНОСТИКА ===');
+  log('URL: ' + PROXY);
+
+  const formats = [
+    { name: 'POST JSON {action:login}', method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({action:'login',username:CL2_BLE_USER,password:CL2_BLE_PASS}) },
+    { name: 'POST JSON {login:true}', method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({login:true,user:CL2_BLE_USER,password:CL2_BLE_PASS}) },
+    { name: 'GET /proxy', method: 'GET' },
+    { name: 'POST form-data', method: 'POST', headers: {'Content-Type':'application/x-www-form-urlencoded'}, body: `username=${CL2_BLE_USER}&password=${CL2_BLE_PASS}` },
+  ];
+
+  for (const fmt of formats) {
+    try {
+      log('Тест: ' + fmt.name);
+      const resp = await fetch(PROXY, { method: fmt.method, headers: fmt.headers, body: fmt.body });
+      const text = await resp.text();
+      log('HTTP ' + resp.status + ' → ' + text.substring(0, 300));
+    } catch(e) {
+      log('ERROR: ' + e.message);
+    }
+  }
+  log('=== КОНЕЦ ДИАГНОСТИКИ - скопируй консоль ===');
+  alert('Диагностика завершена. Открой DevTools (F12) → Console и скопируй результаты [BLE Diag]');
 }
-
-function shOpenFullscreenMap() {
-  document.getElementById('sh_mapFullscreenOverlay')?.classList.add('open');
-  setTimeout(() => {
-    if (!cl2MapFS) shInitMapFS();
-    else { cl2MapFS.invalidateSize(); }
-  }, 200);
-}
-
-function shCloseFullscreenMap() {
-  document.getElementById('sh_mapFullscreenOverlay')?.classList.remove('open');
-}
-
-function shOpenPhotoViewer(url) {
-  const ov = document.getElementById('sh_photoViewerOverlay');
-  const img = document.getElementById('sh_photoViewerImg');
-  if (ov && img) { img.src = url; ov.classList.add('open'); }
-}
-function shClosePhotoViewer() {
-  document.getElementById('sh_photoViewerOverlay')?.classList.remove('open');
-}
-
-// ── Reminders ────────────────────────────────────────────────────────────────
-
-function shLoadReminders() {
-  const container = document.getElementById('sh_remindersContainer');
-  if (!container) return;
-  container.innerHTML = '';
-  const dismissed = JSON.parse(sessionStorage.getItem(CL2_DISMISSED_KEY) || '[]');
-  const now = new Date();
-  const today = now.getDay(); // 0=Sun
-  const reminders = [];
-  if (today === 1 || today === 4) reminders.push({ id: 'ozon-cdek', text: '📦 Подготовить заявку OZON/CDEK', color: '#E3F2FD', border: '#2196F3' });
-  if (today === 2 || today === 5) reminders.push({ id: 'place', text: '📍 Обновить места расстановки', color: '#F3E8FF', border: '#9C27B0' });
-  if (today === 3) reminders.push({ id: 'sync-ww', text: '⌚ Синхронизация с командой WW Dev', color: '#E8F5E9', border: '#43A047' });
-  if (today === 4) reminders.push({ id: 'meeting-deploy', text: '📋 Подготовить данные для митинга Deploy', color: '#FFF8E1', border: '#FFA726' });
-  if (today === 5) reminders.push({ id: 'meetup', text: '👥 Meet-up команды', color: '#FFF3E0', border: '#FF9800' });
-  reminders.filter(r => !dismissed.includes(r.id)).forEach(r => {
-    const div = document.createElement('div');
-    div.style.cssText = `display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;border-radius:10px;border-left:3px solid ${r.border};background:${r.color};margin-bottom:6px;font-size:14px;`;
-    div.innerHTML = `<span>${r.text}</span><button onclick="shDismissReminder('${r.id}')" style="background:none;border:none;cursor:pointer;color:#78909C;font-size:18px;padding:0;line-height:1;">✕</button>`;
-    container.appendChild(div);
-  });
-}
-
-function shDismissReminder(id) {
-  const dismissed = JSON.parse(sessionStorage.getItem(CL2_DISMISSED_KEY) || '[]');
-  dismissed.push(id);
-  sessionStorage.setItem(CL2_DISMISSED_KEY, JSON.stringify(dismissed));
-  shLoadReminders();
-}
-
-// ── Report ────────────────────────────────────────────────────────────────────
-
-function shExportReport() {
-  const date = document.getElementById('sh_workDate')?.value || new Date().toLocaleDateString('ru');
-  const worker = document.getElementById('sh_workerName')?.value || 'Команда';
-  const line = cl2CurrentLine;
-  const lineLabel = line === 'kns' ? 'КНС' : line === 'night' ? 'Ночь' : `Линия ${line}`;
-  const rows = cl2TableData[line] || [];
-  const headers = rows[0] || [];
-  const dataRows = rows.slice(1);
-  const statusIdx = headers.findIndex(h => h === CL2_STATUS_COL);
-  const total = dataRows.length;
-  const done = dataRows.filter(r => statusIdx >= 0 && r[statusIdx] === CL2_STATUS_DONE).length;
-  const countNew = document.getElementById('sh_countNew')?.textContent || '0';
-  const countLost = document.getElementById('sh_countLost')?.textContent || '0';
-  const notesNew = document.getElementById('sh_notesNew')?.value?.trim() || '';
-  const notesLost = document.getElementById('sh_notesLost')?.value?.trim() || '';
-  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-
-  let report = `${CL2_REPORT_PREFIX}\n`;
-  report += `📅 ${date} | ${worker}\n`;
-  report += `📍 ${lineLabel}: ${done}/${total} обходов выполнено (${pct}%)\n`;
-  if (parseInt(countNew) > 0) report += `\n➕ Новые метки (${countNew})${notesNew ? ': ' + notesNew : ''}`;
-  if (parseInt(countLost) > 0) report += `\n➖ Потерянные метки (${countLost})${notesLost ? ': ' + notesLost : ''}`;
-
-  const ta = document.getElementById('sh_reportTextarea');
-  if (ta) ta.value = report;
-  document.getElementById('sh_reportModal')?.classList.add('open');
-  const copyBtn = document.getElementById('sh_btnCopy');
-  if (copyBtn) copyBtn.textContent = '📋 Скопировать';
-}
-
-function shCopyReport() {
-  const ta = document.getElementById('sh_reportTextarea');
-  if (!ta) return;
-  navigator.clipboard.writeText(ta.value).then(() => {
-    const btn = document.getElementById('sh_btnCopy');
-    if (btn) { btn.textContent = '✅ Скопировано'; setTimeout(() => { btn.textContent = '📋 Скопировать'; }, 2000); }
-  }).catch(() => {
-    ta.select(); document.execCommand('copy');
-    const btn = document.getElementById('sh_btnCopy');
-    if (btn) { btn.textContent = '✅ Скопировано'; setTimeout(() => { btn.textContent = '📋 Скопировать'; }, 2000); }
-  });
-}
-  // Group headers for table-group and map-section
-  document.querySelectorAll('#page-shifts .table-group-header').forEach(h => {
-    h.addEventListener('click', () => {
-      const g = h.closest('.table-group');
-      if (g) { g.classList.toggle('open'); cl2SaveState(); }
-    });
-  });
-  document.querySelectorAll('#page-shifts .map-section-header').forEach(h => {
-    h.addEventListener('click', () => {
-      const g = h.closest('.map-section');
-      if (g) { g.classList.toggle('open'); cl2SaveState(); }
-    });
-  });
-
-
-
-  </script>
-
+</script>
 </body>
 </html>
