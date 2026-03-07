@@ -12,18 +12,17 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <style>
-    /* ===== PORTAL SHARED BASE ===== */
+
     :root {
       --primary: #1565C0; --secondary: #1976D2; --accent: #2196F3;
       --bg-main: #F5F7FA; --card-bg: #ffffff; --muted: #78909C;
       --success: #43A047; --warning: #FFA726; --progress-bg: #E3F2FD;
-      --glass-bg: rgba(255,255,255,0.96); --border: #E8EDF2; --danger: #EF5350;
-      --sidebar-w: 240px;
+      --border: #E8EDF2; --danger: #EF5350;
     }
     * { box-sizing: border-box; }
     body { font-family: 'Source Sans 3', sans-serif; background: var(--bg-main); margin: 0; padding: 0; min-height: 100vh; color: #37474F; }
 
-    /* ===== AUTH OVERLAY ===== */
+    /* AUTH */
     #authOverlay {
       position: fixed; inset: 0; z-index: 99999;
       background: linear-gradient(135deg, #1565C0 0%, #1976D2 50%, #2196F3 100%);
@@ -40,78 +39,62 @@
     .auth-btn:hover { background: #1E88E5; transform: translateY(-1px); }
     .auth-error { font-size: 13px; color: #EF5350; text-align: center; min-height: 18px; }
 
-    /* ===== LAYOUT ===== */
-    .app-layout { display: flex; min-height: 100vh; }
-
-    /* ===== SIDEBAR ===== */
-    .sidebar {
-      width: var(--sidebar-w); background: #fff; border-right: 1px solid var(--border);
-      display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0;
-      z-index: 200; transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-      box-shadow: 2px 0 12px rgba(21,101,192,0.06);
+    /* TOP NAV BAR */
+    .topnav {
+      background: #fff;
+      border-bottom: 2px solid var(--accent);
+      box-shadow: 0 1px 6px rgba(21,101,192,0.08);
+      position: sticky; top: 0; z-index: 200;
+      display: flex; align-items: stretch;
+      padding: 0;
     }
-    .sidebar-header { padding: 16px 16px 12px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px; }
-    .sidebar-logo { display: flex; align-items: center; gap: 8px; }
-    .sidebar-logo img { height: 26px; width: auto; max-width: 120px; object-fit: contain; }
-    .sidebar-logo-fallback { font-family: 'Oswald', sans-serif; font-size: 1em; font-weight: 700; color: var(--primary); letter-spacing: 0.1em; text-transform: uppercase; display: none; }
-    .sidebar-subtitle { font-size: 11px; color: var(--muted); }
-    .sidebar-nav { flex: 1; padding: 10px 8px; display: flex; flex-direction: column; gap: 3px; overflow-y: auto; }
-    .nav-item {
-      display: flex; align-items: center; gap: 10px; padding: 9px 12px;
-      border-radius: 9px; cursor: pointer; transition: all 0.18s ease;
-      border: 1px solid transparent;
-      font-family: 'Oswald', sans-serif; font-size: 0.78em; font-weight: 600;
-      letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
+    .topnav-logo {
+      display: flex; align-items: center; padding: 0 16px 0 12px;
+      border-right: 1px solid var(--border); gap: 8px; flex-shrink: 0;
+    }
+    .topnav-logo img { height: 28px; width: auto; max-width: 120px; object-fit: contain; }
+    .topnav-logo-text { font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 700; color: var(--primary); letter-spacing: 0.1em; text-transform: uppercase; display: none; }
+    .topnav-tabs {
+      display: flex; align-items: center; gap: 4px;
+      padding: 6px 12px; flex: 1;
+    }
+    .nav-tab {
+      display: flex; align-items: center; gap: 7px;
+      padding: 7px 18px;
+      border-radius: 8px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.8em; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted);
+      transition: all 0.18s ease;
       user-select: none;
+      background: transparent;
     }
-    .nav-item:hover { background: #EEF6FF; color: var(--primary); border-color: rgba(33,150,243,0.15); }
-    .nav-item.active { background: #EEF6FF; color: var(--primary); border-color: rgba(33,150,243,0.25); box-shadow: 0 1px 4px rgba(33,150,243,0.1); }
-    .nav-item.active svg { stroke: var(--accent); }
-    .nav-label { flex: 1; line-height: 1.2; }
-    .nav-section-label { font-family: 'Oswald', sans-serif; font-size: 0.62em; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #b0bec5; padding: 8px 12px 3px; margin-top: 3px; }
-    .sidebar-footer { padding: 10px 10px; border-top: 1px solid var(--border); font-size: 11px; color: var(--muted); text-align: center; }
-    .sidebar-overlay { display: none; position: fixed; inset: 0; z-index: 199; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); }
-
-    /* ===== MOBILE TOPBAR ===== */
-    .topbar {
-      display: none; position: sticky; top: 0; z-index: 150;
-      background: #fff; border-bottom: 2px solid var(--accent);
-      padding: 0 16px; height: 50px;
-      align-items: center; justify-content: space-between;
-      box-shadow: 0 1px 3px rgba(21,101,192,0.06);
+    .nav-tab:hover {
+      background: #EEF6FF; color: var(--primary);
+      border-color: rgba(33,150,243,0.2);
     }
-    .topbar-title { font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); }
-    .topbar-menu-btn { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); background: #F9FAFB; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; flex-shrink: 0; }
-    .topbar-menu-btn:hover { background: #EEF6FF; border-color: rgba(33,150,243,0.3); }
-
-    /* ===== MAIN CONTENT ===== */
-    .main-content { margin-left: var(--sidebar-w); flex: 1; min-width: 0; display: flex; flex-direction: column; }
-    .page-header {
-      background: #fff; padding: 12px 20px; border-bottom: 2px solid var(--accent);
-      position: sticky; top: 0; z-index: 100; display: flex; align-items: center; gap: 16px;
-      box-shadow: 0 1px 3px rgba(21,101,192,0.06);
+    .nav-tab.active {
+      background: #EEF6FF; color: var(--primary);
+      border-color: rgba(33,150,243,0.35);
+      box-shadow: 0 1px 4px rgba(33,150,243,0.12);
     }
-    .page-header img { height: 32px; width: auto; max-width: 150px; object-fit: contain; }
-    .page-header-info { border-left: 1px solid var(--border); padding-left: 14px; display: flex; flex-direction: column; gap: 1px; }
-    .page-header-title { font-family: 'Oswald', sans-serif; font-size: 0.75em; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); }
-    .page-header-sub { font-size: 11px; color: var(--muted); }
+    .nav-tab.active svg { stroke: var(--accent); }
+    .nav-tab svg { flex-shrink: 0; }
 
-    /* ===== PAGES ===== */
+    /* PAGES */
     .page { display: none; }
     .page.active { display: block; }
 
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 768px) {
-      .sidebar { transform: translateX(calc(-1 * var(--sidebar-w))); }
-      .sidebar.open { transform: translateX(0); }
-      .sidebar-overlay.open { display: block; }
-      .main-content { margin-left: 0; }
-      .page-header { display: none; }
-      .topbar { display: flex; }
+    @media (max-width: 600px) {
+      .topnav-logo { padding: 0 10px 0 8px; }
+      .topnav-tabs { padding: 5px 6px; gap: 3px; }
+      .nav-tab { padding: 6px 10px; font-size: 0.72em; letter-spacing: 0.04em; }
+      .nav-tab svg { display: none; }
     }
 
-  </style>
-  <style>
   </style>
   <style>/* SPRAVKA */
 header { background: #fff; padding: 0; box-shadow: 0 1px 3px rgba(21,101,192,0.06); position: sticky; top: 0; z-index: 100; border-bottom: 2px solid #2196F3; }
@@ -289,7 +272,8 @@ header { background: #fff; padding: 0; box-shadow: 0 1px 3px rgba(21,101,192,0.0
     .glossary-def { padding: 10px 13px; font-size: 13.5px; color: #37474F; line-height: 1.5; flex: 1; background: #fff; }
     .glossary-example { background: #F9FAFB; border-top: 1px solid var(--border); padding: 8px 13px 9px; font-size: 12.5px; color: #5D7A8A; line-height: 1.45; }
     .glossary-example em { font-style: normal; color: #37474F; font-weight: 600; }
-    @media (max-width: 560px) { .glossary-term { min-width: 120px; max-width: 120px; font-size: 0.74em; } }</style>
+    @media (max-width: 560px) { .glossary-term { min-width: 120px; max-width: 120px; font-size: 0.74em; } }
+  </style>
   <style>/* CHECKLIST */
 header {
       background: #fff;
@@ -687,7 +671,8 @@ header {
       .modal { max-height: 95vh; border-radius: 12px; }
       .modal-footer { flex-direction: column; }
       .btn-copy, .btn-cancel { width: 100%; justify-content: center; }
-    }</style>
+    }
+  </style>
   <style>/* SHIFTS */
 
     /* Cluster styling */
@@ -803,66 +788,502 @@ header {
     .leaflet-popup-content-wrapper { border-radius: 10px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important; }
     .leaflet-popup-content { margin: 12px 14px !important; }
     .leaflet-popup-close-button { top: 6px !important; right: 8px !important; font-size: 18px !important; color: #78909C !important; }
-</style>
+
+  </style>
 </head>
 <body>
 
+  <!-- AUTH -->
   <div id="authOverlay">
     <div class="auth-box">
       <span class="auth-logo">ITSSupport</span>
       <span class="auth-title">Портал инженера</span>
-      <input class="auth-input" type="password" id="authInput" placeholder="Введите пароль" autocomplete="current-password" onkeydown="if(event.key==='Enter') doAuth()">
+      <input class="auth-input" type="password" id="authInput" placeholder="Введите пароль"
+             autocomplete="current-password" onkeydown="if(event.key==='Enter') doAuth()">
       <button class="auth-btn" onclick="doAuth()">Войти</button>
       <span class="auth-error" id="authError"></span>
     </div>
   </div>
 
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="sidebar-logo">
-        <img src="./images/ITS_logo_horizont.png" alt="ITSSupport" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-        <span class="sidebar-logo-fallback">ITSSupport</span>
-      </div>
-      <span class="sidebar-subtitle">Инструменты инженера</span>
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="topnav-logo">
+      <img src="./images/ITS_logo_horizont.png" alt="ITSSupport"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="topnav-logo-text">ITS</span>
     </div>
-    <nav class="sidebar-nav">
-      <span class="nav-section-label">Разделы</span>
-      <div class="nav-item active" data-page="spravka" onclick="showPage('spravka')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        <span class="nav-label">Шпаргалка</span>
-      </div>
-      <div class="nav-item" data-page="checklist" onclick="showPage('checklist')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        <span class="nav-label">Чек-лист дежурного</span>
-      </div>
-      <div class="nav-item" data-page="shifts" onclick="showPage('shifts')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        <span class="nav-label">Обходы</span>
-      </div>
-    </nav>
-    <div class="sidebar-footer">ITSSupport © 2025</div>
-  </aside>
+    <div class="topnav-tabs">
+      <!-- Order: Чек-лист → Обходы → Шпаргалка -->
+      <button class="nav-tab" data-page="checklist" onclick="showPage('checklist')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Чек-лист дежурного
+      </button>
+      <button class="nav-tab" data-page="shifts" onclick="showPage('shifts')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Обходы
+      </button>
+      <button class="nav-tab" data-page="spravka" onclick="showPage('spravka')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Шпаргалка
+      </button>
+    </div>
+  </nav>
 
-  <div class="topbar">
-    <button class="topbar-menu-btn" onclick="openSidebar()">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#546E7A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
-    <span class="topbar-title" id="topbarTitle">Шпаргалка</span>
-    <div style="width:34px"></div>
-  </div>
+  <!-- PAGES -->
+  <div id="page-checklist" class="page">
+    <div class="container">
+<div class="intro">
+      <div class="intro-field">
+        <label>Дата</label>
+        <input type="date" id="workDate">
+      </div>
+      <div class="intro-field">
+        <label>Сотрудник</label>
+        <input type="text" id="workerName" placeholder="Введите имя">
+      </div>
+      <p class="intro-hint">Нажмите на заголовок блока чтобы раскрыть задачи · Отметьте выполненные пункты кликом</p>
+    </div>
 
-  <div class="main-content">
-    <div class="page active" id="page-spravka">
-      <div class="page-header">
-        <img src="./images/ITS_logo_horizont.png" alt="ITSSupport" onerror="this.style.display='none'">
-        <div class="page-header-info">
-          <span class="page-header-title">Шпаргалка инженера</span>
-          <span class="page-header-sub">Гайды и инструкции</span>
+    <div class="reminders-container" id="remindersContainer"></div>
+
+    <!-- УТРО -->
+    <div class="task-group" data-group="morning">
+      <div class="group-header">
+        <div class="group-title-row">
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg></span> Утро (6:00–8:00)</h2>
+          <span class="group-chevron">▼</span>
+        </div>
+        <div class="progress-container"><div class="progress-bar" data-group="morning"></div></div>
+      </div>
+      <div class="subtasks"><div class="subtasks-inner">
+        <div class="subtask">
+          <input type="checkbox" data-task-id="morning-1">
+          <span>Фотофиксация пропусков инженеров / перекличка перед началом смены</span>
+          <img src="./images/propusk.jpg" alt="Пропуска" onerror="this.style.display='none'">
+        </div>
+        <div class="subtask">
+          <input type="checkbox" data-task-id="morning-2">
+          <span>Выдача часов в окне 6:00–8:00. Проверка полок с часами</span>
+          <img src="./images/watches.jpg" alt="Часы" onerror="this.style.display='none'">
+        </div>
+        <div class="subtask">
+          <input type="checkbox" data-task-id="morning-3a">
+          <span>Подготовка инженеров перед обходом (рюкзак, рация, часы)</span>
+        </div>
+        <div class="subtask">
+          <input type="checkbox" data-task-id="morning-3">
+          <span>Закрытие неосновных пунктов выдачи</span>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- РАССТАНОВКА -->
+    <div class="deployment-block" id="deploymentBlock">
+      <div class="deployment-header" id="deploymentHeader">
+        <div class="deployment-header-row">
+          <h2>
+            <span class="icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px">
+                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+              </svg>
+            </span>
+            Расстановка по зонам
+          </h2>
+          <span class="deployment-chevron">▼</span>
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar" id="deploymentProgress" style="width:0%"></div>
         </div>
       </div>
-      <div class="container"><div class="search-bar">
+      <div class="deployment-body" id="deploymentBody">
+        <div class="deployment-inner">
+
+          <div class="pool-label">
+            Нераспределённые инженеры
+            <span class="pool-count" id="poolCount">15</span>
+          </div>
+          <div class="pool-zone" id="pool" data-zone="pool" data-hint="Все распределены ✓"></div>
+
+          <div class="zones-grid">
+            <div class="zone-card zone-spg1" data-zone="spg1">
+              <div class="zone-header">
+                <span class="zone-title">СПГ 1</span>
+                <span class="zone-badge" id="badge-spg1">0</span>
+              </div>
+              <div class="zone-drop" id="zone-spg1" data-zone="spg1">
+                <span class="zone-empty">Перетащите сюда</span>
+              </div>
+            </div>
+            <div class="zone-card zone-spg2" data-zone="spg2">
+              <div class="zone-header">
+                <span class="zone-title">СПГ 2</span>
+                <span class="zone-badge" id="badge-spg2">0</span>
+              </div>
+              <div class="zone-drop" id="zone-spg2" data-zone="spg2">
+                <span class="zone-empty">Перетащите сюда</span>
+              </div>
+            </div>
+            <div class="zone-card zone-spg3" data-zone="spg3">
+              <div class="zone-header">
+                <span class="zone-title">СПГ 3</span>
+                <span class="zone-badge" id="badge-spg3">0</span>
+              </div>
+              <div class="zone-drop" id="zone-spg3" data-zone="spg3">
+                <span class="zone-empty">Перетащите сюда</span>
+              </div>
+            </div>
+            <div class="zone-card zone-spg4" data-zone="spg4">
+              <div class="zone-header">
+                <span class="zone-title">Усиление утро</span>
+                <span class="zone-badge" id="badge-spg4">0</span>
+              </div>
+              <div class="zone-drop" id="zone-spg4" data-zone="spg4">
+                <span class="zone-empty">Перетащите сюда</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="deployment-footer">
+            <div class="shift-toggle" id="shiftToggle">
+              <button class="shift-btn morning active" id="btnMorning" onclick="setShift('morning')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+                Утро
+              </button>
+              <button class="shift-btn evening" id="btnEvening" onclick="setShift('evening')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                Вечер
+              </button>
+            </div>
+            <button class="btn-copy-deploy" id="btnCopyDeploy" onclick="copyDeployment()">
+              📋 Копировать расстановку
+            </button>
+            <button class="btn-reset-deployment" onclick="resetDeployment()">↺ Сбросить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ФРОНТ -->
+    <div class="task-group" data-group="front">
+      <div class="group-header">
+        <div class="group-title-row">
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> День: Фронт (новенькие, бот, табель)</h2>
+          <span class="group-chevron">▼</span>
+        </div>
+        <div class="progress-container"><div class="progress-bar" data-group="front"></div></div>
+      </div>
+      <div class="subtasks"><div class="subtasks-inner">
+        <div class="subtask">
+          <input type="checkbox" data-task-id="front-1">
+          <span>Регистрация новичков</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="front-1" placeholder="0">
+        </div>
+        <div class="subtask">
+          <input type="checkbox" data-task-id="front-2">
+          <span>Регистрация в боте</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="front-2" placeholder="0">
+        </div>
+        <div class="subtask">
+          <input type="checkbox" data-task-id="front-3">
+          <span>Обращения, связанные с табелем</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="front-3" placeholder="0">
+        </div>
+        <div class="subtask">
+          <input type="checkbox" data-task-id="front-4">
+          <span>Замена наклейки NFC</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="front-4" placeholder="0">
+        </div>
+      </div></div>
+    </div>
+
+    <!-- МЕТКИ -->
+    <div class="task-group" data-group="tags">
+      <div class="group-header">
+        <div class="group-title-row">
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> День: Метки</h2>
+          <span class="group-chevron">▼</span>
+        </div>
+        <div class="progress-container"><div class="progress-bar" data-group="tags"></div></div>
+      </div>
+      <div class="subtasks"><div class="subtasks-inner">
+        <div class="subtask">
+          <input type="checkbox" data-task-id="tags-1">
+          <span>Количество пройденных меток</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="tags-1" placeholder="0">
+        </div>
+        <div class="subtask">
+          <input type="checkbox" data-task-id="tags-4">
+          <span>Синхронизация данных: работа с журналом BLE / backend</span>
+        </div>
+        <div class="subtask">
+          <input type="checkbox" data-task-id="tags-5">
+          <span>Актуализация web-карты</span>
+        </div>
+        <div class="subtask">
+          <input type="checkbox" data-task-id="tags-6">
+          <span>Метки, готовые к установке</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="tags-6" placeholder="0">
+        </div>
+      </div></div>
+    </div>
+
+    <!-- ИЗМЕНЕНИЯ ПО МЕТКАМ -->
+    <div class="task-group" data-group="tag-events-block">
+      <div class="group-header">
+        <div class="group-title-row">
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span> Изменения по меткам</h2>
+          <span class="group-chevron">▼</span>
+        </div>
+        <div class="progress-container"><div class="progress-bar" data-group="tag-events-block" style="width:0%"></div></div>
+      </div>
+      <div class="subtasks"><div class="subtasks-inner">
+        <div class="tag-events">
+          <div class="tag-event-block tag-event-new">
+            <div class="tag-event-header">
+              <span class="tag-event-icon">＋</span>
+              <span class="tag-event-title">Новые метки</span>
+              <div class="tag-event-counter">
+                <button class="counter-btn" onclick="changeCount('new', -1)">−</button>
+                <span id="countNew">0</span>
+                <button class="counter-btn" onclick="changeCount('new', 1)">＋</button>
+              </div>
+            </div>
+            <textarea id="notesNew" class="tag-event-notes" placeholder="Номера новых меток через запятую: 101, 205, 318..."></textarea>
+          </div>
+          <div class="tag-event-block tag-event-lost">
+            <div class="tag-event-header">
+              <span class="tag-event-icon">−</span>
+              <span class="tag-event-title">Потерянные метки</span>
+              <div class="tag-event-counter">
+                <button class="counter-btn" onclick="changeCount('lost', -1)">−</button>
+                <span id="countLost">0</span>
+                <button class="counter-btn" onclick="changeCount('lost', 1)">＋</button>
+              </div>
+            </div>
+            <textarea id="notesLost" class="tag-event-notes" placeholder="Номера потерянных меток через запятую: 42, 77..."></textarea>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- ВЕЧЕР -->
+    <div class="task-group" data-group="evening">
+      <div class="group-header">
+        <div class="group-title-row">
+          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span> Вечер (18:00–19:30)</h2>
+          <span class="group-chevron">▼</span>
+        </div>
+        <div class="progress-container"><div class="progress-bar" data-group="evening"></div></div>
+      </div>
+      <div class="subtasks"><div class="subtasks-inner">
+        <div class="subtask">
+          <input type="checkbox" data-task-id="evening-1">
+          <span>Нарушения</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="evening-1" placeholder="0">
+          <img src="./images/return.jpg" alt="Возврат" onerror="this.style.display='none'">
+        </div>
+        <div class="subtask" style="flex-wrap:wrap;">
+          <input type="checkbox" data-task-id="evening-2">
+          <span>Проблемы с интернет соединением</span>
+          <input type="number" min="0" value="0" class="task-count" data-count-for="evening-2" id="inetCount" placeholder="0">
+          <div id="inetTimesContainer" style="width:100%;display:none;margin-top:8px;display:flex;flex-direction:column;gap:6px;"></div>
+        </div>
+        <div class="subtask">
+          <input type="checkbox" data-task-id="evening-3">
+          <span>Закрытие смены / перекличка</span>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- ОТЧЁТ -->
+    <div class="report-section">
+      <div class="report-info">
+        <div class="report-info-progress" id="totalProgress">0%</div>
+        <div class="report-info-meta">
+          <span id="reportName">—</span>
+          <span id="reportDate">—</span>
+        </div>
+      </div>
+      <button class="btn-report" onclick="exportReport()">↗ Сформировать отчёт</button>
+    </div>
+
+  </div>
+
+  <!-- MODAL DEPLOYMENT -->
+  <div class="modal-overlay" id="deployModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="deployModalTitle">📋 Расстановка</h3>
+        <button class="modal-close" onclick="closeDeployModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="deployModalLoading" style="text-align:center;padding:24px;color:var(--muted);font-size:14px;display:none;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s linear infinite;vertical-align:middle;margin-right:8px"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          Загрузка данных о выходных…
+        </div>
+        <textarea id="deployTextarea" spellcheck="false"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeDeployModal()">Закрыть</button>
+        <button class="btn-copy" id="btnCopyDeploy2" onclick="copyDeployText()">📋 Скопировать</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL REPORT -->
+  <div class="modal-overlay" id="reportModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>✉️ Отчёт смены</h3>
+        <button class="modal-close" onclick="closeReportModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <textarea id="reportTextarea" spellcheck="false"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeReportModal()">Закрыть</button>
+        <button class="btn-copy" id="btnCopy" onclick="copyReport()">📋 Скопировать</button>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div id="page-shifts" class="page">
+    <div class="container">
+    <div class="intro">
+      <div class="intro-field"><label>Дата</label><input type="date" id="sh_workDate"></div>
+      <div class="intro-field"><label>Команда</label><input type="text" id="sh_workerName" placeholder="Введите название команды"></div>
+      <p class="intro-hint">Нажмите на заголовок блока чтобы раскрыть задачи · Отметьте выполненные пункты кликом</p>
+    </div>
+
+    <div class="reminders-container" id="sh_remindersContainer"></div>
+
+    <div class="task-group" data-group="sh-morning">
+      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg></span> Утро (6:00–8:00)</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-morning"></div></div></div>
+      <div class="subtasks"><div class="subtasks-inner">
+        <div class="subtask"><input type="checkbox" data-task-id="sh-morning-2"><span>Выдача часов в окне 6:00–8:00. Уборка полок с часами</span></div>
+      </div></div>
+    </div>
+
+    <div class="task-group" data-group="sh-prep">
+      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span> Подготовка к обходу</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-prep"></div></div></div>
+      <div class="subtasks"><div class="subtasks-inner">
+        <div class="subtask"><input type="checkbox" data-task-id="sh-prep-1"><span>Запуск смены на часах, получение отладочного устройства</span></div>
+        <div class="subtask"><input type="checkbox" data-task-id="sh-prep-2"><span>Обновление меток в мобильном приложении</span></div>
+        <div class="subtask"><input type="checkbox" data-task-id="sh-prep-3"><span>Проверка рюкзака с инструментом</span></div>
+        <div class="subtask"><input type="checkbox" data-task-id="sh-prep-4"><span>Проверка рации</span></div>
+      </div></div>
+    </div>
+
+    <div class="table-group" data-tgroup="sh-lines">
+      <div class="table-group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> Обход по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" id="sh_linesProgressBar"></div></div></div>
+      <div class="table-body"><div class="table-inner">
+        <div class="line-tabs">
+          <button class="line-tab active" data-line="1">Линия 1 <span class="tab-badge" id="sh_badge1">—</span></button>
+          <button class="line-tab" data-line="2">Линия 3 <span class="tab-badge" id="sh_badge2">—</span></button>
+          <button class="line-tab" data-line="kns">КНС <span class="tab-badge" id="sh_badgeKns">—</span></button>
+          <button class="line-tab" data-line="night">Ночь <span class="tab-badge" id="sh_badgeNight">—</span></button>
+        </div>
+        <div class="status-box" id="sh_statusBox" style="display:none"><div class="status-dot"></div><span id="sh_statusText"></span></div>
+        <div class="table-search"><input type="number" inputmode="numeric" id="sh_tableSearch" placeholder="Поиск по № метки..."><button class="refresh-btn" id="sh_refreshBtn" onclick="shRefreshData()">↺ Обновить</button></div>
+        <div class="data-table-wrap"><table class="data-table"><thead id="sh_dataThead"></thead><tbody id="sh_dataTbody"><tr><td class="table-loading" colspan="99">Загрузка данных…</td></tr></tbody></table></div>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center"><span class="count-chip" id="sh_chipTotal">Всего: —</span><span class="count-chip done" id="sh_chipDone">Выполнено: —</span></div>
+      </div></div>
+    </div>
+
+    <div class="map-section" data-map-section="sh-ble">
+      <div class="map-section-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Карта BLE-меток</h2><span class="group-chevron">▼</span></div></div>
+      <div class="map-body"><div class="map-inner">
+        <div id="sh_mapMsg" class="map-msg" style="display:none"></div>
+        <div style="margin-bottom:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <button class="refresh-btn" onclick="shLoadBleData()">↺ Обновить BLE</button>
+          <button class="refresh-btn" onclick="shDiagnoseAPI()" style="color:#E65100;border-color:#FF9800;">🔍 Диагностика API</button>
+        </div>
+        <div id="sh_mapFiltersBlock" class="map-filters" style="display:none">
+          <button class="map-filter-btn filter-all active" data-shfilter="all">Все <span class="filter-count" id="sh_fcAll">0</span></button>
+          <button class="map-filter-btn filter-ok" data-shfilter="ok">Норма <span class="filter-count" id="sh_fcOk">0</span></button>
+          <button class="map-filter-btn filter-battery" data-shfilter="battery">Батарея <span class="filter-count" id="sh_fcBat">0</span></button>
+          <button class="map-filter-btn filter-inspection" data-shfilter="inspection">Не пройдено <span class="filter-count" id="sh_fcInsp">0</span></button>
+        </div>
+        <div id="sh_mapBottomControls" style="display:none;flex-wrap:wrap;gap:4px;margin-bottom:10px;align-items:center;">
+          <button class="map-fullscreen-btn" onclick="shOpenFullscreenMap()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg> Полный экран</button>
+          <div id="sh_mapLayerToggle" class="map-layer-toggle">
+            <button class="map-layer-btn" id="sh_btnSatellite" data-shlayer="satellite">Спутник</button>
+            <button class="map-layer-btn active" id="sh_btnStreet" data-shlayer="street">Схема</button>
+          </div>
+          <div class="map-search-bar" style="flex:1;min-width:120px;">
+            <input type="text" id="sh_mapBleSearch" placeholder="№ метки" inputmode="numeric">
+            <button class="map-search-clear" id="sh_mapSearchClear" title="Очистить">✕</button>
+          </div>
+        </div>
+        <div id="sh_bleMap"><div class="map-placeholder">Раскройте блок для загрузки карты…</div></div>
+      </div></div>
+    </div>
+
+    <div class="task-group" data-group="sh-tag-events">
+      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span> Изменения по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-tag-events" style="width:0%"></div></div></div>
+      <div class="subtasks"><div class="subtasks-inner">
+        <div class="tag-events">
+          <div class="tag-event-block tag-event-new"><div class="tag-event-header"><span class="tag-event-icon">＋</span><span class="tag-event-title">Новые метки</span><div class="tag-event-counter"><button class="counter-btn" onclick="shChangeCount('new',-1)">−</button><span id="sh_countNew">0</span><button class="counter-btn" onclick="shChangeCount('new',1)">＋</button></div></div><textarea id="sh_notesNew" class="tag-event-notes" placeholder="Номера новых меток: 101, 205..."></textarea></div>
+          <div class="tag-event-block tag-event-lost"><div class="tag-event-header"><span class="tag-event-icon">−</span><span class="tag-event-title">Потерянные метки</span><div class="tag-event-counter"><button class="counter-btn" onclick="shChangeCount('lost',-1)">−</button><span id="sh_countLost">0</span><button class="counter-btn" onclick="shChangeCount('lost',1)">＋</button></div></div><textarea id="sh_notesLost" class="tag-event-notes" placeholder="Номера потерянных меток: 42, 77..."></textarea></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="task-group" data-group="sh-evening">
+      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span> Вечер (18:00–19:30)</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-evening"></div></div></div>
+      <div class="subtasks"><div class="subtasks-inner">
+        <div class="subtask"><input type="checkbox" data-task-id="sh-evening-1"><span>Отчет о нарушениях</span></div>
+        <div class="subtask"><input type="checkbox" data-task-id="sh-evening-2"><span>Закрытие смены / перекличка</span></div>
+      </div></div>
+    </div>
+
+    <div class="report-section">
+      <div class="report-line-info" id="sh_reportLineInfo">Выберите маршрут в блоке «Обход по меткам»</div>
+      <button class="btn-report" id="sh_reportBtn" onclick="shExportReport()" disabled>↗ Сформировать отчёт</button>
+    </div>
+
+    <!-- SHIFTS REPORT MODAL -->
+    <div class="modal-overlay" id="sh_reportModal">
+      <div class="modal"><div class="modal-header"><h3>✉️ Отчёт смены</h3><button class="modal-close" onclick="document.getElementById('sh_reportModal').classList.remove('open')">✕</button></div><div class="modal-body"><textarea id="sh_reportTextarea" spellcheck="false"></textarea></div><div class="modal-footer"><button class="btn-cancel" onclick="document.getElementById('sh_reportModal').classList.remove('open')">Закрыть</button><button class="btn-copy" id="sh_btnCopy" onclick="shCopyReport()">📋 Скопировать</button></div></div>
+    </div>
+
+    <!-- SHIFTS PHOTO VIEWER -->
+    <div class="photo-viewer-overlay" id="sh_photoViewerOverlay" onclick="shClosePhotoViewer()">
+      <button class="photo-viewer-close" onclick="shClosePhotoViewer()">✕</button>
+      <img id="sh_photoViewerImg" src="" alt="">
+    </div>
+
+    <!-- SHIFTS FULLSCREEN MAP -->
+    <div class="map-fullscreen-overlay" id="sh_mapFullscreenOverlay">
+      <div class="map-fullscreen-header">
+        <span class="map-fullscreen-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Карта BLE-меток</span>
+        <button class="map-fullscreen-close" onclick="shCloseFullscreenMap()">✕ Закрыть</button>
+      </div>
+      <div class="map-fullscreen-controls">
+        <button class="map-filter-btn filter-all active" data-shfsfilter="all">Все <span class="filter-count" id="sh_fcFsAll">0</span></button>
+        <button class="map-filter-btn filter-ok" data-shfsfilter="ok">Норма <span class="filter-count" id="sh_fcFsOk">0</span></button>
+        <button class="map-filter-btn filter-battery" data-shfsfilter="battery">Батарея <span class="filter-count" id="sh_fcFsBat">0</span></button>
+        <button class="map-filter-btn filter-inspection" data-shfsfilter="inspection">Не пройд. <span class="filter-count" id="sh_fcFsInsp">0</span></button>
+      </div>
+      <div class="map-fullscreen-layer" style="display:flex;gap:4px;padding:4px 14px 6px;align-items:center;background:rgba(26,31,54,0.7);flex-shrink:0;">
+        <button class="map-layer-btn" id="sh_btnFsSatellite" data-shfslayer="satellite">Спутник</button>
+        <button class="map-layer-btn active" id="sh_btnFsStreet" data-shfslayer="street">Схема</button>
+        <div style="flex:1;min-width:100px;padding:0;background:none;position:relative;">
+          <input type="text" id="sh_mapFsSearch" placeholder="№ метки" inputmode="numeric" style="width:100%;padding:6px 28px 6px 10px;font-size:13px;border-radius:8px;border:1.5px solid rgba(33,150,243,0.5);background:rgba(255,255,255,0.97);">
+          <button style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#78909C;font-size:16px;display:none;" id="sh_mapFsSearchClear">✕</button>
+        </div>
+      </div>
+      <div id="sh_bleMapFS" style="flex:1;width:100%;min-height:0;"></div>
+    </div>
+
+    </div>
+  </div>
+
+  <div id="page-spravka" class="page active">
+    <div class="container">
+<div class="search-bar">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input type="text" id="searchInput" placeholder="Поиск по шпаргалке..." oninput="handleSearch(this.value)" autocomplete="off" spellcheck="false">
       <span class="search-count" id="searchCount"></span>
@@ -1390,475 +1811,16 @@ header {
       <button class="img-modal-nav img-modal-next" onclick="navModal(1); event.stopPropagation()">›</button>
       <img id="imgModalImg" src="" alt="">
       <div class="img-modal-caption" id="imgModalCaption"></div>
-    </div></div>
     </div>
-
-    <div class="page" id="page-checklist">
-      <div class="page-header">
-        <img src="./images/ITS_logo_horizont.png" alt="ITSSupport" onerror="this.style.display='none'">
-        <div class="page-header-info">
-          <span class="page-header-title">Чек-лист дежурного инженера</span>
-          <span class="page-header-sub">Ежедневные задачи и расстановка</span>
-        </div>
-      </div>
-      <div class="container"><div class="intro">
-      <div class="intro-field">
-        <label>Дата</label>
-        <input type="date" id="workDate">
-      </div>
-      <div class="intro-field">
-        <label>Сотрудник</label>
-        <input type="text" id="workerName" placeholder="Введите имя">
-      </div>
-      <p class="intro-hint">Нажмите на заголовок блока чтобы раскрыть задачи · Отметьте выполненные пункты кликом</p>
-    </div>
-
-    <div class="reminders-container" id="remindersContainer"></div>
-
-    <!-- УТРО -->
-    <div class="task-group" data-group="morning">
-      <div class="group-header">
-        <div class="group-title-row">
-          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg></span> Утро (6:00–8:00)</h2>
-          <span class="group-chevron">▼</span>
-        </div>
-        <div class="progress-container"><div class="progress-bar" data-group="morning"></div></div>
-      </div>
-      <div class="subtasks"><div class="subtasks-inner">
-        <div class="subtask">
-          <input type="checkbox" data-task-id="morning-1">
-          <span>Фотофиксация пропусков инженеров / перекличка перед началом смены</span>
-          <img src="./images/propusk.jpg" alt="Пропуска" onerror="this.style.display='none'">
-        </div>
-        <div class="subtask">
-          <input type="checkbox" data-task-id="morning-2">
-          <span>Выдача часов в окне 6:00–8:00. Проверка полок с часами</span>
-          <img src="./images/watches.jpg" alt="Часы" onerror="this.style.display='none'">
-        </div>
-        <div class="subtask">
-          <input type="checkbox" data-task-id="morning-3a">
-          <span>Подготовка инженеров перед обходом (рюкзак, рация, часы)</span>
-        </div>
-        <div class="subtask">
-          <input type="checkbox" data-task-id="morning-3">
-          <span>Закрытие неосновных пунктов выдачи</span>
-        </div>
-      </div></div>
-    </div>
-
-    <!-- РАССТАНОВКА -->
-    <div class="deployment-block" id="deploymentBlock">
-      <div class="deployment-header" id="deploymentHeader">
-        <div class="deployment-header-row">
-          <h2>
-            <span class="icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px">
-                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-                <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-              </svg>
-            </span>
-            Расстановка по зонам
-          </h2>
-          <span class="deployment-chevron">▼</span>
-        </div>
-        <div class="progress-container">
-          <div class="progress-bar" id="deploymentProgress" style="width:0%"></div>
-        </div>
-      </div>
-      <div class="deployment-body" id="deploymentBody">
-        <div class="deployment-inner">
-
-          <div class="pool-label">
-            Нераспределённые инженеры
-            <span class="pool-count" id="poolCount">15</span>
-          </div>
-          <div class="pool-zone" id="pool" data-zone="pool" data-hint="Все распределены ✓"></div>
-
-          <div class="zones-grid">
-            <div class="zone-card zone-spg1" data-zone="spg1">
-              <div class="zone-header">
-                <span class="zone-title">СПГ 1</span>
-                <span class="zone-badge" id="badge-spg1">0</span>
-              </div>
-              <div class="zone-drop" id="zone-spg1" data-zone="spg1">
-                <span class="zone-empty">Перетащите сюда</span>
-              </div>
-            </div>
-            <div class="zone-card zone-spg2" data-zone="spg2">
-              <div class="zone-header">
-                <span class="zone-title">СПГ 2</span>
-                <span class="zone-badge" id="badge-spg2">0</span>
-              </div>
-              <div class="zone-drop" id="zone-spg2" data-zone="spg2">
-                <span class="zone-empty">Перетащите сюда</span>
-              </div>
-            </div>
-            <div class="zone-card zone-spg3" data-zone="spg3">
-              <div class="zone-header">
-                <span class="zone-title">СПГ 3</span>
-                <span class="zone-badge" id="badge-spg3">0</span>
-              </div>
-              <div class="zone-drop" id="zone-spg3" data-zone="spg3">
-                <span class="zone-empty">Перетащите сюда</span>
-              </div>
-            </div>
-            <div class="zone-card zone-spg4" data-zone="spg4">
-              <div class="zone-header">
-                <span class="zone-title">Усиление утро</span>
-                <span class="zone-badge" id="badge-spg4">0</span>
-              </div>
-              <div class="zone-drop" id="zone-spg4" data-zone="spg4">
-                <span class="zone-empty">Перетащите сюда</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="deployment-footer">
-            <div class="shift-toggle" id="shiftToggle">
-              <button class="shift-btn morning active" id="btnMorning" onclick="setShift('morning')">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
-                Утро
-              </button>
-              <button class="shift-btn evening" id="btnEvening" onclick="setShift('evening')">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                Вечер
-              </button>
-            </div>
-            <button class="btn-copy-deploy" id="btnCopyDeploy" onclick="copyDeployment()">
-              📋 Копировать расстановку
-            </button>
-            <button class="btn-reset-deployment" onclick="resetDeployment()">↺ Сбросить</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ФРОНТ -->
-    <div class="task-group" data-group="front">
-      <div class="group-header">
-        <div class="group-title-row">
-          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> День: Фронт (новенькие, бот, табель)</h2>
-          <span class="group-chevron">▼</span>
-        </div>
-        <div class="progress-container"><div class="progress-bar" data-group="front"></div></div>
-      </div>
-      <div class="subtasks"><div class="subtasks-inner">
-        <div class="subtask">
-          <input type="checkbox" data-task-id="front-1">
-          <span>Регистрация новичков</span>
-          <input type="number" min="0" value="0" class="task-count" data-count-for="front-1" placeholder="0">
-        </div>
-        <div class="subtask">
-          <input type="checkbox" data-task-id="front-2">
-          <span>Регистрация в боте</span>
-          <input type="number" min="0" value="0" class="task-count" data-count-for="front-2" placeholder="0">
-        </div>
-        <div class="subtask">
-          <input type="checkbox" data-task-id="front-3">
-          <span>Обращения, связанные с табелем</span>
-          <input type="number" min="0" value="0" class="task-count" data-count-for="front-3" placeholder="0">
-        </div>
-        <div class="subtask">
-          <input type="checkbox" data-task-id="front-4">
-          <span>Замена наклейки NFC</span>
-          <input type="number" min="0" value="0" class="task-count" data-count-for="front-4" placeholder="0">
-        </div>
-      </div></div>
-    </div>
-
-    <!-- МЕТКИ -->
-    <div class="task-group" data-group="tags">
-      <div class="group-header">
-        <div class="group-title-row">
-          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> День: Метки</h2>
-          <span class="group-chevron">▼</span>
-        </div>
-        <div class="progress-container"><div class="progress-bar" data-group="tags"></div></div>
-      </div>
-      <div class="subtasks"><div class="subtasks-inner">
-        <div class="subtask">
-          <input type="checkbox" data-task-id="tags-1">
-          <span>Количество пройденных меток</span>
-          <input type="number" min="0" value="0" class="task-count" data-count-for="tags-1" placeholder="0">
-        </div>
-        <div class="subtask">
-          <input type="checkbox" data-task-id="tags-4">
-          <span>Синхронизация данных: работа с журналом BLE / backend</span>
-        </div>
-        <div class="subtask">
-          <input type="checkbox" data-task-id="tags-5">
-          <span>Актуализация web-карты</span>
-        </div>
-        <div class="subtask">
-          <input type="checkbox" data-task-id="tags-6">
-          <span>Метки, готовые к установке</span>
-          <input type="number" min="0" value="0" class="task-count" data-count-for="tags-6" placeholder="0">
-        </div>
-      </div></div>
-    </div>
-
-    <!-- ИЗМЕНЕНИЯ ПО МЕТКАМ -->
-    <div class="task-group" data-group="tag-events-block">
-      <div class="group-header">
-        <div class="group-title-row">
-          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span> Изменения по меткам</h2>
-          <span class="group-chevron">▼</span>
-        </div>
-        <div class="progress-container"><div class="progress-bar" data-group="tag-events-block" style="width:0%"></div></div>
-      </div>
-      <div class="subtasks"><div class="subtasks-inner">
-        <div class="tag-events">
-          <div class="tag-event-block tag-event-new">
-            <div class="tag-event-header">
-              <span class="tag-event-icon">＋</span>
-              <span class="tag-event-title">Новые метки</span>
-              <div class="tag-event-counter">
-                <button class="counter-btn" onclick="changeCount('new', -1)">−</button>
-                <span id="countNew">0</span>
-                <button class="counter-btn" onclick="changeCount('new', 1)">＋</button>
-              </div>
-            </div>
-            <textarea id="notesNew" class="tag-event-notes" placeholder="Номера новых меток через запятую: 101, 205, 318..."></textarea>
-          </div>
-          <div class="tag-event-block tag-event-lost">
-            <div class="tag-event-header">
-              <span class="tag-event-icon">−</span>
-              <span class="tag-event-title">Потерянные метки</span>
-              <div class="tag-event-counter">
-                <button class="counter-btn" onclick="changeCount('lost', -1)">−</button>
-                <span id="countLost">0</span>
-                <button class="counter-btn" onclick="changeCount('lost', 1)">＋</button>
-              </div>
-            </div>
-            <textarea id="notesLost" class="tag-event-notes" placeholder="Номера потерянных меток через запятую: 42, 77..."></textarea>
-          </div>
-        </div>
-      </div></div>
-    </div>
-
-    <!-- ВЕЧЕР -->
-    <div class="task-group" data-group="evening">
-      <div class="group-header">
-        <div class="group-title-row">
-          <h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span> Вечер (18:00–19:30)</h2>
-          <span class="group-chevron">▼</span>
-        </div>
-        <div class="progress-container"><div class="progress-bar" data-group="evening"></div></div>
-      </div>
-      <div class="subtasks"><div class="subtasks-inner">
-        <div class="subtask">
-          <input type="checkbox" data-task-id="evening-1">
-          <span>Нарушения</span>
-          <input type="number" min="0" value="0" class="task-count" data-count-for="evening-1" placeholder="0">
-          <img src="./images/return.jpg" alt="Возврат" onerror="this.style.display='none'">
-        </div>
-        <div class="subtask" style="flex-wrap:wrap;">
-          <input type="checkbox" data-task-id="evening-2">
-          <span>Проблемы с интернет соединением</span>
-          <input type="number" min="0" value="0" class="task-count" data-count-for="evening-2" id="inetCount" placeholder="0">
-          <div id="inetTimesContainer" style="width:100%;display:none;margin-top:8px;display:flex;flex-direction:column;gap:6px;"></div>
-        </div>
-        <div class="subtask">
-          <input type="checkbox" data-task-id="evening-3">
-          <span>Закрытие смены / перекличка</span>
-        </div>
-      </div></div>
-    </div>
-
-    <!-- ОТЧЁТ -->
-    <div class="report-section">
-      <div class="report-info">
-        <div class="report-info-progress" id="totalProgress">0%</div>
-        <div class="report-info-meta">
-          <span id="reportName">—</span>
-          <span id="reportDate">—</span>
-        </div>
-      </div>
-      <button class="btn-report" onclick="exportReport()">↗ Сформировать отчёт</button>
-    </div>
-
-  </div>
-
-  <!-- MODAL DEPLOYMENT -->
-  <div class="modal-overlay" id="deployModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 id="deployModalTitle">📋 Расстановка</h3>
-        <button class="modal-close" onclick="closeDeployModal()">✕</button>
-      </div>
-      <div class="modal-body">
-        <div id="deployModalLoading" style="text-align:center;padding:24px;color:var(--muted);font-size:14px;display:none;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s linear infinite;vertical-align:middle;margin-right:8px"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-          Загрузка данных о выходных…
-        </div>
-        <textarea id="deployTextarea" spellcheck="false"></textarea>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-cancel" onclick="closeDeployModal()">Закрыть</button>
-        <button class="btn-copy" id="btnCopyDeploy2" onclick="copyDeployText()">📋 Скопировать</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL REPORT -->
-  <div class="modal-overlay" id="reportModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>✉️ Отчёт смены</h3>
-        <button class="modal-close" onclick="closeReportModal()">✕</button>
-      </div>
-      <div class="modal-body">
-        <textarea id="reportTextarea" spellcheck="false"></textarea>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-cancel" onclick="closeReportModal()">Закрыть</button>
-        <button class="btn-copy" id="btnCopy" onclick="copyReport()">📋 Скопировать</button>
-      </div>
-    </div></div>
-    </div>
-
-    <div class="page" id="page-shifts">
-      <div class="page-header">
-        <img src="./images/ITS_logo_horizont.png" alt="ITSSupport" onerror="this.style.display='none'">
-        <div class="page-header-info">
-          <span class="page-header-title">Обходы — Линии и КНС</span>
-          <span class="page-header-sub">Обход меток по маршрутам</span>
-        </div>
-      </div>
-      <div class="container">    <div class="intro">
-      <div class="intro-field"><label>Дата</label><input type="date" id="sh_workDate"></div>
-      <div class="intro-field"><label>Команда</label><input type="text" id="sh_workerName" placeholder="Введите название команды"></div>
-      <p class="intro-hint">Нажмите на заголовок блока чтобы раскрыть задачи · Отметьте выполненные пункты кликом</p>
-    </div>
-
-    <div class="reminders-container" id="sh_remindersContainer"></div>
-
-    <div class="task-group" data-group="sh-morning">
-      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg></span> Утро (6:00–8:00)</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-morning"></div></div></div>
-      <div class="subtasks"><div class="subtasks-inner">
-        <div class="subtask"><input type="checkbox" data-task-id="sh-morning-2"><span>Выдача часов в окне 6:00–8:00. Уборка полок с часами</span></div>
-      </div></div>
-    </div>
-
-    <div class="task-group" data-group="sh-prep">
-      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span> Подготовка к обходу</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-prep"></div></div></div>
-      <div class="subtasks"><div class="subtasks-inner">
-        <div class="subtask"><input type="checkbox" data-task-id="sh-prep-1"><span>Запуск смены на часах, получение отладочного устройства</span></div>
-        <div class="subtask"><input type="checkbox" data-task-id="sh-prep-2"><span>Обновление меток в мобильном приложении</span></div>
-        <div class="subtask"><input type="checkbox" data-task-id="sh-prep-3"><span>Проверка рюкзака с инструментом</span></div>
-        <div class="subtask"><input type="checkbox" data-task-id="sh-prep-4"><span>Проверка рации</span></div>
-      </div></div>
-    </div>
-
-    <div class="table-group" data-tgroup="sh-lines">
-      <div class="table-group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> Обход по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" id="sh_linesProgressBar"></div></div></div>
-      <div class="table-body"><div class="table-inner">
-        <div class="line-tabs">
-          <button class="line-tab active" data-line="1">Линия 1 <span class="tab-badge" id="sh_badge1">—</span></button>
-          <button class="line-tab" data-line="2">Линия 3 <span class="tab-badge" id="sh_badge2">—</span></button>
-          <button class="line-tab" data-line="kns">КНС <span class="tab-badge" id="sh_badgeKns">—</span></button>
-          <button class="line-tab" data-line="night">Ночь <span class="tab-badge" id="sh_badgeNight">—</span></button>
-        </div>
-        <div class="status-box" id="sh_statusBox" style="display:none"><div class="status-dot"></div><span id="sh_statusText"></span></div>
-        <div class="table-search"><input type="number" inputmode="numeric" id="sh_tableSearch" placeholder="Поиск по № метки..."><button class="refresh-btn" id="sh_refreshBtn" onclick="shRefreshData()">↺ Обновить</button></div>
-        <div class="data-table-wrap"><table class="data-table"><thead id="sh_dataThead"></thead><tbody id="sh_dataTbody"><tr><td class="table-loading" colspan="99">Загрузка данных…</td></tr></tbody></table></div>
-        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center"><span class="count-chip" id="sh_chipTotal">Всего: —</span><span class="count-chip done" id="sh_chipDone">Выполнено: —</span></div>
-      </div></div>
-    </div>
-
-    <div class="map-section" data-map-section="sh-ble">
-      <div class="map-section-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Карта BLE-меток</h2><span class="group-chevron">▼</span></div></div>
-      <div class="map-body"><div class="map-inner">
-        <div id="sh_mapMsg" class="map-msg" style="display:none"></div>
-        <div style="margin-bottom:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-          <button class="refresh-btn" onclick="shLoadBleData()">↺ Обновить BLE</button>
-          <button class="refresh-btn" onclick="shDiagnoseAPI()" style="color:#E65100;border-color:#FF9800;">🔍 Диагностика API</button>
-        </div>
-        <div id="sh_mapFiltersBlock" class="map-filters" style="display:none">
-          <button class="map-filter-btn filter-all active" data-shfilter="all">Все <span class="filter-count" id="sh_fcAll">0</span></button>
-          <button class="map-filter-btn filter-ok" data-shfilter="ok">Норма <span class="filter-count" id="sh_fcOk">0</span></button>
-          <button class="map-filter-btn filter-battery" data-shfilter="battery">Батарея <span class="filter-count" id="sh_fcBat">0</span></button>
-          <button class="map-filter-btn filter-inspection" data-shfilter="inspection">Не пройдено <span class="filter-count" id="sh_fcInsp">0</span></button>
-        </div>
-        <div id="sh_mapBottomControls" style="display:none;flex-wrap:wrap;gap:4px;margin-bottom:10px;align-items:center;">
-          <button class="map-fullscreen-btn" onclick="shOpenFullscreenMap()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg> Полный экран</button>
-          <div id="sh_mapLayerToggle" class="map-layer-toggle">
-            <button class="map-layer-btn" id="sh_btnSatellite" data-shlayer="satellite">Спутник</button>
-            <button class="map-layer-btn active" id="sh_btnStreet" data-shlayer="street">Схема</button>
-          </div>
-          <div class="map-search-bar" style="flex:1;min-width:120px;">
-            <input type="text" id="sh_mapBleSearch" placeholder="№ метки" inputmode="numeric">
-            <button class="map-search-clear" id="sh_mapSearchClear" title="Очистить">✕</button>
-          </div>
-        </div>
-        <div id="sh_bleMap"><div class="map-placeholder">Раскройте блок для загрузки карты…</div></div>
-      </div></div>
-    </div>
-
-    <div class="task-group" data-group="sh-tag-events">
-      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span> Изменения по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-tag-events" style="width:0%"></div></div></div>
-      <div class="subtasks"><div class="subtasks-inner">
-        <div class="tag-events">
-          <div class="tag-event-block tag-event-new"><div class="tag-event-header"><span class="tag-event-icon">＋</span><span class="tag-event-title">Новые метки</span><div class="tag-event-counter"><button class="counter-btn" onclick="shChangeCount('new',-1)">−</button><span id="sh_countNew">0</span><button class="counter-btn" onclick="shChangeCount('new',1)">＋</button></div></div><textarea id="sh_notesNew" class="tag-event-notes" placeholder="Номера новых меток: 101, 205..."></textarea></div>
-          <div class="tag-event-block tag-event-lost"><div class="tag-event-header"><span class="tag-event-icon">−</span><span class="tag-event-title">Потерянные метки</span><div class="tag-event-counter"><button class="counter-btn" onclick="shChangeCount('lost',-1)">−</button><span id="sh_countLost">0</span><button class="counter-btn" onclick="shChangeCount('lost',1)">＋</button></div></div><textarea id="sh_notesLost" class="tag-event-notes" placeholder="Номера потерянных меток: 42, 77..."></textarea></div>
-        </div>
-      </div></div>
-    </div>
-
-    <div class="task-group" data-group="sh-evening">
-      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span> Вечер (18:00–19:30)</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-evening"></div></div></div>
-      <div class="subtasks"><div class="subtasks-inner">
-        <div class="subtask"><input type="checkbox" data-task-id="sh-evening-1"><span>Отчет о нарушениях</span></div>
-        <div class="subtask"><input type="checkbox" data-task-id="sh-evening-2"><span>Закрытие смены / перекличка</span></div>
-      </div></div>
-    </div>
-
-    <div class="report-section">
-      <div class="report-line-info" id="sh_reportLineInfo">Выберите маршрут в блоке «Обход по меткам»</div>
-      <button class="btn-report" id="sh_reportBtn" onclick="shExportReport()" disabled>↗ Сформировать отчёт</button>
-    </div>
-
-    <!-- SHIFTS REPORT MODAL -->
-    <div class="modal-overlay" id="sh_reportModal">
-      <div class="modal"><div class="modal-header"><h3>✉️ Отчёт смены</h3><button class="modal-close" onclick="document.getElementById('sh_reportModal').classList.remove('open')">✕</button></div><div class="modal-body"><textarea id="sh_reportTextarea" spellcheck="false"></textarea></div><div class="modal-footer"><button class="btn-cancel" onclick="document.getElementById('sh_reportModal').classList.remove('open')">Закрыть</button><button class="btn-copy" id="sh_btnCopy" onclick="shCopyReport()">📋 Скопировать</button></div></div>
-    </div>
-
-    <!-- SHIFTS PHOTO VIEWER -->
-    <div class="photo-viewer-overlay" id="sh_photoViewerOverlay" onclick="shClosePhotoViewer()">
-      <button class="photo-viewer-close" onclick="shClosePhotoViewer()">✕</button>
-      <img id="sh_photoViewerImg" src="" alt="">
-    </div>
-
-    <!-- SHIFTS FULLSCREEN MAP -->
-    <div class="map-fullscreen-overlay" id="sh_mapFullscreenOverlay">
-      <div class="map-fullscreen-header">
-        <span class="map-fullscreen-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Карта BLE-меток</span>
-        <button class="map-fullscreen-close" onclick="shCloseFullscreenMap()">✕ Закрыть</button>
-      </div>
-      <div class="map-fullscreen-controls">
-        <button class="map-filter-btn filter-all active" data-shfsfilter="all">Все <span class="filter-count" id="sh_fcFsAll">0</span></button>
-        <button class="map-filter-btn filter-ok" data-shfsfilter="ok">Норма <span class="filter-count" id="sh_fcFsOk">0</span></button>
-        <button class="map-filter-btn filter-battery" data-shfsfilter="battery">Батарея <span class="filter-count" id="sh_fcFsBat">0</span></button>
-        <button class="map-filter-btn filter-inspection" data-shfsfilter="inspection">Не пройд. <span class="filter-count" id="sh_fcFsInsp">0</span></button>
-      </div>
-      <div class="map-fullscreen-layer" style="display:flex;gap:4px;padding:4px 14px 6px;align-items:center;background:rgba(26,31,54,0.7);flex-shrink:0;">
-        <button class="map-layer-btn" id="sh_btnFsSatellite" data-shfslayer="satellite">Спутник</button>
-        <button class="map-layer-btn active" id="sh_btnFsStreet" data-shfslayer="street">Схема</button>
-        <div style="flex:1;min-width:100px;padding:0;background:none;position:relative;">
-          <input type="text" id="sh_mapFsSearch" placeholder="№ метки" inputmode="numeric" style="width:100%;padding:6px 28px 6px 10px;font-size:13px;border-radius:8px;border:1.5px solid rgba(33,150,243,0.5);background:rgba(255,255,255,0.97);">
-          <button style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#78909C;font-size:16px;display:none;" id="sh_mapFsSearchClear">✕</button>
-        </div>
-      </div>
-      <div id="sh_bleMapFS" style="flex:1;width:100%;min-height:0;"></div>
-    </div>
-</div>
     </div>
   </div>
 
   <canvas id="confetti"></canvas>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <script>// ===== PORTAL AUTH =====
+  <script>
+
     const AUTH_SESSION_KEY = 'portal_auth';
     const AUTH_PASSWORDS = ['VELES_2024', 'impl_dept'];
 
@@ -1867,9 +1829,9 @@ header {
       const err = document.getElementById('authError');
       if (AUTH_PASSWORDS.includes(val)) {
         sessionStorage.setItem(AUTH_SESSION_KEY, '1');
-        const overlay = document.getElementById('authOverlay');
-        overlay.classList.add('hidden');
-        setTimeout(() => { overlay.remove(); }, 350);
+        const ov = document.getElementById('authOverlay');
+        ov.classList.add('hidden');
+        setTimeout(() => ov.remove(), 350);
         portalInit();
       } else {
         err.textContent = 'Неверный пароль';
@@ -1890,41 +1852,25 @@ header {
       }
     })();
 
-    // ===== NAVIGATION =====
-    const PAGE_TITLES = { spravka: 'Шпаргалка', checklist: 'Чек-лист дежурного', shifts: 'Обходы' };
-    let cl_Initialized = false, shifts_Initialized = false;
+    const PAGE_TITLES = { checklist: 'Чек-лист дежурного', shifts: 'Обходы', spravka: 'Шпаргалка' };
+    let cl_Init = false, sh_Init = false;
 
     function showPage(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
       document.getElementById('page-' + pageId)?.classList.add('active');
-      document.querySelector(`.nav-item[data-page="${pageId}"]`)?.classList.add('active');
-      const titleEl = document.getElementById('topbarTitle');
-      if (titleEl) titleEl.textContent = PAGE_TITLES[pageId] || '';
-      closeSidebar();
-      if (pageId === 'checklist' && !cl_Initialized) {
-        cl_Initialized = true;
-        try { clInitPage(); } catch(e) { console.error('CL init error:', e); }
-      }
-      if (pageId === 'shifts' && !shifts_Initialized) {
-        shifts_Initialized = true;
-        try { shInitPage(); } catch(e) { console.error('Shifts init error:', e); }
-      }
-    }
-
-    function openSidebar() {
-      document.getElementById('sidebar').classList.add('open');
-      document.getElementById('sidebarOverlay').classList.add('open');
-    }
-    function closeSidebar() {
-      document.getElementById('sidebar').classList.remove('open');
-      document.getElementById('sidebarOverlay').classList.remove('open');
+      document.querySelector(`.nav-tab[data-page="${pageId}"]`)?.classList.add('active');
+      if (pageId === 'checklist' && !cl_Init) { cl_Init = true; try { clInitPage(); } catch(e) { console.error(e); } }
+      if (pageId === 'shifts'    && !sh_Init) { sh_Init = true; try { shInitPage(); } catch(e) { console.error(e); } }
     }
 
     function portalInit() {
-      try { spInitPage(); } catch(e) { console.error('SP init error:', e); }
-    }</script>
-  <script>const SCREENSHOTS = [
+      try { spInitPage(); } catch(e) { console.error(e); }
+    }
+
+  </script>
+  <script>
+const SCREENSHOTS = [
       ['./images/ble-screen-1.jpg', 'Скрин 1 — Отправка данных на сервер'],
       ['./images/ble-screen-2.jpg', 'Скрин 2 — Настройки метки (тип, зона, период)'],
       ['./images/ble-screen-3.jpg', 'Скрин 3 — BackEnd: поставлена на учёт'],
@@ -2121,9 +2067,12 @@ header {
     function spInitPage() {
       loadState();
     }
-</script>
+
+  </script>
   <script>
-    // ===== AUTH =====const CL_STORAGE_KEY = 'itssupport_checklist_v5';
+
+    
+const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     const SCHEDULE_SHEET_ID = '1h-GMxdT2z3MC-somIq8sX3iV6KfjaoCffIIfeBQezRk';
     const SCHEDULE_SHEET_NAME = 'график 2026';
     const MONTH_NAMES = ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
@@ -2841,11 +2790,12 @@ header {
       document.getElementById('workerName').addEventListener('input', () => { clSaveState(); updateReportMeta(); });
     }
 
-
     window.addEventListener('beforeunload', clSaveState);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) clSaveState(); });
+  
   </script>
-  <script>// ===== SHIFTS PAGE SCRIPT (Линии и КНС) =====
+  <script>
+// ===== SHIFTS PAGE SCRIPT (Линии и КНС) =====
 const CL2_SHEET_ID = "1CU56AZdWC9dCvkf_z6CWMtrgfuWRCG3HYx7hp79vI_c";
 const CL2_SHEET_NAME_PRINT = "Для печати🖨️";
 const CL2_STATUS_SHEET = "Свод_журналов_СПГ+ТСБ";
@@ -3228,102 +3178,97 @@ async function shLoadBleData() {
   };
 
   const BASE = CL2_BLE_PROXY; // https://raspy-sound-6f18.kejexu8hem1.workers.dev/proxy
-  // Worker strips /proxy prefix → forwards to https://front-api.vsm.workwatch.pro
+  // Worker strips /proxy → forwards to https://front-api.vsm.workwatch.pro
+  // Backend is FastAPI → OAuth2 password flow
 
-  showMsg('Авторизация в WorkWatch…', '');
+  showMsg('Авторизация…', '');
 
-  // ── Step 1: Login ────────────────────────────────────────────────────────
-  const loginEndpoints = [
-    { path: '/api/v1/auth/login',  body: { username: CL2_BLE_USER, password: CL2_BLE_PASS } },
-    { path: '/api/auth/login',     body: { username: CL2_BLE_USER, password: CL2_BLE_PASS } },
-    { path: '/api/v1/auth/signin', body: { username: CL2_BLE_USER, password: CL2_BLE_PASS } },
-    { path: '/api/auth/signin',    body: { username: CL2_BLE_USER, password: CL2_BLE_PASS } },
-    { path: '/api/login',          body: { username: CL2_BLE_USER, password: CL2_BLE_PASS } },
-    { path: '/api/v1/login',       body: { username: CL2_BLE_USER, password: CL2_BLE_PASS } },
-    { path: '/api/auth/login',     body: { login: CL2_BLE_USER, password: CL2_BLE_PASS } },
+  // ── Step 1: Login (FastAPI OAuth2 password flow) ─────────────────────────
+  // FastAPI typically uses POST /token with x-www-form-urlencoded
+  const loginAttempts = [
+    // OAuth2 form-urlencoded (most common FastAPI pattern)
+    { path: '/token',             ct: 'form', body: `grant_type=password&username=${encodeURIComponent(CL2_BLE_USER)}&password=${encodeURIComponent(CL2_BLE_PASS)}` },
+    { path: '/auth/token',        ct: 'form', body: `grant_type=password&username=${encodeURIComponent(CL2_BLE_USER)}&password=${encodeURIComponent(CL2_BLE_PASS)}` },
+    { path: '/api/token',         ct: 'form', body: `grant_type=password&username=${encodeURIComponent(CL2_BLE_USER)}&password=${encodeURIComponent(CL2_BLE_PASS)}` },
+    { path: '/api/auth/token',    ct: 'form', body: `grant_type=password&username=${encodeURIComponent(CL2_BLE_USER)}&password=${encodeURIComponent(CL2_BLE_PASS)}` },
+    { path: '/api/v1/token',      ct: 'form', body: `grant_type=password&username=${encodeURIComponent(CL2_BLE_USER)}&password=${encodeURIComponent(CL2_BLE_PASS)}` },
+    // JSON variants
+    { path: '/api/v1/auth/login', ct: 'json', body: JSON.stringify({ username: CL2_BLE_USER, password: CL2_BLE_PASS }) },
+    { path: '/api/auth/login',    ct: 'json', body: JSON.stringify({ username: CL2_BLE_USER, password: CL2_BLE_PASS }) },
+    { path: '/auth/login',        ct: 'json', body: JSON.stringify({ username: CL2_BLE_USER, password: CL2_BLE_PASS }) },
   ];
 
   let token = null;
-  let loginError = '';
+  let lastErr = '';
 
-  for (const ep of loginEndpoints) {
+  for (const ep of loginAttempts) {
     try {
+      const ct = ep.ct === 'form' ? 'application/x-www-form-urlencoded' : 'application/json';
       const r = await fetch(BASE + ep.path, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(ep.body)
+        method: 'POST', headers: { 'Content-Type': ct }, body: ep.body
       });
-      if (!r.ok) { loginError = `${ep.path}: HTTP ${r.status}`; continue; }
-      const data = await r.json();
-      token = data.token || data.accessToken || data.access_token
-              || data.data?.token || data.data?.accessToken
-              || (data.tokens && (data.tokens.access || data.tokens.accessToken))
-              || null;
+      if (!r.ok) { lastErr = `${ep.path}: HTTP ${r.status}`; continue; }
+      const d = await r.json();
+      token = d.access_token || d.token || d.accessToken
+              || d.data?.access_token || d.data?.token
+              || (d.tokens && (d.tokens.access_token || d.tokens.access)) || null;
       if (token) { console.log('[BLE] Login OK via', ep.path); break; }
-      loginError = `${ep.path}: no token in response: ${JSON.stringify(data).substring(0, 100)}`;
-    } catch(e) {
-      loginError = `${ep.path}: ${e.message}`;
-    }
+      lastErr = `${ep.path}: no token (keys: ${Object.keys(d).join(',')})`;
+    } catch(e) { lastErr = `${ep.path}: ${e.message}`; }
   }
 
   if (!token) {
-    showMsg(`<strong>Ошибка авторизации BLE.</strong><br><small>${loginError}</small><br><small>Прокси: ${BASE}</small>`, 'error');
+    showMsg(`<strong>Ошибка авторизации.</strong><br><small>${lastErr}</small>`, 'error');
     return;
   }
 
-  // ── Step 2: Get tags ─────────────────────────────────────────────────────
+  // ── Step 2: Get BLE tags ─────────────────────────────────────────────────
   showMsg('Загрузка меток…', '');
 
-  const tagEndpoints = [
-    '/api/v1/beacons',
-    '/api/v1/tags',
-    '/api/beacons',
-    '/api/tags',
-    '/api/v1/ble/tags',
-    '/api/v1/devices',
+  const tagAttempts = [
+    '/beacons', '/api/beacons', '/api/v1/beacons',
+    '/tags', '/api/tags', '/api/v1/tags',
+    '/devices', '/api/devices', '/api/v1/devices',
+    '/ble/tags', '/api/ble/tags', '/api/v1/ble',
+    '/organization/ble', '/api/organization/ble',
   ];
 
-  let bleRaw = null;
-  let tagError = '';
+  let bleArr = null;
+  let tagErr = '';
 
-  for (const ep of tagEndpoints) {
+  for (const ep of tagAttempts) {
     try {
-      const r = await fetch(BASE + ep, {
-        headers: { 'Authorization': 'Bearer ' + token }
-      });
-      if (!r.ok) { tagError = `${ep}: HTTP ${r.status}`; continue; }
-      const data = await r.json();
-      const arr = Array.isArray(data) ? data
-                : (data.data || data.items || data.beacons || data.tags || data.results || []);
+      const r = await fetch(BASE + ep, { headers: { 'Authorization': 'Bearer ' + token } });
+      if (!r.ok) { tagErr = `${ep}: HTTP ${r.status}`; continue; }
+      const d = await r.json();
+      const arr = Array.isArray(d) ? d
+                : (d.data || d.items || d.results || d.beacons || d.tags || d.devices || []);
       if (arr.length > 0) {
-        bleRaw = arr;
-        console.log('[BLE] Tags OK via', ep, '→', arr.length, 'items');
+        bleArr = arr;
+        console.log('[BLE] Tags OK via', ep, '(' + arr.length + ' items)');
         break;
       }
-      tagError = `${ep}: empty array in response`;
-    } catch(e) {
-      tagError = `${ep}: ${e.message}`;
-    }
+      tagErr = `${ep}: пусто (keys: ${Object.keys(d).join(',')})`;
+    } catch(e) { tagErr = `${ep}: ${e.message}`; }
   }
 
-  if (!bleRaw || !bleRaw.length) {
-    showMsg(`<strong>Авторизация OK, но метки не найдены.</strong><br><small>${tagError}</small>`, 'error');
+  if (!bleArr || !bleArr.length) {
+    showMsg(`<strong>Авторизация OK, метки не найдены.</strong><br><small>${tagErr}</small>`, 'error');
     return;
   }
 
-  cl2BleData = bleRaw;
+  cl2BleData = bleArr;
   if (cl2Map && cl2MarkerLayer) shPopulateMap(cl2Map, cl2MarkerLayer, false);
   if (cl2MapFS && cl2MarkerLayerFS) shPopulateMap(cl2MapFS, cl2MarkerLayerFS, true);
   shUpdateFilterCounts();
-
   const fb = document.getElementById('sh_mapFiltersBlock');
   if (fb) fb.style.display = 'flex';
   const bc = document.getElementById('sh_mapBottomControls');
   if (bc) bc.style.display = 'flex';
-
-  showMsg(`✓ Загружено меток: ${cl2BleData.length}`, 'ok');
+  showMsg(`✓ Меток загружено: ${cl2BleData.length}`, 'ok');
   setTimeout(() => { if (msgEl) msgEl.style.display = 'none'; }, 3000);
 }
+
 
 async function shDiagnoseAPI() {
   const log = (msg) => { console.log('[BLE Diag]', msg); };
@@ -3351,6 +3296,7 @@ async function shDiagnoseAPI() {
   log('=== КОНЕЦ ДИАГНОСТИКИ - скопируй консоль ===');
   alert('Диагностика завершена. Открой DevTools (F12) → Console и скопируй результаты [BLE Diag]');
 }
-</script>
+
+  </script>
 </body>
 </html>
