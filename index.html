@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <style>
-
     :root {
       --primary: #1565C0; --secondary: #1976D2; --accent: #2196F3;
       --bg-main: #F5F7FA; --card-bg: #ffffff; --muted: #78909C;
@@ -21,14 +20,7 @@
     }
     * { box-sizing: border-box; }
     body { font-family: 'Source Sans 3', sans-serif; background: var(--bg-main); margin: 0; padding: 0; min-height: 100vh; color: #37474F; }
-
-    /* AUTH */
-    #authOverlay {
-      position: fixed; inset: 0; z-index: 99999;
-      background: linear-gradient(135deg, #1565C0 0%, #1976D2 50%, #2196F3 100%);
-      display: flex; align-items: center; justify-content: center; padding: 20px;
-      transition: opacity 0.3s ease;
-    }
+    #authOverlay { position: fixed; inset: 0; z-index: 99999; background: linear-gradient(135deg, #1565C0 0%, #1976D2 50%, #2196F3 100%); display: flex; align-items: center; justify-content: center; padding: 20px; transition: opacity 0.3s ease; }
     #authOverlay.hidden { opacity: 0; pointer-events: none; }
     .auth-box { background: #fff; border-radius: 16px; padding: 36px 32px; width: 100%; max-width: 360px; box-shadow: 0 24px 64px rgba(0,0,0,0.25); display: flex; flex-direction: column; gap: 20px; align-items: center; }
     .auth-logo { font-family: 'Oswald', sans-serif; font-size: 1.1em; font-weight: 600; color: #37474F; letter-spacing: 0.1em; text-transform: uppercase; }
@@ -38,47 +30,20 @@
     .auth-btn { width: 100%; font-family: 'Oswald', sans-serif; font-size: 0.95em; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 600; padding: 12px; border-radius: 999px; border: none; background: #2196F3; color: #fff; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(33,150,243,0.3); }
     .auth-btn:hover { background: #1E88E5; transform: translateY(-1px); }
     .auth-error { font-size: 13px; color: #EF5350; text-align: center; min-height: 18px; }
-
-    /* TOP NAV */
-    .topnav {
-      background: #fff;
-      border-bottom: 2px solid var(--accent);
-      box-shadow: 0 1px 6px rgba(21,101,192,0.08);
-      position: sticky; top: 0; z-index: 200;
-      display: flex; align-items: stretch;
-      padding: 0;
-    }
-    .topnav-logo {
-      display: flex; align-items: center; padding: 0 16px 0 12px;
-      border-right: 1px solid var(--border); gap: 8px; flex-shrink: 0;
-    }
+    .topnav { background: #fff; border-bottom: 2px solid var(--accent); box-shadow: 0 1px 6px rgba(21,101,192,0.08); position: sticky; top: 0; z-index: 200; display: flex; align-items: stretch; padding: 0; }
+    .topnav-logo { display: flex; align-items: center; padding: 0 16px 0 12px; border-right: 1px solid var(--border); gap: 8px; flex-shrink: 0; }
     .topnav-logo img { height: 28px; width: auto; max-width: 120px; object-fit: contain; }
     .topnav-logo-text { font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 700; color: var(--primary); letter-spacing: 0.1em; text-transform: uppercase; display: none; }
     .topnav-tabs { display: flex; align-items: center; gap: 4px; padding: 6px 12px; flex: 1; }
-    .nav-tab {
-      display: flex; align-items: center; gap: 7px;
-      padding: 7px 18px; border-radius: 8px;
-      border: 1.5px solid transparent; cursor: pointer;
-      font-family: 'Oswald', sans-serif; font-size: 0.8em;
-      font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-      color: var(--muted); transition: all 0.18s ease; user-select: none; background: transparent;
-    }
+    .nav-tab { display: flex; align-items: center; gap: 7px; padding: 7px 18px; border-radius: 8px; border: 1.5px solid transparent; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 0.8em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); transition: all 0.18s ease; user-select: none; background: transparent; }
     .nav-tab:hover { background: #EEF6FF; color: var(--primary); border-color: rgba(33,150,243,0.2); }
     .nav-tab.active { background: #EEF6FF; color: var(--primary); border-color: rgba(33,150,243,0.35); box-shadow: 0 1px 4px rgba(33,150,243,0.12); }
     .nav-tab svg { flex-shrink: 0; }
-
-    /* PAGES */
     .page { display: none; }
     .page.active { display: block; }
-
-    @media (max-width: 600px) {
-      .topnav-logo { padding: 0 10px 0 8px; }
-      .topnav-tabs { padding: 5px 6px; gap: 3px; }
-      .nav-tab { padding: 6px 10px; font-size: 0.72em; letter-spacing: 0.04em; }
-      .nav-tab svg { display: none; }
-    }
-
-    /* Cluster styling */
+    @media (max-width: 600px) { .topnav-logo { padding: 0 10px 0 8px; } .topnav-tabs { padding: 5px 6px; gap: 3px; } .nav-tab { padding: 6px 10px; font-size: 0.72em; letter-spacing: 0.04em; } .nav-tab svg { display: none; } }
+</style>
+  <style>
     .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background-clip: padding-box; border-radius: 50%; }
     .marker-cluster-small { background-color: rgba(33,150,243,0.25); }
     .marker-cluster-small div { background-color: rgba(33,150,243,0.7); }
@@ -88,7 +53,7 @@
     .marker-cluster-large div { background-color: rgba(239,68,68,0.7); }
     .marker-cluster div { width: 30px; height: 30px; margin-left: 5px; margin-top: 5px; text-align: center; border-radius: 50%; font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: center; }
     .marker-cluster span { line-height: 1; }
-  </style>
+</style>
   <style>/* SPRAVKA */
 header { background: #fff; padding: 0; box-shadow: 0 1px 3px rgba(21,101,192,0.06); position: sticky; top: 0; z-index: 100; border-bottom: 2px solid #2196F3; }
     .header-inner { max-width: 900px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 16px; }
@@ -265,8 +230,7 @@ header { background: #fff; padding: 0; box-shadow: 0 1px 3px rgba(21,101,192,0.0
     .glossary-def { padding: 10px 13px; font-size: 13.5px; color: #37474F; line-height: 1.5; flex: 1; background: #fff; }
     .glossary-example { background: #F9FAFB; border-top: 1px solid var(--border); padding: 8px 13px 9px; font-size: 12.5px; color: #5D7A8A; line-height: 1.45; }
     .glossary-example em { font-style: normal; color: #37474F; font-weight: 600; }
-    @media (max-width: 560px) { .glossary-term { min-width: 120px; max-width: 120px; font-size: 0.74em; } }
-  </style>
+    @media (max-width: 560px) { .glossary-term { min-width: 120px; max-width: 120px; font-size: 0.74em; } }</style>
   <style>/* CHECKLIST */
 header {
       background: #fff;
@@ -664,8 +628,7 @@ header {
       .modal { max-height: 95vh; border-radius: 12px; }
       .modal-footer { flex-direction: column; }
       .btn-copy, .btn-cancel { width: 100%; justify-content: center; }
-    }
-  </style>
+    }</style>
   <style>/* SHIFTS */
 
     /* Cluster styling */
@@ -781,12 +744,10 @@ header {
     .leaflet-popup-content-wrapper { border-radius: 10px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important; }
     .leaflet-popup-content { margin: 12px 14px !important; }
     .leaflet-popup-close-button { top: 6px !important; right: 8px !important; font-size: 18px !important; color: #78909C !important; }
-
-  </style>
+</style>
 </head>
 <body>
 
-  <!-- AUTH -->
   <div id="authOverlay">
     <div class="auth-box">
       <span class="auth-logo">ITSSupport</span>
@@ -798,7 +759,6 @@ header {
     </div>
   </div>
 
-  <!-- TOP NAV -->
   <nav class="topnav">
     <div class="topnav-logo">
       <img src="./images/ITS_logo_horizont.png" alt="ITSSupport"
@@ -821,7 +781,6 @@ header {
     </div>
   </nav>
 
-  <!-- PAGES -->
   <div id="page-checklist" class="page">
     <div class="container">
 <div class="intro">
@@ -1848,13 +1807,13 @@ header {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
       document.getElementById('page-' + pageId)?.classList.add('active');
-      document.querySelector(`.nav-tab[data-page="${pageId}"]`)?.classList.add('active');
-      if (pageId === 'checklist' && !cl_Init) { cl_Init = true; try { clInitPage(); } catch(e) { console.error(e); } }
-      if (pageId === 'shifts'    && !sh_Init) { sh_Init = true; try { shInitPage(); } catch(e) { console.error(e); } }
+      document.querySelector('.nav-tab[data-page="' + pageId + '"]')?.classList.add('active');
+      if (pageId === 'checklist' && !cl_Init) { cl_Init = true; try { clInitPage(); } catch(e) { console.error('clInitPage error:', e); } }
+      if (pageId === 'shifts'    && !sh_Init) { sh_Init = true; try { shInitPage(); } catch(e) { console.error('shInitPage error:', e); } }
     }
 
     function portalInit() {
-      try { spInitPage(); } catch(e) { console.error(e); }
+      try { spInitPage(); } catch(e) { console.error('spInitPage error:', e); }
     }
 
   </script>
@@ -2459,7 +2418,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
         deploymentOpen: document.getElementById('deploymentBlock').classList.contains('open'),
         shift: currentShift,
         deployment: deployState,
-        counts: Array.from(document.querySelectorAll('.task-count')).map(inp => ({ id: inp.dataset.countFor, value: inp.value })),
+        counts: Array.from(document.querySelectorAll('#page-checklist .task-count')).map(inp => ({ id: inp.dataset.countFor, value: inp.value })),
         countNew: document.getElementById('countNew').textContent,
         countLost: document.getElementById('countLost').textContent,
         notesNew: document.getElementById('notesNew').value,
@@ -2760,10 +2719,10 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
       document.getElementById('workDate').valueAsDate = new Date();
       checkReminders();
       clLoadState();
-      document.querySelectorAll('.group-header').forEach(header => {
+      document.querySelectorAll('#page-checklist .group-header').forEach(header => {
         header.addEventListener('click', () => { header.parentElement.classList.toggle('open'); clSaveState(); });
       });
-      document.querySelectorAll('.subtask').forEach(subtask => {
+      document.querySelectorAll('#page-checklist .subtask').forEach(subtask => {
         subtask.addEventListener('click', function(e) {
           const checkbox = this.querySelector('input[type="checkbox"]');
           const isCount = e.target.classList.contains('task-count');
@@ -2771,7 +2730,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
           clSaveState(); updateAllProgress();
         });
       });
-      document.querySelectorAll('.task-count').forEach(inp => { inp.addEventListener('input', clSaveState); });
+      document.querySelectorAll('#page-checklist .task-count').forEach(inp => { inp.addEventListener('input', clSaveState); });
       document.getElementById('notesNew').addEventListener('input', clSaveState);
       document.getElementById('notesLost').addEventListener('input', clSaveState);
       document.getElementById('inetCount').addEventListener('input', function() { renderInetTimes(parseInt(this.value) || 0); clSaveState(); });
@@ -2784,13 +2743,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
   
   </script>
   <script>
-    // ===== AUTH =====
-    const AUTH_SESSION_KEY = 'admin';
-    const AUTH_PASSWORDS = ['VELES_2024', 'impl_dept'];
-    function doAuth() { const val = document.getElementById('authInput').value; const err = document.getElementById('authError'); if (AUTH_PASSWORDS.includes(val)) { sessionStorage.setItem(AUTH_SESSION_KEY, '1'); const overlay = document.getElementById('authOverlay'); overlay.classList.add('hidden'); setTimeout(() => overlay.remove(), 350); } else { err.textContent = 'Неверный пароль'; document.getElementById('authInput').value = ''; document.getElementById('authInput').focus(); setTimeout(() => { err.textContent = ''; }, 2500); } }
-    (function checkAuth() { if (sessionStorage.getItem(AUTH_SESSION_KEY) === '1') { document.getElementById('authOverlay').remove(); } else { window.addEventListener('load', () => { document.getElementById('authInput')?.focus(); }); } })();
-
-    const SHEET_ID = "1CU56AZdWC9dCvkf_z6CWMtrgfuWRCG3HYx7hp79vI_c";
+        const SHEET_ID = "1CU56AZdWC9dCvkf_z6CWMtrgfuWRCG3HYx7hp79vI_c";
     const SHEET_NAME = "Для печати🖨️";
     const STATUS_SHEET_NAME = "Свод_журналов_СПГ+ТСБ";
     const STATUS_RANGE = "Q1:R2";
@@ -2802,16 +2755,16 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     const STATUS_DONE = "Данные зафиксированы";
     const STORAGE_KEY = 'itssupport_cl2_v1';
 
-    function saveState() { const state = { tasks: Array.from(document.querySelectorAll('input[type="checkbox"]')).map(cb => ({ id: cb.dataset.taskId, checked: cb.checked })), date: document.getElementById('workDate').value, name: document.getElementById('workerName').value, groups: Array.from(document.querySelectorAll('.task-group')).map(g => ({ id: g.dataset.group, open: g.classList.contains('open') })), tableOpen: document.querySelector('[data-tgroup="lines"]').classList.contains('open'), mapOpen: document.querySelector('[data-map-section="ble"]').classList.contains('open'), currentLine, countNew: document.getElementById('countNew').textContent, countLost: document.getElementById('countLost').textContent, notesNew: document.getElementById('notesNew').value, notesLost: document.getElementById('notesLost').value }; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function shSaveState() { const state = { tasks: Array.from(document.querySelectorAll('#page-shifts input[type="checkbox"]')).map(cb => ({ id: cb.dataset.taskId, checked: cb.checked })), date: document.getElementById('sh_workDate').value, name: document.getElementById('sh_workerName').value, groups: Array.from(document.querySelectorAll('#page-shifts .task-group')).map(g => ({ id: g.dataset.group, open: g.classList.contains('open') })), tableOpen: document.querySelector('#page-shifts [data-tgroup="lines"]').classList.contains('open'), mapOpen: document.querySelector('#page-shifts [data-map-section="ble"]').classList.contains('open'), currentLine, countNew: document.getElementById('sh_countNew').textContent, countLost: document.getElementById('sh_countLost').textContent, notesNew: document.getElementById('sh_notesNew').value, notesLost: document.getElementById('sh_notesLost').value }; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
-    function loadState() { try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (saved) { saved.tasks?.forEach(({ id, checked }) => { const cb = document.querySelector(`[data-task-id="${id}"]`); if (cb) { cb.checked = checked; cb.closest('.subtask').classList.toggle('completed', checked); } }); if (saved.date) document.getElementById('workDate').value = saved.date; if (saved.name) document.getElementById('workerName').value = saved.name; saved.groups?.forEach(({ id, open }) => { const group = document.querySelector(`[data-group="${id}"]`); if (group && open) group.classList.add('open'); }); if (saved.tableOpen) document.querySelector('[data-tgroup="lines"]').classList.add('open'); if (saved.mapOpen) document.querySelector('[data-map-section="ble"]').classList.add('open'); if (saved.currentLine) currentLine = saved.currentLine; if (saved.countNew) document.getElementById('countNew').textContent = saved.countNew; if (saved.countLost) document.getElementById('countLost').textContent = saved.countLost; if (saved.notesNew) document.getElementById('notesNew').value = saved.notesNew; if (saved.notesLost) document.getElementById('notesLost').value = saved.notesLost; } } catch (e) {} updateAllProgress(); }
+    function shLoadState() { try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (saved) { saved.tasks?.forEach(({ id, checked }) => { const cb = document.querySelector(`[data-task-id="${id}"]`); if (cb) { cb.checked = checked; cb.closest('.subtask').classList.toggle('completed', checked); } }); if (saved.date) document.getElementById('sh_workDate').value = saved.date; if (saved.name) document.getElementById('sh_workerName').value = saved.name; saved.groups?.forEach(({ id, open }) => { const group = document.querySelector(`#page-shifts [data-group="${id}"]`); if (group && open) group.classList.add('open'); }); if (saved.tableOpen) document.querySelector('#page-shifts [data-tgroup="lines"]').classList.add('open'); if (saved.mapOpen) document.querySelector('#page-shifts [data-map-section="ble"]').classList.add('open'); if (saved.currentLine) currentLine = saved.currentLine; if (saved.countNew) document.getElementById('sh_countNew').textContent = saved.countNew; if (saved.countLost) document.getElementById('sh_countLost').textContent = saved.countLost; if (saved.notesNew) document.getElementById('sh_notesNew').value = saved.notesNew; if (saved.notesLost) document.getElementById('sh_notesLost').value = saved.notesLost; } } catch (e) {} shUpdateAllProgress(); }
 
-    function updateGroupProgress(groupId) { const group = document.querySelector(`[data-group="${groupId}"]`); const tasks = group.querySelectorAll('input[type="checkbox"]'); const checked = group.querySelectorAll('input[type="checkbox"]:checked').length; const percent = tasks.length ? Math.round((checked / tasks.length) * 100) : 0; group.querySelector('.progress-bar').style.width = percent + '%'; return { checked, total: tasks.length }; }
-    function updateAllProgress() { document.querySelectorAll('.task-group').forEach(group => { if (group.dataset.group === 'tag-events-block') return; updateGroupProgress(group.dataset.group); }); }
-    function changeCount(type, delta) { const el = document.getElementById(type === 'new' ? 'countNew' : 'countLost'); const current = parseInt(el.textContent) || 0; el.textContent = Math.max(0, current + delta); saveState(); }
+    function shUpdateGroupProgress(groupId) { const group = document.querySelector(`#page-shifts [data-group="${groupId}"]`); const tasks = group.querySelectorAll('input[type="checkbox"]'); const checked = group.querySelectorAll('input[type="checkbox"]:checked').length; const percent = tasks.length ? Math.round((checked / tasks.length) * 100) : 0; group.querySelector('.progress-bar').style.width = percent + '%'; return { checked, total: tasks.length }; }
+    function shUpdateAllProgress() { document.querySelectorAll('.task-group').forEach(group => { if (group.dataset.group === 'tag-events-block') return; shUpdateGroupProgress(group.dataset.group); }); }
+    function changeCount(type, delta) { const el = document.getElementById(type === 'new' ? 'sh_countNew' : 'sh_countLost'); const current = parseInt(el.textContent) || 0; el.textContent = Math.max(0, current + delta); shSaveState(); }
     function formatTagNumbers(raw) { if (!raw) return ''; return raw.split(/[,;\s]+/).map(s => s.trim()).filter(Boolean).join(', '); }
 
-    function updateReportSection() { const info = labelCounts[currentLine]; const infoEl = document.getElementById("reportLineInfo"); const btn = document.getElementById("reportBtn"); if (!info || info.total === 0) { infoEl.innerHTML = `Откройте блок «Обход по меткам» и выберите маршрут`; btn.disabled = true; return; } const pct = Math.round((info.done / info.total) * 100); const lineLabel = currentLine === "kns" ? "КНС" : currentLine === "2" ? "Линия 3" : currentLine === "night" ? "Ночь" : `Линия ${currentLine}`; const isDone = pct === 100; infoEl.innerHTML = `<span class="pct ${isDone ? 'pct-done' : ''}">${pct}%</span> <strong>${lineLabel}</strong> — выполнено ${info.done} из ${info.total} меток`; btn.disabled = false; }
+    function updateReportSection() { const info = labelCounts[currentLine]; const infoEl = document.getElementById("sh_reportLineInfo"); const btn = document.getElementById("sh_reportBtn"); if (!info || info.total === 0) { infoEl.innerHTML = `Откройте блок «Обход по меткам» и выберите маршрут`; btn.disabled = true; return; } const pct = Math.round((info.done / info.total) * 100); const lineLabel = currentLine === "kns" ? "КНС" : currentLine === "2" ? "Линия 3" : currentLine === "night" ? "Ночь" : `Линия ${currentLine}`; const isDone = pct === 100; infoEl.innerHTML = `<span class="pct ${isDone ? 'pct-done' : ''}">${pct}%</span> <strong>${lineLabel}</strong> — выполнено ${info.done} из ${info.total} меток`; btn.disabled = false; }
 
     let currentLine = "1"; let lineData = { "1": null, "2": null, "kns": null, "night": null }; let labelCounts = { "1": { total: 0, done: 0 }, "2": { total: 0, done: 0 }, "kns": { total: 0, done: 0 }, "night": { total: 0, done: 0 } };
     function norm(s) { return String(s ?? "").toLowerCase().replace(/\s/g, ""); }
@@ -2819,7 +2772,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     function isIntLike(s) { return /^[0-9]+$/.test(String(s).trim()); }
     function esc(str) { return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
 
-    function updateBadges() { ["1","2","kns","night"].forEach(k => { const id = k === "kns" ? "badgeKns" : k === "night" ? "badgeNight" : "badge" + k; const el = document.getElementById(id); const info = labelCounts[k]; el.textContent = info.total > 0 ? `${info.done}/${info.total}` : "—"; }); let total = 0, done = 0; Object.values(labelCounts).forEach(v => { total += v.total; done += v.done; }); const pct = total > 0 ? Math.round((done / total) * 100) : 0; document.getElementById("linesProgressBar").style.width = pct + '%'; }
+    function updateBadges() { ["1","2","kns","night"].forEach(k => { const id = k === "kns" ? "sh_badgeKns" : k === "night" ? "sh_badgeNight" : "badge" + k; const el = document.getElementById(id); const info = labelCounts[k]; el.textContent = info.total > 0 ? `${info.done}/${info.total}` : "—"; }); let total = 0, done = 0; Object.values(labelCounts).forEach(v => { total += v.total; done += v.done; }); const pct = total > 0 ? Math.round((done / total) * 100) : 0; document.getElementById("sh_linesProgressBar").style.width = pct + '%'; }
 
     async function loadLine(lineKey, force = false) { if (lineData[lineKey] && !force) { renderLine(lineKey); return; } setTableContent(`<tr><td class="table-loading" colspan="99">Загрузка…</td></tr>`); const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_NAME)}&range=${encodeURIComponent(GROUPS[lineKey])}&headers=1&t=${Date.now()}`; try { const res = await fetch(url); const text = await res.text(); const json = JSON.parse(text.substring(47).slice(0, -2)); const table = json.table; const headers = table.cols.map(c => cellText(c.label || "")); let rows = table.rows.map(r => (r.c || []).map(c => cellText(c ? c.v : ""))).filter(row => row.some(c => c.trim() !== "")); const labelIdx = headers.findIndex(h => norm(h).includes("метк")); const statusIdx = headers.findIndex(h => norm(h) === norm(STATUS_COL_NAME)); if (statusIdx !== -1) { rows.sort((a, b) => { const rank = v => { const s = v.trim(); if (s === STATUS_WAIT || s === '') return 0; if (s === STATUS_DONE) return 2; return 1; }; return rank(a[statusIdx]) - rank(b[statusIdx]); }); } labelCounts[lineKey] = { total: rows.filter(r => labelIdx !== -1 && isIntLike(r[labelIdx])).length, done: rows.filter(r => statusIdx !== -1 && r[statusIdx].trim() === STATUS_DONE).length }; lineData[lineKey] = { headers, rows, labelIdx, statusIdx }; updateBadges(); updateReportSection(); renderLine(lineKey); } catch(e) { setTableContent(`<tr><td class="table-error" colspan="99">Ошибка загрузки данных</td></tr>`); } }
 
@@ -2829,7 +2782,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     async function loadStatusBox() { try { const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(STATUS_SHEET_NAME)}&range=${encodeURIComponent(STATUS_RANGE)}&headers=0&t=${Date.now()}`; const res = await fetch(url); const text = await res.text(); const json = JSON.parse(text.substring(47).slice(0, -2)); const lines = json.table.rows.map(r => r.c.map(c => cellText(c?.v)).filter(Boolean).join(" ")).filter(Boolean); const box = document.getElementById("sh_statusBox"); if (lines.length) { document.getElementById("sh_statusText").textContent = lines.join(" · "); box.style.display = "flex"; } else box.style.display = "none"; } catch { document.getElementById("sh_statusBox").style.display = "none"; } }
 
     async function refreshData() { const btn = document.getElementById("sh_refreshBtn"); btn.disabled = true; btn.textContent = "⌛"; (new Image()).src = `${TRIGGER_WEBAPP_URL}?token=${TRIGGER_TOKEN}&t=${Date.now()}`; lineData[currentLine] = null; setTimeout(async () => { await loadLine(currentLine, true); await loadStatusBox(); btn.disabled = false; btn.textContent = "↺ Обновить"; }, 3000); }
-    function switchLine(lineKey) { currentLine = lineKey; document.querySelectorAll('#page-shifts .line-tab').forEach(t => t.classList.toggle('active', t.dataset.line === lineKey)); document.getElementById("sh_tableSearch").value = ""; loadLine(lineKey); updateReportSection(); saveState(); }
+    function switchLine(lineKey) { currentLine = lineKey; document.querySelectorAll('#page-shifts .line-tab').forEach(t => t.classList.toggle('active', t.dataset.line === lineKey)); document.getElementById("sh_tableSearch").value = ""; loadLine(lineKey); updateReportSection(); shSaveState(); }
 
     function exportReport() { const name = document.getElementById('sh_workerName').value || 'Команда'; const date = document.getElementById('sh_workDate').value || new Date().toLocaleDateString('ru-RU'); const info = labelCounts[currentLine]; const lineLabel = currentLine === "kns" ? "КНС" : currentLine === "2" ? "Линия 3" : currentLine === "night" ? "Ночь" : `Линия ${currentLine}`; const pct = info.total > 0 ? Math.round((info.done / info.total) * 100) : 0; let report = `@NURLAN_MURZABAEV @Ruslanburangulovv\n📅 ${date}\nОтчёт по обходу:\n${name}\nМаршрут: ${lineLabel}\nВыполнено: ${info.done}/${info.total} меток (${pct}%)\n`; const countNew = parseInt(document.getElementById('sh_countNew').textContent) || 0; const countLost = parseInt(document.getElementById('sh_countLost').textContent) || 0; const notesNew = formatTagNumbers(document.getElementById('sh_notesNew').value.trim()); const notesLost = formatTagNumbers(document.getElementById('sh_notesLost').value.trim()); if (countNew > 0) { report += `\nНовые метки: ${countNew} шт.`; if (notesNew) report += `\nНомера: ${notesNew}`; report += `\n`; } if (countLost > 0) { report += `\nПотерянные метки: ${countLost} шт.`; if (notesLost) report += `\nНомера: ${notesLost}`; report += `\n`; } openReportModal(report); }
     function openReportModal(text) { document.getElementById('sh_reportTextarea').value = text; document.getElementById('sh_reportModal').classList.add('open'); const btn = document.getElementById('sh_btnCopy'); btn.textContent = '📋 Скопировать'; btn.classList.remove('copied'); }
@@ -2898,15 +2851,15 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     function shInitPage() {
       document.getElementById('sh_workDate').valueAsDate = new Date();
       checkReminders();
-      loadState();
+      shLoadState();
       document.querySelectorAll('#page-shifts .group-header').forEach(header => {
-        header.addEventListener('click', () => { header.parentElement.classList.toggle('open'); saveState(); });
+        header.addEventListener('click', () => { header.parentElement.classList.toggle('open'); shSaveState(); });
       });
       document.querySelectorAll('#page-shifts .subtask').forEach(subtask => {
         subtask.addEventListener('click', function(e) {
           const checkbox = this.querySelector('input[type="checkbox"]');
           if (e.target !== checkbox && checkbox) { checkbox.checked = !checkbox.checked; this.classList.toggle('completed', checkbox.checked); }
-          saveState(); updateAllProgress();
+          shSaveState(); shUpdateAllProgress();
         });
       });
       const tableGroupHeader = document.querySelector('#page-shifts .table-group-header');
@@ -2915,7 +2868,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
         const wasOpen = tableGroup.classList.contains('open');
         tableGroup.classList.toggle('open');
         if (!wasOpen) { ["1","2","kns","night"].forEach(k => { if (!lineData[k]) loadLine(k); }); loadStatusBox(); }
-        saveState();
+        shSaveState();
       });
       document.querySelectorAll('#page-shifts .line-tab').forEach(tab => {
         tab.addEventListener('click', () => switchLine(tab.dataset.line));
@@ -2947,7 +2900,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
           mapSection.classList.toggle('open');
           if (!wasOpen && !bleMapInitialized) { loadBleMap(); }
           if (!wasOpen && bleMap) { setTimeout(() => bleMap.invalidateSize(), 300); }
-          saveState();
+          shSaveState();
         });
         if (mapSection.classList.contains('open') && !bleMapInitialized) loadBleMap();
       }
@@ -2961,7 +2914,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     }
 
     window.addEventListener('beforeunload', saveState);
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) saveState(); });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) shSaveState(); });
 
   </script>
 </body>
