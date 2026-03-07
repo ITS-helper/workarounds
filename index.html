@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <style>
-
     /* ===== PORTAL SHARED BASE ===== */
     :root {
       --primary: #1565C0; --secondary: #1976D2; --accent: #2196F3;
@@ -43,7 +42,7 @@
 
     /* ===== LAYOUT ===== */
     .app-layout { display: flex; min-height: 100vh; }
-    
+
     /* ===== SIDEBAR ===== */
     .sidebar {
       width: var(--sidebar-w); background: #fff; border-right: 1px solid var(--border);
@@ -113,6 +112,8 @@
 
   </style>
   <style>
+  </style>
+  <style>
     /* === SPRAVKA CSS === */
 header { background: #fff; padding: 0; box-shadow: 0 1px 3px rgba(21,101,192,0.06); position: sticky; top: 0; z-index: 100; border-bottom: 2px solid #2196F3; }
     .header-inner { max-width: 900px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 16px; }
@@ -132,8 +133,8 @@ header { background: #fff; padding: 0; box-shadow: 0 1px 3px rgba(21,101,192,0.0
     .guide-group h2 .icon { font-size: 1.1em; line-height: 1; display: flex; align-items: center; }
     .group-chevron { color: var(--muted); font-size: 18px; transition: transform 0.3s ease; flex-shrink: 0; }
     .guide-group.open .group-chevron { transform: rotate(180deg); }
-    .guide-
-    .guide-group.open .guide-
+    .guide-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .guide-group.open .guide-body { max-height: 6000px; }
     .guide-inner { padding: 6px 20px 20px; display: flex; flex-direction: column; gap: 0; }
 
     /* SECTIONS */
@@ -234,9 +235,9 @@ header { background: #fff; padding: 0; box-shadow: 0 1px 3px rgba(21,101,192,0.0
     .subsection-toggle-title { font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--secondary); display: flex; align-items: center; gap: 8px; }
     .subsection-toggle-title .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
     .subsection-chevron { color: var(--muted); font-size: 14px; transition: transform 0.3s ease; flex-shrink: 0; }
-    .subsection-
+    .subsection-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     .subsection-wrap.open .subsection-chevron { transform: rotate(180deg); }
-    .subsection-wrap.open .subsection-
+    .subsection-wrap.open .subsection-body { max-height: 3000px; }
     .subsection-wrap.open .subsection-toggle { background: #E3F2FD; border-color: rgba(33,150,243,0.35); }
 
     /* ===== SEARCH ===== */
@@ -464,8 +465,8 @@ header {
     .deployment-chevron { color: var(--muted); font-size: 18px; transition: transform 0.3s ease; flex-shrink: 0; }
     .deployment-block.open .deployment-chevron { transform: rotate(180deg); }
 
-    .deployment-
-    .deployment-block.open .deployment-
+    .deployment-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .deployment-block.open .deployment-body { max-height: 1200px; }
     .deployment-inner { padding: 8px 16px 20px; }
 
     .pool-label {
@@ -656,7 +657,7 @@ header {
       display: flex; align-items: center; justify-content: center; transition: all 0.15s;
     }
     .modal-close:hover { background: #FFEBEE; color: var(--danger); }
-    .modal-
+    .modal-body { padding: 16px 20px; flex: 1; overflow-y: auto; }
     .modal-body textarea {
       width: 100%; min-height: 220px; resize: vertical;
       padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px;
@@ -823,10 +824,8 @@ header {
     </div>
   </div>
 
-  <!-- SIDEBAR OVERLAY -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-logo">
@@ -847,13 +846,12 @@ header {
       </div>
       <div class="nav-item" data-page="shifts" onclick="showPage('shifts')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        <span class="nav-label">Чек-лист смены</span>
+        <span class="nav-label">Обходы</span>
       </div>
     </nav>
     <div class="sidebar-footer">ITSSupport © 2025</div>
   </aside>
 
-  <!-- MOBILE TOPBAR -->
   <div class="topbar">
     <button class="topbar-menu-btn" onclick="openSidebar()">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#546E7A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -862,10 +860,8 @@ header {
     <div style="width:34px"></div>
   </div>
 
-  <!-- MAIN CONTENT -->
   <div class="main-content">
 
-    <!-- ══════════ PAGE: ШПАРГАЛКА ══════════ -->
     <div class="page active" id="page-spravka">
       <div class="page-header">
         <img src="./images/ITS_logo_horizont.png" alt="ITSSupport" onerror="this.style.display='none'">
@@ -1407,7 +1403,6 @@ header {
       </div>
     </div>
 
-    <!-- ══════════ PAGE: ЧЕК-ЛИСТ ДЕЖУРНОГО ══════════ -->
     <div class="page" id="page-checklist">
       <div class="page-header">
         <img src="./images/ITS_logo_horizont.png" alt="ITSSupport" onerror="this.style.display='none'">
@@ -1734,12 +1729,11 @@ header {
       </div>
     </div>
 
-    <!-- ══════════ PAGE: ЧЕК-ЛИСТ СМЕНЫ ══════════ -->
     <div class="page" id="page-shifts">
       <div class="page-header">
         <img src="./images/ITS_logo_horizont.png" alt="ITSSupport" onerror="this.style.display='none'">
         <div class="page-header-info">
-          <span class="page-header-title">Чек-лист смены — Линии и КНС</span>
+          <span class="page-header-title">Обходы — Линии и КНС</span>
           <span class="page-header-sub">Обход меток по маршрутам</span>
         </div>
       </div>
@@ -1870,18 +1864,15 @@ header {
       </div>
     </div>
 
-  </div><!-- /main-content -->
+  </div>
 
   <canvas id="confetti"></canvas>
 
-  <!-- LEAFLET -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
-  <!-- PORTAL SHARED -->
   <script>
-
-    // ===== PORTAL SHARED AUTH =====
+    // ===== PORTAL AUTH =====
     const AUTH_SESSION_KEY = 'portal_auth';
     const AUTH_PASSWORDS = ['VELES_2024', 'impl_dept'];
 
@@ -1913,8 +1904,8 @@ header {
       }
     })();
 
-    // ===== SIDEBAR NAV =====
-    const PAGE_TITLES = { spravka: 'Шпаргалка', checklist: 'Чек-лист дежурного', shifts: 'Чек-лист смены' };
+    // ===== NAVIGATION =====
+    const PAGE_TITLES = { spravka: 'Шпаргалка', checklist: 'Чек-лист дежурного', shifts: 'Обходы' };
     let cl_Initialized = false, shifts_Initialized = false;
 
     function showPage(pageId) {
@@ -1922,7 +1913,8 @@ header {
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       document.getElementById('page-' + pageId)?.classList.add('active');
       document.querySelector(`.nav-item[data-page="${pageId}"]`)?.classList.add('active');
-      document.getElementById('topbarTitle').textContent = PAGE_TITLES[pageId] || '';
+      const titleEl = document.getElementById('topbarTitle');
+      if (titleEl) titleEl.textContent = PAGE_TITLES[pageId] || '';
       closeSidebar();
       if (pageId === 'checklist' && !cl_Initialized) {
         cl_Initialized = true;
@@ -1944,16 +1936,13 @@ header {
     }
 
     function portalInit() {
-      // Init spravka immediately (it's the default page)
       try { spInitPage(); } catch(e) { console.error('SP init error:', e); }
     }
-
   </script>
 
-  <!-- SPRAVKA -->
   <script>
-    function spInitPage() {
-    }const SCREENSHOTS = [
+    /* SPRAVKA */
+const SCREENSHOTS = [
       ['./images/ble-screen-1.jpg', 'Скрин 1 — Отправка данных на сервер'],
       ['./images/ble-screen-2.jpg', 'Скрин 2 — Настройки метки (тип, зона, период)'],
       ['./images/ble-screen-3.jpg', 'Скрин 3 — BackEnd: поставлена на учёт'],
@@ -2029,7 +2018,7 @@ header {
       } catch (e) {}
     }
 
-    function spInitPage() { loadState(); }
+    
     window.addEventListener('beforeunload', saveState);
 
     // ===== SEARCH =====
@@ -2146,15 +2135,17 @@ header {
         if (input) { e.preventDefault(); input.focus(); input.select(); }
       }
     });
-  
+
+    function spInitPage() {
+      loadState();
     }
+
   </script>
 
-  <!-- CHECKLIST -->
   <script>
-    function clInitPage() {
+    /* CHECKLIST */
 
-    // ===== AUTH =====    }const CL_STORAGE_KEY = 'itssupport_checklist_v5';
+    // ===== AUTH =====const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     const SCHEDULE_SHEET_ID = '1h-GMxdT2z3MC-somIq8sX3iV6KfjaoCffIIfeBQezRk';
     const SCHEDULE_SHEET_NAME = 'график 2026';
     const MONTH_NAMES = ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
@@ -2639,7 +2630,7 @@ header {
         const row = document.createElement('div');
         row.className = 'inet-time-row';
         row.innerHTML = `<span class="inet-label">${i + 1}.</span><input type="time" class="inet-from" value="${oldValues[i]?.from || ''}"><span style="color:var(--muted);font-size:13px;">—</span><input type="time" class="inet-to" value="${oldValues[i]?.to || ''}">`;
-        row.querySelectorAll('input').forEach(inp => inp.addEventListener('change', saveState));
+        row.querySelectorAll('input').forEach(inp => inp.addEventListener('change', clSaveState));
         container.appendChild(row);
       }
     }
@@ -2850,7 +2841,6 @@ header {
     }
 
     function clInitPage() {
-
       document.getElementById('workDate').valueAsDate = new Date();
       checkReminders();
       clLoadState();
@@ -2865,23 +2855,22 @@ header {
           clSaveState(); updateAllProgress();
         });
       });
-      document.querySelectorAll('.task-count').forEach(inp => { inp.addEventListener('input', saveState); });
-      document.getElementById('notesNew').addEventListener('input', saveState);
-      document.getElementById('notesLost').addEventListener('input', saveState);
+      document.querySelectorAll('.task-count').forEach(inp => { inp.addEventListener('input', clSaveState); });
+      document.getElementById('notesNew').addEventListener('input', clSaveState);
+      document.getElementById('notesLost').addEventListener('input', clSaveState);
       document.getElementById('inetCount').addEventListener('input', function() { renderInetTimes(parseInt(this.value) || 0); clSaveState(); });
       document.getElementById('workDate').addEventListener('change', () => { clSaveState(); updateReportMeta(); });
       document.getElementById('workerName').addEventListener('input', () => { clSaveState(); updateReportMeta(); });
     }
-;
 
-    window.addEventListener('beforeunload', saveState);
+
+    window.addEventListener('beforeunload', clSaveState);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) clSaveState(); });
   
-    }
   </script>
 
-  <!-- SHIFTS -->
   <script>
+    /* SHIFTS */
 // ===== SHIFTS PAGE SCRIPT (Линии и КНС) =====
 const CL2_SHEET_ID = "1CU56AZdWC9dCvkf_z6CWMtrgfuWRCG3HYx7hp79vI_c";
 const CL2_SHEET_NAME_PRINT = "Для печати🖨️";
@@ -3505,6 +3494,21 @@ function shCopyReport() {
     if (btn) { btn.textContent = '✅ Скопировано'; setTimeout(() => { btn.textContent = '📋 Скопировать'; }, 2000); }
   });
 }
+  // Group headers for table-group and map-section
+  document.querySelectorAll('#page-shifts .table-group-header').forEach(h => {
+    h.addEventListener('click', () => {
+      const g = h.closest('.table-group');
+      if (g) { g.classList.toggle('open'); cl2SaveState(); }
+    });
+  });
+  document.querySelectorAll('#page-shifts .map-section-header').forEach(h => {
+    h.addEventListener('click', () => {
+      const g = h.closest('.map-section');
+      if (g) { g.classList.toggle('open'); cl2SaveState(); }
+    });
+  });
+
+
 
   </script>
 
