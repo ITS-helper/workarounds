@@ -29,14 +29,14 @@
     .topnav-logo { display: flex; align-items: center; padding: 0 16px 0 12px; border-right: 1px solid var(--border); gap: 8px; flex-shrink: 0; }
     .topnav-logo img { height: 28px; width: auto; max-width: 120px; object-fit: contain; }
     .topnav-logo-text { font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 700; color: var(--primary); letter-spacing: 0.1em; text-transform: uppercase; display: none; }
-    .topnav-tabs { display: flex; align-items: center; gap: 4px; padding: 6px 12px; flex: 1; }
-    .nav-tab { display: flex; align-items: center; gap: 7px; padding: 7px 18px; border-radius: 8px; border: 1.5px solid transparent; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 0.8em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); transition: all 0.18s ease; user-select: none; background: transparent; }
+    .topnav-tabs { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; flex: 1; }
+    .nav-tab { display: flex; align-items: center; gap: 8px; padding: 8px 22px; border-radius: 8px; border: 1.5px solid transparent; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 0.96em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); transition: all 0.18s ease; user-select: none; background: transparent; }
     .nav-tab:hover { background: #EEF6FF; color: var(--primary); border-color: rgba(33,150,243,0.2); }
     .nav-tab.active { background: #EEF6FF; color: var(--primary); border-color: rgba(33,150,243,0.35); box-shadow: 0 1px 4px rgba(33,150,243,0.12); }
     .nav-tab svg { flex-shrink: 0; }
     .page { display: none; }
     .page.active { display: block; }
-    @media (max-width: 600px) { .topnav-logo { padding: 0 10px 0 8px; } .topnav-tabs { padding: 5px 6px; gap: 3px; } .nav-tab { padding: 6px 10px; font-size: 0.72em; } .nav-tab svg { display: none; } }
+    @media (max-width: 600px) { .topnav-logo { padding: 0 10px 0 8px; } .topnav-tabs { padding: 6px 6px; gap: 4px; } .nav-tab { padding: 7px 12px; font-size: 0.86em; } .nav-tab svg { display: none; } }
 </style>
   <style>
     .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background-clip: padding-box; border-radius: 50%; }
@@ -48,13 +48,13 @@
 </style>
   <style>/* SPRAVKA */
 header { background: #fff; padding: 0; box-shadow: 0 1px 3px rgba(21,101,192,0.06); position: sticky; top: 0; z-index: 100; border-bottom: 2px solid #2196F3; }
-    .header-inner { max-width: 900px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 16px; }
+    .header-inner { max-width: 1100px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 16px; }
     header img { height: 36px; width: auto; max-width: 160px; object-fit: contain; }
     .header-title-wrap { display: flex; flex-direction: column; gap: 2px; border-left: 1px solid #E8EDF2; padding-left: 16px; }
     .header-title { font-family: 'Oswald', sans-serif; font-size: 0.75em; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #78909C; border: none; padding: 0; }
     .header-subtitle { font-family: 'Source Sans 3', sans-serif; font-size: 0.7em; color: #b0bec5; letter-spacing: 0; }
 
-    .container { max-width: 900px; margin: 0 auto 40px auto; padding: 24px 20px; }
+    .container { max-width: 1100px; margin: 0 auto 40px auto; padding: 24px 20px; }
 
     /* GUIDE GROUPS */
     .guide-group { margin-bottom: 16px; background: var(--card-bg); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); border: 1px solid var(--border); overflow: hidden; transition: box-shadow 0.25s ease, border-color 0.25s ease; }
@@ -232,7 +232,7 @@ header {
       border-bottom: 2px solid #2196F3;
     }
     .header-inner {
-      max-width: 900px; margin: 0 auto;
+      max-width: 1100px; margin: 0 auto;
       padding: 12px 20px; display: flex; align-items: center; gap: 16px;
     }
     header img { height: 36px; width: auto; max-width: 160px; object-fit: contain; }
@@ -242,7 +242,7 @@ header {
       border-left: 1px solid #E8EDF2; padding-left: 16px;
     }
 
-    .container { max-width: 900px; margin: 0 auto 40px auto; padding: 24px 20px; }
+    .container { max-width: 1100px; margin: 0 auto 40px auto; padding: 24px 20px; }
 
     .intro {
       background: #fff; padding: 18px 22px; border-radius: 12px;
