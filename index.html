@@ -766,7 +766,7 @@ header {
       <span class="topnav-logo-text">ITS</span>
     </div>
     <div class="topnav-tabs">
-      <button class="nav-tab" data-page="checklist" onclick="showPage('checklist')">
+      <button class="nav-tab active" data-page="checklist" onclick="showPage('checklist')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Чек-лист дежурного
       </button>
@@ -780,7 +780,7 @@ header {
       </button>
     </div>
   </nav>
-  <div id="page-checklist" class="page">
+  <div id="page-checklist" class="page active">
     <div class="container"><div class="intro">
       <div class="intro-field">
         <label>Дата</label>
@@ -1108,7 +1108,7 @@ header {
   <div id="page-obhody" class="page">
     <iframe src="map.html" title="Обходы" style="width:100%;height:calc(100vh - 52px);border:none;display:block;"></iframe>
   </div>
-  <div id="page-spravka" class="page active">
+  <div id="page-spravka" class="page">
     <div class="container"><div class="search-bar">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input type="text" id="searchInput" placeholder="Поиск по шпаргалке..." oninput="handleSearch(this.value)" autocomplete="off" spellcheck="false">
@@ -1676,7 +1676,7 @@ header {
       document.querySelector('.nav-tab[data-page="' + pageId + '"]')?.classList.add('active');
       if (pageId === 'checklist' && !cl_Init) { cl_Init = true; try { clInitPage(); } catch(e) { console.error('clInitPage:', e); } }
     }
-    function portalInit() { try { spInitPage(); } catch(e) { console.error('spInitPage:', e); } }
+    function portalInit() { try { spInitPage(); } catch(e) { console.error('spInitPage:', e); } cl_Init = true; try { clInitPage(); } catch(e) { console.error('clInitPage:', e); } }
 </script>
   <script>const SCREENSHOTS = [
       ['./images/ble-screen-1.jpg', 'Скрин 1 — Отправка данных на сервер'],
