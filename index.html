@@ -2599,5 +2599,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     window.addEventListener('beforeunload', clSaveState);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) clSaveState(); });
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase-sync.js"></script>
 </body>
 </html>
