@@ -25,11 +25,11 @@
     .auth-btn { width: 100%; font-family: 'Oswald', sans-serif; font-size: 0.95em; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 600; padding: 12px; border-radius: 999px; border: none; background: #2196F3; color: #fff; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(33,150,243,0.3); }
     .auth-btn:hover { background: #1E88E5; transform: translateY(-1px); }
     .auth-error { font-size: 13px; color: #EF5350; text-align: center; min-height: 18px; }
-    .topnav { background: #fff; border-bottom: 2px solid var(--accent); box-shadow: 0 1px 6px rgba(21,101,192,0.08); position: sticky; top: 0; z-index: 200; display: flex; align-items: stretch; padding: 0; }
-    .topnav-logo { display: flex; align-items: center; padding: 0 16px 0 12px; border-right: 1px solid var(--border); gap: 8px; flex-shrink: 0; }
+    .topnav { background: #fff; border-bottom: 2px solid var(--accent); box-shadow: 0 1px 6px rgba(21,101,192,0.08); position: sticky; top: 0; z-index: 200; display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; padding: 0; }
+    .topnav-logo { display: flex; align-items: center; padding: 0 16px 0 12px; border-right: 1px solid var(--border); gap: 8px; grid-column: 1; justify-self: start; }
     .topnav-logo img { height: 28px; width: auto; max-width: 120px; object-fit: contain; }
     .topnav-logo-text { font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 700; color: var(--primary); letter-spacing: 0.1em; text-transform: uppercase; display: none; }
-    .topnav-tabs { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; flex: 1; }
+    .topnav-tabs { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; grid-column: 2; }
     .nav-tab { display: flex; align-items: center; gap: 8px; padding: 8px 22px; border-radius: 8px; border: 1.5px solid transparent; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 0.96em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); transition: all 0.18s ease; user-select: none; background: transparent; }
     .nav-tab:hover { background: #EEF6FF; color: var(--primary); border-color: rgba(33,150,243,0.2); }
     .nav-tab.active { background: #EEF6FF; color: var(--primary); border-color: rgba(33,150,243,0.35); box-shadow: 0 1px 4px rgba(33,150,243,0.12); }
@@ -37,6 +37,8 @@
     .page { display: none; }
     .page.active { display: block; }
     @media (max-width: 600px) { .topnav-logo { padding: 0 10px 0 8px; } .topnav-tabs { padding: 6px 6px; gap: 4px; } .nav-tab { padding: 7px 12px; font-size: 0.86em; } .nav-tab svg { display: none; } }
+    @media (max-width: 768px) { .container, .header-inner { max-width: 100%; padding-left: 14px; padding-right: 14px; } .container { padding-top: 20px; padding-bottom: 24px; } }
+    @media (max-width: 480px) { .container, .header-inner { padding-left: 12px; padding-right: 12px; } }
 </style>
   <style>
     .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background-clip: padding-box; border-radius: 50%; }
@@ -838,7 +840,7 @@ header {
 
           <div class="pool-label">
             Нераспределённые инженеры
-            <span class="pool-count" id="poolCount">15</span>
+            <span class="pool-count" id="poolCount">17</span>
           </div>
           <div class="pool-zone" id="pool" data-zone="pool" data-hint="Все распределены ✓"></div>
 
@@ -2053,13 +2055,15 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
       'Гаджиев Ильгар', 'Зацепин Никита', 'Кумейко Николай',
       'Окунев Александр', 'Смирнов Павел', 'Устян Авенир',
       'Шуйский Иван', 'Савчук Руслан', 'Насыров Максим',
-      'Бурангулов Руслан', 'Жарков Александр', 'Газизуллин Рустам'
+      'Бурангулов Руслан', 'Жарков Александр', 'Газизуллин Рустам',
+      'Магомедов Султан', 'Аюшеев Дандар'
     ];
 
     const AVATAR_COLORS = [
       '#1565C0','#00897B','#E53935','#5E35B1','#0277BD',
       '#00695C','#BF360C','#6A1B9A','#01579B','#004D40',
-      '#B71C1C','#4527A0','#006064','#E65100','#1B5E20'
+      '#B71C1C','#4527A0','#006064','#E65100','#1B5E20',
+      '#37474F','#795548'
     ];
 
     function getInitials(name) {
