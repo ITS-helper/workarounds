@@ -1094,14 +1094,14 @@ header {
     <div class="reminders-container" id="sh_remindersContainer"></div>
 
     <div class="task-group" data-group="sh-morning">
-      <div class="group-header" onclick="this.parentElement.classList.toggle('open');try{shSaveState();}catch(e){}"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg></span> Утро (6:00–8:00)</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-morning"></div></div></div>
+      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg></span> Утро (6:00–8:00)</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-morning"></div></div></div>
       <div class="subtasks"><div class="subtasks-inner">
         <div class="subtask"><input type="checkbox" data-task-id="sh-morning-2"><span>Выдача часов в окне 6:00–8:00. Уборка полок с часами</span></div>
       </div></div>
     </div>
 
     <div class="task-group" data-group="sh-prep">
-      <div class="group-header" onclick="this.parentElement.classList.toggle('open');try{shSaveState();}catch(e){}"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span> Подготовка к обходу</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-prep"></div></div></div>
+      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span> Подготовка к обходу</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-prep"></div></div></div>
       <div class="subtasks"><div class="subtasks-inner">
         <div class="subtask"><input type="checkbox" data-task-id="sh-prep-1"><span>Запуск смены на часах, получение отладочного устройства</span></div>
         <div class="subtask"><input type="checkbox" data-task-id="sh-prep-2"><span>Обновление меток в мобильном приложении</span></div>
@@ -1111,7 +1111,7 @@ header {
     </div>
 
     <div class="table-group open" data-tgroup="lines">
-      <div class="table-group-header" onclick="this.parentElement.classList.toggle('open');if(this.parentElement.classList.contains('open')){['1','2','kns','night'].forEach(k=>{if(!lineData[k])loadLine(k)});loadStatusBox();}try{shSaveState();}catch(e){}"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> Обход по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" id="sh_linesProgressBar"></div></div></div>
+      <div class="table-group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> Обход по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" id="sh_linesProgressBar"></div></div></div>
       <div class="table-body"><div class="table-inner">
         <div class="line-tabs">
           <button class="line-tab active" data-line="1">Линия 1 <span class="tab-badge" id="sh_badge1">—</span></button>
@@ -1127,7 +1127,7 @@ header {
     </div>
 
           <div class="map-section open" data-map-section="ble">
-      <div class="map-section-title"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Карта BLE-меток</h2></div>
+      <div class="map-section-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Карта BLE-меток</h2><span class="group-chevron">▼</span></div></div>
       <div class="map-body"><div class="map-inner">
         <div id="sh_mapAuthBlock" class="map-auth-bar" style="display:none"></div>
         <div id="sh_mapMsg" class="map-msg" style="display:none"></div>
@@ -1154,7 +1154,7 @@ header {
     </div>
 
     <div class="task-group" data-group="sh-tag-events">
-      <div class="group-header" onclick="this.parentElement.classList.toggle('open');try{shSaveState();}catch(e){}"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span> Изменения по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-tag-events" style="width:0%"></div></div></div>
+      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span> Изменения по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-tag-events" style="width:0%"></div></div></div>
       <div class="subtasks"><div class="subtasks-inner">
         <div class="tag-events">
           <div class="tag-event-block tag-event-new"><div class="tag-event-header"><span class="tag-event-icon">＋</span><span class="tag-event-title">Новые метки</span><div class="tag-event-counter"><button class="counter-btn" onclick="sh_changeCount('new',-1)">−</button><span id="sh_countNew">0</span><button class="counter-btn" onclick="sh_changeCount('new',1)">＋</button></div></div><textarea id="sh_notesNew" class="tag-event-notes" placeholder="Номера новых меток: 101, 205..."></textarea></div>
@@ -1164,7 +1164,7 @@ header {
     </div>
 
     <div class="task-group" data-group="sh-evening">
-      <div class="group-header" onclick="this.parentElement.classList.toggle('open');try{shSaveState();}catch(e){}"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span> Вечер (18:00–19:30)</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-evening"></div></div></div>
+      <div class="group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span> Вечер (18:00–19:30)</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" data-group="sh-evening"></div></div></div>
       <div class="subtasks"><div class="subtasks-inner">
         <div class="subtask"><input type="checkbox" data-task-id="sh-evening-1"><span>Отчет о нарушениях</span></div>
         <div class="subtask"><input type="checkbox" data-task-id="sh-evening-2"><span>Закрытие смены / перекличка</span></div>
@@ -2715,9 +2715,9 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     const STATUS_DONE = "Данные зафиксированы";
     const STORAGE_KEY = 'itssupport_cl2_v1';
 
-    function shSaveState() { const state = { tasks: Array.from(document.querySelectorAll('#page-shifts input[type="checkbox"]')).map(cb => ({ id: cb.dataset.taskId, checked: cb.checked })), date: document.getElementById('sh_workDate').value, name: document.getElementById('sh_workerName').value, groups: Array.from(document.querySelectorAll('#page-shifts .task-group')).map(g => ({ id: g.dataset.group, open: g.classList.contains('open') })), tableOpen: document.querySelector('#page-shifts [data-tgroup="lines"]').classList.contains('open'), currentLine, countNew: document.getElementById('sh_countNew').textContent, countLost: document.getElementById('sh_countLost').textContent, notesNew: document.getElementById('sh_notesNew').value, notesLost: document.getElementById('sh_notesLost').value }; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function shSaveState() { const state = { tasks: Array.from(document.querySelectorAll('#page-shifts input[type="checkbox"]')).map(cb => ({ id: cb.dataset.taskId, checked: cb.checked })), date: document.getElementById('sh_workDate').value, name: document.getElementById('sh_workerName').value, groups: Array.from(document.querySelectorAll('#page-shifts .task-group')).map(g => ({ id: g.dataset.group, open: g.classList.contains('open') })), tableOpen: document.querySelector('#page-shifts [data-tgroup="lines"]').classList.contains('open'), mapOpen: document.querySelector('#page-shifts [data-map-section="ble"]')?.classList.contains('open'), currentLine, countNew: document.getElementById('sh_countNew').textContent, countLost: document.getElementById('sh_countLost').textContent, notesNew: document.getElementById('sh_notesNew').value, notesLost: document.getElementById('sh_notesLost').value }; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
-    function shLoadState() { try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (saved) { saved.tasks?.forEach(({ id, checked }) => { const cb = document.querySelector(`[data-task-id="${id}"]`); if (cb) { cb.checked = checked; cb.closest('.subtask').classList.toggle('completed', checked); } }); if (saved.date) document.getElementById('sh_workDate').value = saved.date; if (saved.name) document.getElementById('sh_workerName').value = saved.name; saved.groups?.forEach(({ id, open }) => { const group = document.querySelector(`#page-shifts [data-group="${id}"]`); if (group && open) group.classList.add('open'); }); if (saved.tableOpen) document.querySelector('#page-shifts [data-tgroup="lines"]').classList.add('open'); if (saved.currentLine) currentLine = saved.currentLine; if (saved.countNew) document.getElementById('sh_countNew').textContent = saved.countNew; if (saved.countLost) document.getElementById('sh_countLost').textContent = saved.countLost; if (saved.notesNew) document.getElementById('sh_notesNew').value = saved.notesNew; if (saved.notesLost) document.getElementById('sh_notesLost').value = saved.notesLost; } } catch (e) {} shUpdateAllProgress(); }
+    function shLoadState() { try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (saved) { saved.tasks?.forEach(({ id, checked }) => { const cb = document.querySelector(`[data-task-id="${id}"]`); if (cb) { cb.checked = checked; cb.closest('.subtask').classList.toggle('completed', checked); } }); if (saved.date) document.getElementById('sh_workDate').value = saved.date; if (saved.name) document.getElementById('sh_workerName').value = saved.name; saved.groups?.forEach(({ id, open }) => { const group = document.querySelector(`#page-shifts [data-group="${id}"]`); if (group && open) group.classList.add('open'); }); if (saved.tableOpen) document.querySelector('#page-shifts [data-tgroup="lines"]')?.classList.add('open'); if (saved.mapOpen) document.querySelector('#page-shifts [data-map-section="ble"]')?.classList.add('open'); if (saved.currentLine) currentLine = saved.currentLine; if (saved.countNew) document.getElementById('sh_countNew').textContent = saved.countNew; if (saved.countLost) document.getElementById('sh_countLost').textContent = saved.countLost; if (saved.notesNew) document.getElementById('sh_notesNew').value = saved.notesNew; if (saved.notesLost) document.getElementById('sh_notesLost').value = saved.notesLost; } } catch (e) {} shUpdateAllProgress(); }
 
     function shUpdateGroupProgress(groupId) { const group = document.querySelector(`#page-shifts [data-group="${groupId}"]`); const tasks = group.querySelectorAll('input[type="checkbox"]'); const checked = group.querySelectorAll('input[type="checkbox"]:checked').length; const percent = tasks.length ? Math.round((checked / tasks.length) * 100) : 0; group.querySelector('.progress-bar').style.width = percent + '%'; return { checked, total: tasks.length }; }
     function shUpdateAllProgress() { document.querySelectorAll('.task-group').forEach(group => { if (group.dataset.group === 'tag-events-block') return; shUpdateGroupProgress(group.dataset.group); }); }
@@ -2810,6 +2810,34 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
       document.getElementById('sh_workDate').valueAsDate = new Date();
       sh_checkReminders();
       shLoadState();
+      document.querySelectorAll('#page-shifts .group-header').forEach(header => {
+        header.addEventListener('click', () => { header.parentElement.classList.toggle('open'); shSaveState(); });
+      });
+      document.querySelectorAll('#page-shifts .table-group-header').forEach(header => {
+        header.addEventListener('click', () => {
+          const tableGroup = header.parentElement;
+          const wasOpen = tableGroup.classList.contains('open');
+          tableGroup.classList.toggle('open');
+          if (!wasOpen) {
+            ['1','2','kns','night'].forEach(k => { if (!lineData[k]) loadLine(k); });
+            loadStatusBox();
+          }
+          shSaveState();
+        });
+      });
+      const shMapSection = document.querySelector('#page-shifts [data-map-section="ble"]');
+      if (shMapSection) {
+        const shMapHeader = shMapSection.querySelector('.map-section-header');
+        if (shMapHeader) {
+          shMapHeader.addEventListener('click', () => {
+            const wasOpen = shMapSection.classList.contains('open');
+            shMapSection.classList.toggle('open');
+            if (!wasOpen && !bleMapInitialized) loadBleMap();
+            if (!wasOpen && bleMap) setTimeout(() => bleMap.invalidateSize(), 300);
+            shSaveState();
+          });
+        }
+      }
       document.querySelectorAll('#page-shifts .subtask').forEach(subtask => {
         subtask.addEventListener('click', function(e) {
           const checkbox = this.querySelector('input[type="checkbox"]');
