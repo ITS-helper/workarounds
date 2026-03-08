@@ -148,15 +148,14 @@ header { background: #fff; padding: 0; box-shadow: 0 1px 3px rgba(21,101,192,0.0
     kbd { display: inline-block; padding: 2px 7px; border-radius: 5px; background: #E8EDF2; border: 1px solid #CBD5E1; font-family: 'Source Sans 3', sans-serif; font-size: 12.5px; color: #37474F; font-weight: 600; }
 
     /* ZONE TABLE */
-    .zone-table-wrap { margin-top: 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
-    .zone-table { width: 100%; min-width: 320px; border-collapse: collapse; font-size: 13.5px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-    .zone-table thead tr { background: var(--primary); color: #fff; }
-    .zone-table th { padding: 9px 12px; text-align: left; font-family: 'Oswald', sans-serif; font-size: 0.8em; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; }
+    .zone-table-wrap { margin-top: 12px; border-radius: 10px; border: 1px solid var(--border); overflow: auto; max-height: 400px; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    .zone-table { width: 100%; min-width: 300px; border-collapse: collapse; font-size: 13.5px; }
+    .zone-table thead th { position: sticky; top: 0; background: var(--primary); color: #fff; padding: 9px 12px; text-align: left; font-family: 'Oswald', sans-serif; font-size: 0.8em; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; z-index: 10; }
     .zone-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
     .zone-table tbody tr:last-child { border-bottom: none; }
     .zone-table tbody tr:hover { background: #EEF6FF; }
     .zone-table td { padding: 9px 12px; color: #37474F; vertical-align: middle; }
-    @media (max-width: 600px) { .zone-table { font-size: 12px; min-width: 280px; } .zone-table th, .zone-table td { padding: 6px 8px; } }
+    @media (max-width: 600px) { .zone-table { font-size: 12px; min-width: 260px; } .zone-table thead th, .zone-table td { padding: 7px 9px; } }
     .zone-num { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 700; color: #fff; }
     .z1 { background: #1565C0; } .z2 { background: #00897B; } .z3 { background: #E53935; } .z4 { background: #5E35B1; }
     .z5 { background: #00ACC1; } .z6 { background: #F4511E; } .z7 { background: #6D4C41; } .z8 { background: #8E24AA; }
