@@ -436,8 +436,13 @@
     // Синхронизируем с существующим showPage
     const origShowPage = window.showPage;
     window.showPage = function (pageId) {
-      origShowPage.apply(this, arguments);
+      if (typeof origShowPage === 'function') origShowPage.apply(this, arguments);
       syncActiveNav(pageId);
+      if (pageId === 'handover') {
+        document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
+        var handoverEl = document.getElementById('page-handover');
+        if (handoverEl) handoverEl.classList.add('active');
+      }
     };
 
     function syncActiveNav(pageId) {
