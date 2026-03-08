@@ -8,7 +8,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <!-- version: 2 -->
+  <!-- version: 4 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
@@ -283,6 +283,7 @@ header {
     .intro input::placeholder { color: #a0b0c0; }
     #workDate { width: 160px; } #workerName { width: 180px; }
     .intro-hint { font-size: 12px; color: var(--muted); width: 100%; margin: 0; padding-top: 4px; border-top: 1px solid var(--border); }
+    .tag-events-hint { border-top: none; padding-top: 0; margin-bottom: 8px; }
 
     .reminders-container { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
     .reminder-banner {
@@ -891,7 +892,7 @@ header {
         Чек-лист дежурного
       </button>
       <button class="nav-tab" data-page="obhody" onclick="showPage('obhody')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
         Обходы
       </button>
       <button class="nav-tab" data-page="spravka" onclick="showPage('spravka')">
@@ -1123,6 +1124,7 @@ header {
         <div class="progress-container"><div class="progress-bar" data-group="tag-events-block" style="width:0%"></div></div>
       </div>
       <div class="subtasks"><div class="subtasks-inner">
+        <p class="intro-hint tag-events-hint">Укажите количество новых и потерянных меток; при необходимости перечислите номера в полях ниже.</p>
         <div class="tag-events">
           <div class="tag-event-block tag-event-new">
             <div class="tag-event-header">
@@ -2596,8 +2598,8 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
             applyDeploymentState(saved.deployment);
           } else { initDeployment(); }
           saved.counts?.forEach(({ id, value }) => { const inp = document.querySelector(`.task-count[data-count-for="${id}"]`); if (inp) inp.value = value; });
-          if (saved.countNew) document.getElementById('countNew').textContent = saved.countNew;
-          if (saved.countLost) document.getElementById('countLost').textContent = saved.countLost;
+          if (saved.countNew != null) document.getElementById('countNew').textContent = String(saved.countNew);
+          if (saved.countLost != null) document.getElementById('countLost').textContent = String(saved.countLost);
           if (saved.notesNew) document.getElementById('notesNew').value = saved.notesNew;
           if (saved.notesLost) document.getElementById('notesLost').value = saved.notesLost;
           if (saved.inetTimes) {
@@ -2724,7 +2726,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
       if (webMapChecked) report += `  • Web-карта актуализирована\n`;
       const tagsReadyChecked = document.querySelector('input[data-task-id="tags-6"]')?.checked;
       if (tagsReadyChecked) { const tagsReadyCount = parseInt(document.querySelector('.task-count[data-count-for="tags-6"]')?.value || '0') || 0; report += `  • Метки, готовые к установке: ${tagsReadyCount} шт.\n`; }
-      report += `  • Всего BLE-меток со статусом «Установлена»: ${bleCount} шт.\n`;
+      report += `  • Всего BLE-меток со статусом «Установлена»: ${bleCount ?? '—'} шт.\n`;
       openReportModal(report);
     }
 
@@ -3161,8 +3163,8 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _hnTryInit); } else { _hnTryInit(); }
   </script>
    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="auth-sync.js?v=2"></script>
+  <script src="auth-sync.js?v=4"></script>
   <script src="map-fullscreen-patch.js"></script>
-  <script src="ux-patch.js?v=12"></script>
+  <script src="ux-patch.js?v=4"></script>
 </body>
 </html>
