@@ -63,6 +63,8 @@
     header img { height: 36px; width: auto; max-width: 160px; object-fit: contain; }
     .header-title { font-family: 'Oswald', sans-serif; font-size: 0.75em; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #78909C; border-left: 1px solid #E8EDF2; padding-left: 16px; }
     .container { max-width: 1100px; margin: 0 auto 40px auto; padding: 24px 20px; }
+    @media (max-width: 768px) { .container, .header-inner { max-width: 100%; padding-left: 14px; padding-right: 14px; } .container { padding-top: 20px; padding-bottom: 24px; } }
+    @media (max-width: 480px) { .container, .header-inner { padding-left: 12px; padding-right: 12px; } }
     h1 { font-family: 'Oswald', sans-serif; color: var(--primary); margin: 0 0 24px 0; font-size: 1.9em; font-weight: 600; letter-spacing: 0.04em; text-align: center; text-transform: uppercase; }
     .intro { background: #fff; padding: 18px 22px; border-radius: 12px; margin-bottom: 24px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
     .intro-field { display: flex; align-items: center; gap: 8px; }
@@ -279,22 +281,6 @@
       </div></div>
     </div>
 
-    <div class="table-group" data-tgroup="lines">
-      <div class="table-group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> Обход по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" id="linesProgressBar"></div></div></div>
-      <div class="table-body"><div class="table-inner">
-        <div class="line-tabs">
-          <button class="line-tab active" data-line="1">Линия 1 <span class="tab-badge" id="badge1">—</span></button>
-          <button class="line-tab" data-line="2">Линия 3 <span class="tab-badge" id="badge2">—</span></button>
-          <button class="line-tab" data-line="kns">КНС <span class="tab-badge" id="badgeKns">—</span></button>
-          <button class="line-tab" data-line="night">Ночь <span class="tab-badge" id="badgeNight">—</span></button>
-        </div>
-        <div class="status-box" id="statusBox" style="display:none"><div class="status-dot"></div><span id="statusText"></span></div>
-        <div class="table-search"><input type="number" inputmode="numeric" id="tableSearch" placeholder="Поиск по № метки..."><button class="refresh-btn" id="refreshBtn" onclick="refreshData()">↺ Обновить</button></div>
-        <div class="data-table-wrap"><table class="data-table"><thead id="dataThead"></thead><tbody id="dataTbody"><tr><td class="table-loading" colspan="99">Загрузка данных…</td></tr></tbody></table></div>
-        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center"><span class="count-chip" id="chipTotal">Всего: —</span><span class="count-chip done" id="chipDone">Выполнено: —</span></div>
-      </div></div>
-    </div>
-
     <div class="map-section" data-map-section="ble">
       <div class="map-section-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Карта BLE-меток</h2><span class="group-chevron">▼</span></div></div>
       <div class="map-body"><div class="map-inner">
@@ -319,6 +305,22 @@
           </div>
         </div>
         <div id="bleMap"><div class="map-placeholder" id="mapPlaceholder">Раскройте блок для загрузки карты…</div></div>
+      </div></div>
+    </div>
+
+    <div class="table-group" data-tgroup="lines">
+      <div class="table-group-header"><div class="group-title-row"><h2><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg></span> Обход по меткам</h2><span class="group-chevron">▼</span></div><div class="progress-container"><div class="progress-bar" id="linesProgressBar"></div></div></div>
+      <div class="table-body"><div class="table-inner">
+        <div class="line-tabs">
+          <button class="line-tab active" data-line="1">Линия 1 <span class="tab-badge" id="badge1">—</span></button>
+          <button class="line-tab" data-line="2">Линия 3 <span class="tab-badge" id="badge2">—</span></button>
+          <button class="line-tab" data-line="kns">КНС <span class="tab-badge" id="badgeKns">—</span></button>
+          <button class="line-tab" data-line="night">Ночь <span class="tab-badge" id="badgeNight">—</span></button>
+        </div>
+        <div class="status-box" id="statusBox" style="display:none"><div class="status-dot"></div><span id="statusText"></span></div>
+        <div class="table-search"><input type="number" inputmode="numeric" id="tableSearch" placeholder="Поиск по № метки..."><button class="refresh-btn" id="refreshBtn" onclick="refreshData()">↺ Обновить</button></div>
+        <div class="data-table-wrap"><table class="data-table"><thead id="dataThead"></thead><tbody id="dataTbody"><tr><td class="table-loading" colspan="99">Загрузка данных…</td></tr></tbody></table></div>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center"><span class="count-chip" id="chipTotal">Всего: —</span><span class="count-chip done" id="chipDone">Выполнено: —</span></div>
       </div></div>
     </div>
 
@@ -482,4 +484,3 @@
   </div>
 </body>
 </html>
-
