@@ -1,0 +1,518 @@
+/**
+ * ================================================
+ *  ПАТЧ: Нижняя навигация + Tap-to-assign
+ * ================================================
+ *
+ *  Подключение: <script src="ux-patch.js"></script>
+ *  Перед </body>, после основных скриптов портала.
+ *
+ *  1. Переносит навигацию вниз (fixed bottom bar)
+ *  2. Добавляет tap-to-assign: тап на чип → bottom sheet с выбором зоны
+ */
+
+(function () {
+  'use strict';
+
+  // =============================================
+  //  ЧАСТЬ 1: НИЖНЯЯ НАВИГАЦИЯ
+  // =============================================
+
+  function patchNavbar() {
+    const topnav = document.querySelector('.topnav');
+    if (!topnav) return;
+
+    // --- CSS ---
+    const css = document.createElement('style');
+    css.id = 'ux-patch-css';
+    css.textContent = `
+      /* === ПРЯЧЕМ ВЕРХНИЕ ТАБЫ === */
+      .topnav-tabs { display: none !important; }
+      .topnav {
+        border-bottom: 1px solid var(--border, #E8EDF2) !important;
+        box-shadow: none !important;
+      }
+
+      /* === НИЖНИЙ НАВБАР === */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        z-index: 9999;
+        background: #fff;
+        border-top: 1px solid var(--border, #E8EDF2);
+        box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        padding: 0;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+      }
+
+      .bottom-nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        padding: 8px 4px 6px;
+        cursor: pointer;
+        border: none;
+        background: transparent;
+        color: #90A4AE;
+        transition: color 0.15s;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        position: relative;
+        max-width: 120px;
+      }
+      .bottom-nav-item:hover { color: var(--primary, #1565C0); }
+      .bottom-nav-item.active {
+        color: var(--accent, #2196F3);
+      }
+      .bottom-nav-item.active::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 20%; right: 20%;
+        height: 2.5px;
+        background: var(--accent, #2196F3);
+        border-radius: 0 0 2px 2px;
+      }
+      .bottom-nav-item svg {
+        width: 20px; height: 20px;
+        flex-shrink: 0;
+      }
+      .bottom-nav-label {
+        font-family: 'Oswald', sans-serif;
+        font-size: 0.6em;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        line-height: 1;
+        white-space: nowrap;
+      }
+
+      /* Отступ внизу страницы чтобы контент не прятался за навбар */
+      body { padding-bottom: 64px !important; }
+
+      /* Прячем навбар при fullscreen карте */
+      body.map-fullscreen .bottom-nav { display: none !important; }
+      body.map-fullscreen { padding-bottom: 0 !important; }
+
+      /* === BOTTOM SHEET ДЛЯ TAP-TO-ASSIGN === */
+      .zone-sheet-overlay {
+        position: fixed; inset: 0;
+        z-index: 10000;
+        background: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(2px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+      }
+      .zone-sheet-overlay.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .zone-sheet {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        z-index: 10001;
+        background: #fff;
+        border-radius: 16px 16px 0 0;
+        box-shadow: 0 -8px 40px rgba(0,0,0,0.15);
+        padding: 0;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        transform: translateY(100%);
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+      .zone-sheet-overlay.open .zone-sheet {
+        transform: translateY(0);
+      }
+
+      .zone-sheet-handle {
+        display: flex;
+        justify-content: center;
+        padding: 10px 0 4px;
+      }
+      .zone-sheet-handle::after {
+        content: '';
+        width: 36px; height: 4px;
+        border-radius: 2px;
+        background: #D1D5DB;
+      }
+
+      .zone-sheet-title {
+        padding: 4px 20px 12px;
+        font-family: 'Oswald', sans-serif;
+        font-size: 0.88em;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--primary, #1565C0);
+        text-align: center;
+      }
+      .zone-sheet-person {
+        color: var(--accent, #2196F3);
+      }
+
+      .zone-sheet-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 0 12px 12px;
+      }
+
+      .zone-sheet-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        transition: background 0.12s;
+        border-radius: 10px;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .zone-sheet-btn:hover { background: #F1F5F9; }
+      .zone-sheet-btn:active { background: #E2E8F0; }
+
+      .zone-sheet-btn.current {
+        background: #E3F2FD;
+      }
+      .zone-sheet-btn.current .zsb-label {
+        color: var(--accent, #2196F3);
+      }
+
+      .zsb-dot {
+        width: 32px; height: 32px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #fff;
+        font-family: 'Oswald', sans-serif;
+        font-size: 0.7em;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+      .zsb-dot-spg1 { background: linear-gradient(135deg, #1565C0, #2196F3); }
+      .zsb-dot-spg2 { background: linear-gradient(135deg, #00897B, #009688); }
+      .zsb-dot-spg3 { background: linear-gradient(135deg, #E53935, #EF5350); }
+      .zsb-dot-spg4 { background: linear-gradient(135deg, #5E35B1, #7E57C2); }
+      .zsb-dot-dayoff { background: linear-gradient(135deg, #546E7A, #78909C); }
+      .zsb-dot-pool { background: linear-gradient(135deg, #90A4AE, #B0BEC5); }
+
+      .zsb-info { display: flex; flex-direction: column; gap: 1px; text-align: left; }
+      .zsb-label {
+        font-family: 'Oswald', sans-serif;
+        font-size: 0.9em;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: #37474F;
+      }
+      .zsb-count {
+        font-size: 12px;
+        color: #90A4AE;
+        font-family: 'Source Sans 3', sans-serif;
+      }
+
+      .zone-sheet-cancel {
+        display: block;
+        width: calc(100% - 24px);
+        margin: 4px 12px 12px;
+        padding: 12px;
+        border: 1px solid var(--border, #E8EDF2);
+        border-radius: 10px;
+        background: #F9FAFB;
+        color: #78909C;
+        font-family: 'Oswald', sans-serif;
+        font-size: 0.85em;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.15s;
+        text-align: center;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .zone-sheet-cancel:hover { background: #F1F5F9; color: #546E7A; }
+    `;
+    document.head.appendChild(css);
+
+    // --- Создаём нижний навбар ---
+    const navbar = document.createElement('nav');
+    navbar.className = 'bottom-nav';
+    navbar.id = 'bottomNav';
+    navbar.innerHTML = `
+      <button class="bottom-nav-item" data-nav="checklist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+        <span class="bottom-nav-label">Чек-лист</span>
+      </button>
+      <button class="bottom-nav-item" data-nav="obhody">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+        <span class="bottom-nav-label">Обходы</span>
+      </button>
+      <button class="bottom-nav-item" data-nav="spravka">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+        <span class="bottom-nav-label">Шпаргалка</span>
+      </button>
+    `;
+    document.body.appendChild(navbar);
+
+    // Обработчики
+    navbar.querySelectorAll('.bottom-nav-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const page = btn.dataset.nav;
+        if (typeof showPage === 'function') showPage(page);
+        syncActiveNav(page);
+      });
+    });
+
+    // Синхронизируем с существующим showPage
+    const origShowPage = window.showPage;
+    window.showPage = function (pageId) {
+      origShowPage.apply(this, arguments);
+      syncActiveNav(pageId);
+    };
+
+    function syncActiveNav(pageId) {
+      navbar.querySelectorAll('.bottom-nav-item').forEach(b => {
+        b.classList.toggle('active', b.dataset.nav === pageId);
+      });
+    }
+
+    // Определяем текущую активную страницу
+    const activePage = document.querySelector('.page.active');
+    if (activePage) {
+      const id = activePage.id.replace('page-', '');
+      syncActiveNav(id);
+    }
+  }
+
+  // =============================================
+  //  ЧАСТЬ 2: TAP-TO-ASSIGN (BOTTOM SHEET)
+  // =============================================
+
+  const ZONES = [
+    { key: 'spg1', label: 'СПГ 1', dot: 'zsb-dot-spg1', abbr: 'СПГ1' },
+    { key: 'spg2', label: 'СПГ 2', dot: 'zsb-dot-spg2', abbr: 'СПГ2' },
+    { key: 'spg3', label: 'СПГ 3', dot: 'zsb-dot-spg3', abbr: 'СПГ3' },
+    { key: 'spg4', label: 'Усиление утро', dot: 'zsb-dot-spg4', abbr: 'УС' },
+    { key: 'dayoff', label: 'Выходной', dot: 'zsb-dot-dayoff', abbr: 'ВЫХ' },
+    { key: 'pool', label: 'Нераспределённые', dot: 'zsb-dot-pool', abbr: '—' },
+  ];
+
+  let sheetOverlay = null;
+  let sheetPerson = null;
+  let sheetSourceZone = null;
+
+  function createSheet() {
+    sheetOverlay = document.createElement('div');
+    sheetOverlay.className = 'zone-sheet-overlay';
+    sheetOverlay.id = 'zoneSheetOverlay';
+    sheetOverlay.innerHTML = `
+      <div class="zone-sheet" id="zoneSheet">
+        <div class="zone-sheet-handle"></div>
+        <div class="zone-sheet-title">
+          Переместить <span class="zone-sheet-person" id="zoneSheetPerson"></span>
+        </div>
+        <div class="zone-sheet-options" id="zoneSheetOptions"></div>
+        <button class="zone-sheet-cancel" id="zoneSheetCancel">Отмена</button>
+      </div>
+    `;
+    document.body.appendChild(sheetOverlay);
+
+    // Закрытие
+    sheetOverlay.addEventListener('click', (e) => {
+      if (e.target === sheetOverlay) closeSheet();
+    });
+    document.getElementById('zoneSheetCancel').addEventListener('click', closeSheet);
+
+    // Swipe down to close
+    let touchStartY = 0;
+    const sheet = document.getElementById('zoneSheet');
+    sheet.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    sheet.addEventListener('touchmove', (e) => {
+      const dy = e.touches[0].clientY - touchStartY;
+      if (dy > 60) closeSheet();
+    }, { passive: true });
+  }
+
+  function openSheet(personName, fromZone) {
+    sheetPerson = personName;
+    sheetSourceZone = fromZone;
+
+    document.getElementById('zoneSheetPerson').textContent = personName;
+
+    const optionsEl = document.getElementById('zoneSheetOptions');
+    optionsEl.innerHTML = '';
+
+    ZONES.forEach(zone => {
+      const container = zone.key === 'pool'
+        ? document.getElementById('pool')
+        : document.getElementById('zone-' + zone.key);
+      const count = container
+        ? container.querySelectorAll('.person-chip').length
+        : 0;
+      const isCurrent = zone.key === fromZone;
+
+      const btn = document.createElement('button');
+      btn.className = 'zone-sheet-btn' + (isCurrent ? ' current' : '');
+      btn.innerHTML = `
+        <div class="zsb-dot ${zone.dot}">${zone.abbr}</div>
+        <div class="zsb-info">
+          <span class="zsb-label">${zone.label}${isCurrent ? ' ← сейчас' : ''}</span>
+          <span class="zsb-count">${count} чел.</span>
+        </div>
+      `;
+
+      btn.addEventListener('click', () => {
+        if (!isCurrent && typeof movePerson === 'function') {
+          movePerson(sheetPerson, sheetSourceZone, zone.key);
+        }
+        closeSheet();
+      });
+
+      optionsEl.appendChild(btn);
+    });
+
+    sheetOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSheet() {
+    if (!sheetOverlay) return;
+    sheetOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+    sheetPerson = null;
+    sheetSourceZone = null;
+  }
+
+  // Перехватываем создание чипов
+  function patchTapToAssign() {
+    createSheet();
+
+    // Escape закрывает
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSheet();
+    });
+
+    // Перехватываем createChip — добавляем tap-обработчик
+    const origCreateChip = window.createChip;
+    if (typeof origCreateChip !== 'function') {
+      console.warn('[UX Patch] createChip не найден');
+      return;
+    }
+
+    window.createChip = function (name, zone) {
+      const chip = origCreateChip.apply(this, arguments);
+
+      // Добавляем обработчик тапа (не мешает drag-and-drop)
+      let tapStartTime = 0;
+      let tapStartX = 0;
+      let tapStartY = 0;
+
+      chip.addEventListener('pointerdown', (e) => {
+        tapStartTime = Date.now();
+        tapStartX = e.clientX;
+        tapStartY = e.clientY;
+      });
+
+      chip.addEventListener('pointerup', (e) => {
+        const dt = Date.now() - tapStartTime;
+        const dx = Math.abs(e.clientX - tapStartX);
+        const dy = Math.abs(e.clientY - tapStartY);
+
+        // Короткий тап без перемещения = открываем sheet
+        if (dt < 300 && dx < 10 && dy < 10) {
+          e.preventDefault();
+          e.stopPropagation();
+          openSheet(name, chip.dataset.zone);
+        }
+      });
+
+      return chip;
+    };
+
+    // Перепатчиваем существующие чипы
+    function repatchExistingChips() {
+      document.querySelectorAll('.person-chip').forEach(chip => {
+        if (chip._tapPatched) return;
+        chip._tapPatched = true;
+
+        let tapStartTime = 0;
+        let tapStartX = 0;
+        let tapStartY = 0;
+
+        chip.addEventListener('pointerdown', (e) => {
+          tapStartTime = Date.now();
+          tapStartX = e.clientX;
+          tapStartY = e.clientY;
+        });
+
+        chip.addEventListener('pointerup', (e) => {
+          const dt = Date.now() - tapStartTime;
+          const dx = Math.abs(e.clientX - tapStartX);
+          const dy = Math.abs(e.clientY - tapStartY);
+
+          if (dt < 300 && dx < 10 && dy < 10) {
+            e.preventDefault();
+            e.stopPropagation();
+            const name = chip.dataset.person;
+            const zone = chip.dataset.zone;
+            if (name) openSheet(name, zone);
+          }
+        });
+      });
+    }
+
+    // Патчим при загрузке и при изменениях DOM
+    repatchExistingChips();
+
+    const observer = new MutationObserver(() => {
+      repatchExistingChips();
+    });
+
+    const poolEl = document.getElementById('pool');
+    if (poolEl) observer.observe(poolEl, { childList: true, subtree: true });
+
+    ['spg1', 'spg2', 'spg3', 'spg4', 'dayoff'].forEach(z => {
+      const el = document.getElementById('zone-' + z);
+      if (el) observer.observe(el, { childList: true, subtree: true });
+    });
+  }
+
+  // =============================================
+  //  ЗАПУСК
+  // =============================================
+
+  function initPatches() {
+    patchNavbar();
+    // Ждём чуть дольше чтобы createChip и pool были готовы
+    setTimeout(patchTapToAssign, 1500);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(initPatches, 300));
+  } else {
+    setTimeout(initPatches, 300);
+  }
+
+})();
