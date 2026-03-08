@@ -27,48 +27,45 @@
     css.textContent = `
 
       /* ==================================================
-         DESKTOP (> 768px): верхние табы, жирное лого
+         DESKTOP (> 768px): верхние табы по центру, лого без текста ITS
          ================================================== */
       @media (min-width: 769px) {
         .topnav {
-          display: flex !important;
+          display: grid !important;
+          grid-template-columns: auto 1fr auto !important;
           align-items: center !important;
-          justify-content: space-between !important;
           padding: 0 24px !important;
           border-bottom: 2.5px solid var(--accent, #2196F3) !important;
           box-shadow: 0 2px 12px rgba(21,101,192,0.08) !important;
-          grid-template-columns: unset !important;
-          gap: 0 !important;
           min-height: 56px !important;
-          flex-direction: row !important;
+          flex-direction: unset !important;
         }
 
         .topnav-logo {
-          border-right: 1px solid var(--border, #E8EDF2) !important;
+          grid-column: 1 !important;
+          border-right: none !important;
           border-bottom: none !important;
-          padding: 0 20px 0 0 !important;
+          padding: 0 !important;
           gap: 10px !important;
           flex-shrink: 0 !important;
         }
         .topnav-logo img {
-          height: 36px !important;
+          height: 34px !important;
           max-width: 160px !important;
         }
+        /* Прячем текст ITS */
         .topnav-logo-text {
-          display: block !important;
-          font-size: 1.1em !important;
-          font-weight: 700 !important;
-          letter-spacing: 0.12em !important;
+          display: none !important;
         }
 
         .topnav-tabs {
+          grid-column: 2 !important;
           display: flex !important;
           align-items: center !important;
+          justify-content: center !important;
           gap: 6px !important;
-          padding: 8px 0 8px 20px !important;
-          margin-left: 0 !important;
-          flex: 1 !important;
-          justify-content: flex-start !important;
+          padding: 8px 0 !important;
+          margin: 0 !important;
         }
 
         .nav-tab {
@@ -511,69 +508,78 @@
   function patchTapToAssign() {
     createSheet();
 
-    // Escape закрывает
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeSheet();
     });
 
-    // --- КЛЮЧЕВОЕ: отключаем drag на мобилке, заменяем на tap ---
-    // Удаляем оригинальные mousedown/touchstart обработчики с чипов
-    // и вешаем простой click → openSheet
+    const isMobile = () => window.innerWidth <= 768;
 
-    function killDragOnChip(chip) {
-      // Клонируем чип чтобы убить все старые event listeners
-      const newChip = chip.cloneNode(true);
-      chip.parentNode.replaceChild(newChip, chip);
+    // Добавляет tap-обработчик к чипу, НЕ убивая drag
+    function addTapToChip(chip) {
+      if (chip._tapPatched) return;
+      chip._tapPatched = true;
 
-      // Вешаем простой click
-      newChip.addEventListener('click', (e) => {
+      let tapStartTime = 0;
+      let tapStartX = 0;
+      let tapStartY = 0;
+      let wasDragged = false;
+
+      // На мобилке: перехватываем touch чтобы отключить drag
+      chip.addEventListener('touchstart', (e) => {
+        if (!isMobile()) return;
+        tapStartTime = Date.now();
+        tapStartX = e.touches[0].clientX;
+        tapStartY = e.touches[0].clientY;
+        wasDragged = false;
+        // Блокируем drag на мобилке
+        e.stopPropagation();
+      }, { capture: true });
+
+      chip.addEventListener('touchmove', (e) => {
+        if (!isMobile()) return;
+        const dx = Math.abs(e.touches[0].clientX - tapStartX);
+        const dy = Math.abs(e.touches[0].clientY - tapStartY);
+        if (dx > 10 || dy > 10) wasDragged = true;
+      }, { passive: true });
+
+      chip.addEventListener('touchend', (e) => {
+        if (!isMobile()) return;
+        e.stopPropagation();
+        if (wasDragged) return;
+        const dt = Date.now() - tapStartTime;
+        if (dt < 400) {
+          e.preventDefault();
+          const name = chip.dataset.person;
+          const zone = chip.dataset.zone;
+          if (name) openSheet(name, zone);
+        }
+      }, { capture: true });
+
+      // На десктопе: dblclick открывает sheet (одиночный click = drag)
+      chip.addEventListener('dblclick', (e) => {
+        if (isMobile()) return;
         e.preventDefault();
         e.stopPropagation();
-        const name = newChip.dataset.person;
-        const zone = newChip.dataset.zone;
+        const name = chip.dataset.person;
+        const zone = chip.dataset.zone;
         if (name) openSheet(name, zone);
       });
-
-      // Блокируем drag-события чтобы не мешали
-      newChip.addEventListener('mousedown', (e) => e.stopPropagation(), true);
-      newChip.addEventListener('touchstart', (e) => e.stopPropagation(), { capture: true, passive: true });
-
-      newChip.style.cursor = 'pointer';
-      newChip._tapPatched = true;
-
-      return newChip;
     }
 
     function patchAllChips() {
-      document.querySelectorAll('.person-chip').forEach(chip => {
-        if (chip._tapPatched) return;
-        killDragOnChip(chip);
-      });
+      document.querySelectorAll('.person-chip').forEach(addTapToChip);
     }
 
-    // Перехватываем createChip — новые чипы сразу с click
+    // Перехватываем createChip — новые чипы сразу с обработчиком
     const origCreateChip = window.createChip;
     if (typeof origCreateChip === 'function') {
       window.createChip = function (name, zone) {
         const chip = origCreateChip.apply(this, arguments);
-
-        // Убираем drag-обработчики
-        const newChip = chip.cloneNode(true);
-        newChip.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          openSheet(name, newChip.dataset.zone);
-        });
-        newChip.addEventListener('mousedown', (e) => e.stopPropagation(), true);
-        newChip.addEventListener('touchstart', (e) => e.stopPropagation(), { capture: true, passive: true });
-        newChip.style.cursor = 'pointer';
-        newChip._tapPatched = true;
-
-        return newChip;
+        addTapToChip(chip);
+        return chip;
       };
     }
 
-    // Патчим существующие чипы
     patchAllChips();
 
     // Наблюдаем за новыми чипами
@@ -589,7 +595,6 @@
       if (el) observer.observe(el, { childList: true, subtree: true });
     });
 
-    // Повторный патч через время (на случай если чеклист инициализируется позже)
     setTimeout(patchAllChips, 3000);
     setTimeout(patchAllChips, 6000);
   }
