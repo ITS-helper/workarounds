@@ -94,11 +94,13 @@
       }
 
       /* Отступ внизу страницы чтобы контент не прятался за навбар */
-      body { padding-bottom: 64px !important; }
+      body { padding-bottom: 0 !important; }
+      .page .container { margin-bottom: 120px !important; }
+      .deployment-footer { padding-bottom: 20px !important; }
 
       /* Прячем навбар при fullscreen карте */
       body.map-fullscreen .bottom-nav { display: none !important; }
-      body.map-fullscreen { padding-bottom: 0 !important; }
+      body.map-fullscreen .page .container { margin-bottom: 0 !important; }
 
       /* === BOTTOM SHEET ДЛЯ TAP-TO-ASSIGN === */
       .zone-sheet-overlay {
