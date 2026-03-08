@@ -1,625 +1,588 @@
 /**
- * ============================================================
- *  AUTH + SUPABASE SYNC — ITSSupport Portal v2
- * ============================================================
+ * ================================================
+ *  ПАТЧ: Нижняя навигация + Tap-to-assign
+ * ================================================
  *
- *  Подключение (в index.html перед </body>):
- *    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
- *    <script src="auth-sync.js"></script>
+ *  Подключение: <script src="ux-patch.js"></script>
+ *  Перед </body>, после основных скриптов портала.
  *
- *  Этот модуль:
- *    1. Переделывает логин: логин + пароль
- *    2. Роли: admin, ilgar, ivan, rustam — полный доступ + синхронизация
- *             guest — только чтение (чеклист не обновляется от синхронизации)
- *    3. Автосохранение в Supabase каждые 10 секунд
- *    4. Realtime-подписка для мгновенных обновлений
- *    5. Индикатор: кто залогинен + статус синхронизации
+ *  1. Переносит навигацию вниз (fixed bottom bar)
+ *  2. Добавляет tap-to-assign: тап на чип → bottom sheet с выбором зоны
  */
 
 (function () {
   'use strict';
 
-  // ===== КОНФИГ =====
-  const SUPABASE_URL = 'https://yjlkfylgglurwyhbxudr.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqbGtmeWxnZ2x1cnd5aGJ4dWRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NDMxODEsImV4cCI6MjA4ODUxOTE4MX0.FspLFmsXUCrIfmvOSrJolhhDhbKDxJO8hfJFNl0LrdM';
-  const TABLE = 'checklist_state';
-  const ROW_ID = 'shared';
-  const AUTO_SAVE_INTERVAL = 10000; // 10 секунд
-  const AUTH_SESSION_KEY = 'portal_auth_v2';
+  // =============================================
+  //  ЧАСТЬ 1: НИЖНЯЯ НАВИГАЦИЯ
+  // =============================================
 
-  // ===== ПОЛЬЗОВАТЕЛИ =====
-  const USERS = {
-    admin:  { password: 'VELES_2024', name: 'Администратор', role: 'admin' },
-    ilgar:  { password: 'VELES_2024', name: 'Ильгар Гаджиев', role: 'user' },
-    ivan:   { password: 'VELES_2024', name: 'Иван Шуйский', role: 'user' },
-    rustam: { password: 'VELES_2024', name: 'Рустам Газизуллин', role: 'user' },
-    guest:  { password: 'VELES_2024', name: 'Гость', role: 'guest' },
-  };
+  function patchNavbar() {
+    const topnav = document.querySelector('.topnav');
+    if (!topnav) return;
 
-  // ===== СОСТОЯНИЕ =====
-  let supabase = null;
-  let channel = null;
-  let isOnline = true;
-  let lastRemoteUpdate = 0;
-  let ignoreNextRemote = false;
-  let autoSaveTimer = null;
-  let lastPushedHash = '';
-  let currentUser = null; // { login, name, role }
+    // --- CSS ---
+    const css = document.createElement('style');
+    css.id = 'ux-patch-css';
+    css.textContent = `
 
-  // ===== УТИЛИТЫ =====
-  function simpleHash(obj) {
-    return JSON.stringify(obj);
-  }
+      /* ==================================================
+         DESKTOP (> 768px): верхние табы, жирное лого
+         ================================================== */
+      @media (min-width: 769px) {
+        .topnav {
+          display: flex !important;
+          align-items: center !important;
+          padding: 0 24px !important;
+          border-bottom: 2.5px solid var(--accent, #2196F3) !important;
+          box-shadow: 0 2px 12px rgba(21,101,192,0.08) !important;
+          grid-template-columns: unset !important;
+          gap: 0 !important;
+          min-height: 56px !important;
+        }
 
-  // ===== АВТОРИЗАЦИЯ =====
+        .topnav-logo {
+          border-right: none !important;
+          padding: 0 20px 0 0 !important;
+          gap: 10px !important;
+        }
+        .topnav-logo img {
+          height: 36px !important;
+          max-width: 160px !important;
+        }
+        .topnav-logo-text {
+          display: block !important;
+          font-size: 1.1em !important;
+          font-weight: 700 !important;
+          letter-spacing: 0.12em !important;
+        }
 
-  function patchAuthOverlay() {
-    const overlay = document.getElementById('authOverlay');
-    if (!overlay) return;
+        .topnav-tabs {
+          display: flex !important;
+          align-items: center !important;
+          gap: 6px !important;
+          padding: 8px 0 !important;
+          margin-left: auto !important;
+        }
 
-    // Проверяем сохранённую сессию
-    try {
-      const saved = JSON.parse(sessionStorage.getItem(AUTH_SESSION_KEY));
-      if (saved && USERS[saved.login]) {
-        currentUser = saved;
-        overlay.remove();
-        onAuthSuccess();
-        return;
+        .nav-tab {
+          padding: 9px 24px !important;
+          font-size: 0.92em !important;
+          border-radius: 8px !important;
+        }
+        .nav-tab svg {
+          display: inline-block !important;
+          width: 15px !important;
+          height: 15px !important;
+        }
+        .nav-tab.active {
+          background: #EEF6FF !important;
+          color: var(--primary, #1565C0) !important;
+          border-color: rgba(33,150,243,0.35) !important;
+          box-shadow: 0 1px 4px rgba(33,150,243,0.12) !important;
+        }
+
+        .bottom-nav { display: none !important; }
+        body { padding-bottom: 0 !important; }
+        .page .container { margin-bottom: 40px !important; }
       }
-    } catch (e) {}
 
-    // Переделываем форму — добавляем поле логина
-    const authBox = overlay.querySelector('.auth-box');
-    if (!authBox) return;
+      /* ==================================================
+         MOBILE (≤ 768px): нижний навбар, верхние табы скрыты
+         ================================================== */
+      @media (max-width: 768px) {
+        .topnav-tabs { display: none !important; }
+        .topnav {
+          border-bottom: 1px solid var(--border, #E8EDF2) !important;
+          box-shadow: none !important;
+          display: flex !important;
+          grid-template-columns: unset !important;
+        }
+        .topnav-logo {
+          border-right: none !important;
+          border-bottom: none !important;
+          justify-content: flex-start !important;
+          padding: 8px 14px !important;
+        }
 
-    // Удаляем старый обработчик кнопки
-    const oldBtn = authBox.querySelector('.auth-btn');
-    const oldInput = authBox.querySelector('.auth-input');
+        .bottom-nav {
+          position: fixed;
+          bottom: 0; left: 0; right: 0;
+          z-index: 9999;
+          background: #fff;
+          border-top: 1px solid var(--border, #E8EDF2);
+          box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+          display: flex;
+          align-items: stretch;
+          justify-content: center;
+          padding: 0;
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+          transform: translateZ(0);
+          -webkit-transform: translateZ(0);
+        }
 
-    // Полностью перестраиваем содержимое
-    authBox.innerHTML = `
-      <span class="auth-logo">ITSSupport</span>
-      <span class="auth-title">Портал инженера</span>
-      <input class="auth-input" type="text" id="authLogin" placeholder="Логин"
-             autocomplete="username" autocapitalize="none" spellcheck="false"
-             style="text-transform:lowercase;">
-      <input class="auth-input" type="password" id="authPass" placeholder="Пароль"
-             autocomplete="current-password">
-      <button class="auth-btn" id="authBtn">Войти</button>
-      <span class="auth-error" id="authError"></span>
+        .bottom-nav-item {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 2px;
+          padding: 8px 4px 6px;
+          cursor: pointer;
+          border: none;
+          background: transparent;
+          color: #90A4AE;
+          transition: color 0.15s;
+          -webkit-tap-highlight-color: transparent;
+          user-select: none;
+          position: relative;
+          max-width: 120px;
+        }
+        .bottom-nav-item:hover { color: var(--primary, #1565C0); }
+        .bottom-nav-item.active { color: var(--accent, #2196F3); }
+        .bottom-nav-item.active::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 20%; right: 20%;
+          height: 2.5px;
+          background: var(--accent, #2196F3);
+          border-radius: 0 0 2px 2px;
+        }
+        .bottom-nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+        .bottom-nav-label {
+          font-family: 'Oswald', sans-serif;
+          font-size: 0.6em;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          line-height: 1;
+          white-space: nowrap;
+        }
+
+        body { padding-bottom: 0 !important; }
+        .page .container { margin-bottom: 0 !important; padding-bottom: 140px !important; }
+        .deployment-footer { padding-bottom: 20px !important; }
+        .deployment-block { margin-bottom: 16px !important; }
+        #page-checklist .report-section { margin-bottom: 80px !important; }
+      }
+
+      /* Прячем навбар при fullscreen карте */
+      body.map-fullscreen .bottom-nav { display: none !important; }
+      body.map-fullscreen .topnav { display: none !important; }
+      body.map-fullscreen .page .container { margin-bottom: 0 !important; }
+
+      /* === BOTTOM SHEET ДЛЯ TAP-TO-ASSIGN === */
+      .zone-sheet-overlay {
+        position: fixed; inset: 0;
+        z-index: 10000;
+        background: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(2px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+      }
+      .zone-sheet-overlay.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .zone-sheet {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        z-index: 10001;
+        background: #fff;
+        border-radius: 16px 16px 0 0;
+        box-shadow: 0 -8px 40px rgba(0,0,0,0.15);
+        padding: 0;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        transform: translateY(100%);
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+      .zone-sheet-overlay.open .zone-sheet {
+        transform: translateY(0);
+      }
+
+      .zone-sheet-handle {
+        display: flex;
+        justify-content: center;
+        padding: 10px 0 4px;
+      }
+      .zone-sheet-handle::after {
+        content: '';
+        width: 36px; height: 4px;
+        border-radius: 2px;
+        background: #D1D5DB;
+      }
+
+      .zone-sheet-title {
+        padding: 4px 20px 12px;
+        font-family: 'Oswald', sans-serif;
+        font-size: 0.88em;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--primary, #1565C0);
+        text-align: center;
+      }
+      .zone-sheet-person {
+        color: var(--accent, #2196F3);
+      }
+
+      .zone-sheet-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 0 12px 12px;
+      }
+
+      .zone-sheet-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        transition: background 0.12s;
+        border-radius: 10px;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .zone-sheet-btn:hover { background: #F1F5F9; }
+      .zone-sheet-btn:active { background: #E2E8F0; }
+
+      .zone-sheet-btn.current {
+        background: #E3F2FD;
+      }
+      .zone-sheet-btn.current .zsb-label {
+        color: var(--accent, #2196F3);
+      }
+
+      .zsb-dot {
+        width: 32px; height: 32px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #fff;
+        font-family: 'Oswald', sans-serif;
+        font-size: 0.7em;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+      .zsb-dot-spg1 { background: linear-gradient(135deg, #1565C0, #2196F3); }
+      .zsb-dot-spg2 { background: linear-gradient(135deg, #00897B, #009688); }
+      .zsb-dot-spg3 { background: linear-gradient(135deg, #E53935, #EF5350); }
+      .zsb-dot-spg4 { background: linear-gradient(135deg, #5E35B1, #7E57C2); }
+      .zsb-dot-dayoff { background: linear-gradient(135deg, #546E7A, #78909C); }
+      .zsb-dot-pool { background: linear-gradient(135deg, #90A4AE, #B0BEC5); }
+
+      .zsb-info { display: flex; flex-direction: column; gap: 1px; text-align: left; }
+      .zsb-label {
+        font-family: 'Oswald', sans-serif;
+        font-size: 0.9em;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: #37474F;
+      }
+      .zsb-count {
+        font-size: 12px;
+        color: #90A4AE;
+        font-family: 'Source Sans 3', sans-serif;
+      }
+
+      .zone-sheet-cancel {
+        display: block;
+        width: calc(100% - 24px);
+        margin: 4px 12px 12px;
+        padding: 12px;
+        border: 1px solid var(--border, #E8EDF2);
+        border-radius: 10px;
+        background: #F9FAFB;
+        color: #78909C;
+        font-family: 'Oswald', sans-serif;
+        font-size: 0.85em;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.15s;
+        text-align: center;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .zone-sheet-cancel:hover { background: #F1F5F9; color: #546E7A; }
     `;
+    document.head.appendChild(css);
+
+    // --- Создаём нижний навбар ---
+    const navbar = document.createElement('nav');
+    navbar.className = 'bottom-nav';
+    navbar.id = 'bottomNav';
+    navbar.innerHTML = `
+      <button class="bottom-nav-item" data-nav="checklist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+        <span class="bottom-nav-label">Чек-лист</span>
+      </button>
+      <button class="bottom-nav-item" data-nav="obhody">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+        <span class="bottom-nav-label">Обходы</span>
+      </button>
+      <button class="bottom-nav-item" data-nav="spravka">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+        <span class="bottom-nav-label">Шпаргалка</span>
+      </button>
+    `;
+    document.body.appendChild(navbar);
 
     // Обработчики
-    const loginInput = document.getElementById('authLogin');
-    const passInput = document.getElementById('authPass');
-    const btn = document.getElementById('authBtn');
-    const err = document.getElementById('authError');
-
-    function doNewAuth() {
-      const login = loginInput.value.trim().toLowerCase();
-      const pass = passInput.value;
-
-      if (!login) {
-        showAuthError('Введите логин');
-        loginInput.focus();
-        return;
-      }
-
-      const user = USERS[login];
-      if (!user) {
-        showAuthError('Неизвестный логин');
-        loginInput.value = '';
-        loginInput.focus();
-        return;
-      }
-
-      if (pass !== user.password) {
-        showAuthError('Неверный пароль');
-        passInput.value = '';
-        passInput.focus();
-        return;
-      }
-
-      // Успех
-      currentUser = { login, name: user.name, role: user.role };
-      sessionStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(currentUser));
-
-      overlay.classList.add('hidden');
-      setTimeout(() => overlay.remove(), 350);
-      onAuthSuccess();
-    }
-
-    function showAuthError(text) {
-      err.textContent = text;
-      setTimeout(() => { err.textContent = ''; }, 2500);
-    }
-
-    btn.addEventListener('click', doNewAuth);
-    loginInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') passInput.focus();
-    });
-    passInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') doNewAuth();
+    navbar.querySelectorAll('.bottom-nav-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const page = btn.dataset.nav;
+        if (typeof showPage === 'function') showPage(page);
+        syncActiveNav(page);
+      });
     });
 
-    // Перехватываем старую функцию doAuth чтобы не мешала
-    window.doAuth = doNewAuth;
+    // Синхронизируем с существующим showPage
+    const origShowPage = window.showPage;
+    window.showPage = function (pageId) {
+      origShowPage.apply(this, arguments);
+      syncActiveNav(pageId);
+    };
 
-    // Фокус
-    setTimeout(() => loginInput.focus(), 100);
+    function syncActiveNav(pageId) {
+      // Синхронизируем нижний навбар
+      navbar.querySelectorAll('.bottom-nav-item').forEach(b => {
+        b.classList.toggle('active', b.dataset.nav === pageId);
+      });
+      // Синхронизируем верхние табы (для десктопа)
+      document.querySelectorAll('.topnav .nav-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.page === pageId);
+      });
+    }
+
+    // Определяем текущую активную страницу
+    const activePage = document.querySelector('.page.active');
+    if (activePage) {
+      const id = activePage.id.replace('page-', '');
+      syncActiveNav(id);
+    }
   }
 
-  function onAuthSuccess() {
-    if (!currentUser) return;
+  // =============================================
+  //  ЧАСТЬ 2: TAP-TO-ASSIGN (BOTTOM SHEET)
+  // =============================================
 
-    // Автозаполняем имя сотрудника
-    const workerNameEl = document.getElementById('workerName');
-    if (workerNameEl && currentUser.role !== 'guest') {
-      if (!workerNameEl.value || workerNameEl.value.trim() === '') {
-        workerNameEl.value = currentUser.name;
-      }
-    }
+  const ZONES = [
+    { key: 'spg1', label: 'СПГ 1', dot: 'zsb-dot-spg1', abbr: 'СПГ1' },
+    { key: 'spg2', label: 'СПГ 2', dot: 'zsb-dot-spg2', abbr: 'СПГ2' },
+    { key: 'spg3', label: 'СПГ 3', dot: 'zsb-dot-spg3', abbr: 'СПГ3' },
+    { key: 'spg4', label: 'Усиление утро', dot: 'zsb-dot-spg4', abbr: 'УС' },
+    { key: 'dayoff', label: 'Выходной', dot: 'zsb-dot-dayoff', abbr: 'ВЫХ' },
+    { key: 'pool', label: 'Нераспределённые', dot: 'zsb-dot-pool', abbr: '—' },
+  ];
 
-    // Вызываем оригинальную portalInit если ещё не вызвана
-    if (typeof portalInit === 'function') {
-      try { portalInit(); } catch (e) {}
-    }
+  let sheetOverlay = null;
+  let sheetPerson = null;
+  let sheetSourceZone = null;
 
-    // Инициализируем Supabase синхронизацию
-    initSync();
-  }
+  function createSheet() {
+    sheetOverlay = document.createElement('div');
+    sheetOverlay.className = 'zone-sheet-overlay';
+    sheetOverlay.id = 'zoneSheetOverlay';
+    sheetOverlay.innerHTML = `
+      <div class="zone-sheet" id="zoneSheet">
+        <div class="zone-sheet-handle"></div>
+        <div class="zone-sheet-title">
+          Переместить <span class="zone-sheet-person" id="zoneSheetPerson"></span>
+        </div>
+        <div class="zone-sheet-options" id="zoneSheetOptions"></div>
+        <button class="zone-sheet-cancel" id="zoneSheetCancel">Отмена</button>
+      </div>
+    `;
+    document.body.appendChild(sheetOverlay);
 
-  function isGuest() {
-    return currentUser && currentUser.role === 'guest';
-  }
-
-  function canWrite() {
-    return currentUser && currentUser.role !== 'guest';
-  }
-
-  // ===== SUPABASE SYNC =====
-
-  function initSync() {
-    if (typeof window.supabase === 'undefined' || !window.supabase.createClient) {
-      console.warn('[Sync] Supabase SDK не загружен');
-      injectSyncIndicator();
-      showSyncStatus('offline', 'SDK не загружен');
-      return;
-    }
-
-    try {
-      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    } catch (e) {
-      console.error('[Sync] Ошибка:', e);
-      injectSyncIndicator();
-      showSyncStatus('error', 'Ошибка подключения');
-      return;
-    }
-
-    injectSyncIndicator();
-    loadRemoteState();
-    subscribeRealtime();
-
-    if (canWrite()) {
-      hookIntoSaveState();
-      startAutoSave();
-    }
-
-    window.addEventListener('online', () => {
-      isOnline = true;
-      showSyncStatus('syncing', 'Подключение…');
-      if (canWrite()) pushToRemote();
+    // Закрытие
+    sheetOverlay.addEventListener('click', (e) => {
+      if (e.target === sheetOverlay) closeSheet();
     });
-    window.addEventListener('offline', () => {
-      isOnline = false;
-      showSyncStatus('offline', 'Нет сети — работаю локально');
-    });
+    document.getElementById('zoneSheetCancel').addEventListener('click', closeSheet);
 
-    console.log(`[Sync] Инициализирован. Пользователь: ${currentUser.name} (${currentUser.role})`);
+    // Swipe down to close
+    let touchStartY = 0;
+    const sheet = document.getElementById('zoneSheet');
+    sheet.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    sheet.addEventListener('touchmove', (e) => {
+      const dy = e.touches[0].clientY - touchStartY;
+      if (dy > 60) closeSheet();
+    }, { passive: true });
   }
 
-  // ===== ИНДИКАТОР =====
+  function openSheet(personName, fromZone) {
+    sheetPerson = personName;
+    sheetSourceZone = fromZone;
 
-  function injectSyncIndicator() {
-    // Ждём пока чеклист-страница станет доступна
-    const tryInject = () => {
-      const reportSection = document.querySelector('#page-checklist .report-section');
-      if (!reportSection) {
-        setTimeout(tryInject, 500);
-        return;
-      }
+    document.getElementById('zoneSheetPerson').textContent = personName;
 
-      if (document.getElementById('syncIndicator')) return;
+    const optionsEl = document.getElementById('zoneSheetOptions');
+    optionsEl.innerHTML = '';
 
-      const indicator = document.createElement('div');
-      indicator.id = 'syncIndicator';
-      indicator.style.cssText = `
-        display: flex; align-items: center; gap: 8px;
-        padding: 10px 14px; margin-top: 10px;
-        background: #F9FAFB; border: 1px solid var(--border, #E8EDF2);
-        border-radius: 10px; font-size: 13px;
-        font-family: 'Source Sans 3', sans-serif; color: #78909C;
-        transition: all 0.3s ease; flex-wrap: wrap;
+    ZONES.forEach(zone => {
+      const container = zone.key === 'pool'
+        ? document.getElementById('pool')
+        : document.getElementById('zone-' + zone.key);
+      const count = container
+        ? container.querySelectorAll('.person-chip').length
+        : 0;
+      const isCurrent = zone.key === fromZone;
+
+      const btn = document.createElement('button');
+      btn.className = 'zone-sheet-btn' + (isCurrent ? ' current' : '');
+      btn.innerHTML = `
+        <div class="zsb-dot ${zone.dot}">${zone.abbr}</div>
+        <div class="zsb-info">
+          <span class="zsb-label">${zone.label}${isCurrent ? ' ← сейчас' : ''}</span>
+          <span class="zsb-count">${count} чел.</span>
+        </div>
       `;
 
-      const roleLabel = isGuest() ? '👁 Гость (только просмотр)' : `👤 ${currentUser.name}`;
-      const roleBadge = isGuest()
-        ? `<span style="background:#FFF3E0;color:#E65100;border-radius:999px;padding:1px 8px;font-size:11px;font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:0.04em;">ГОСТЬ</span>`
-        : `<span style="background:#E8F5E9;color:#2E7D32;border-radius:999px;padding:1px 8px;font-size:11px;font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:0.04em;">${currentUser.login.toUpperCase()}</span>`;
-
-      indicator.innerHTML = `
-        <span id="syncDot" style="width:8px;height:8px;border-radius:50%;background:#78909C;flex-shrink:0;transition:background 0.3s;"></span>
-        <span id="syncText" style="flex:1;">Подключение…</span>
-        ${roleBadge}
-      `;
-      reportSection.parentNode.insertBefore(indicator, reportSection.nextSibling);
-    };
-
-    tryInject();
-  }
-
-  function showSyncStatus(status, text) {
-    const dot = document.getElementById('syncDot');
-    const txt = document.getElementById('syncText');
-    if (!dot || !txt) return;
-
-    const indicator = document.getElementById('syncIndicator');
-    const colors = {
-      synced: '#43A047',
-      syncing: '#FFA726',
-      error: '#EF5350',
-      offline: '#78909C'
-    };
-
-    dot.style.background = colors[status] || colors.offline;
-    dot.style.animation = status === 'syncing' ? 'pulse-sync 1s infinite' : 'none';
-    txt.textContent = text;
-
-    if (status === 'synced' && text.includes('обновил') && indicator) {
-      indicator.style.background = '#E8F5E9';
-      indicator.style.borderColor = '#A7F3D0';
-      setTimeout(() => {
-        indicator.style.background = '#F9FAFB';
-        indicator.style.borderColor = '';
-      }, 3000);
-    }
-  }
-
-  // CSS
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes pulse-sync {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-  `;
-  document.head.appendChild(style);
-
-  // ===== СБОР СОСТОЯНИЯ =====
-
-  function collectState() {
-    const workerName = document.getElementById('workerName')?.value || '';
-    const workDate = document.getElementById('workDate')?.value || '';
-
-    const tasks = {};
-    document.querySelectorAll('#page-checklist input[type="checkbox"][data-task-id]').forEach(cb => {
-      tasks[cb.dataset.taskId] = cb.checked;
-    });
-
-    const counts = {};
-    document.querySelectorAll('#page-checklist .task-count[data-count-for]').forEach(inp => {
-      counts[inp.dataset.countFor] = inp.value;
-    });
-
-    const tagEvents = {
-      countNew: document.getElementById('countNew')?.textContent || '0',
-      countLost: document.getElementById('countLost')?.textContent || '0',
-      notesNew: document.getElementById('notesNew')?.value || '',
-      notesLost: document.getElementById('notesLost')?.value || ''
-    };
-
-    const deployment = {};
-    ['pool', 'spg1', 'spg2', 'spg3', 'spg4', 'dayoff'].forEach(z => {
-      const container = z === 'pool' ? document.getElementById('pool') : document.getElementById('zone-' + z);
-      if (container) {
-        deployment[z] = Array.from(container.querySelectorAll('.person-chip')).map(c => c.dataset.person);
-      }
-    });
-
-    const inetTimes = Array.from(document.querySelectorAll('.inet-time-row')).map(row => ({
-      from: row.querySelector('.inet-from')?.value || '',
-      to: row.querySelector('.inet-to')?.value || ''
-    }));
-
-    return {
-      tasks,
-      counts,
-      tag_events: tagEvents,
-      deployment,
-      meta: {
-        lastUpdatedBy: currentUser?.name || workerName || 'Аноним',
-        lastUpdatedByLogin: currentUser?.login || '',
-        lastUpdatedAt: Date.now(),
-        workDate,
-        inetTimes
-      }
-    };
-  }
-
-  // ===== ПРИМЕНЕНИЕ СОСТОЯНИЯ =====
-
-  function applyState(data) {
-    if (!data) return;
-
-    if (data.tasks) {
-      Object.entries(data.tasks).forEach(([id, checked]) => {
-        const cb = document.querySelector(`[data-task-id="${id}"]`);
-        if (cb && cb.checked !== checked) {
-          cb.checked = checked;
-          const subtask = cb.closest('.subtask');
-          if (subtask) subtask.classList.toggle('completed', checked);
+      btn.addEventListener('click', () => {
+        if (!isCurrent && typeof movePerson === 'function') {
+          movePerson(sheetPerson, sheetSourceZone, zone.key);
         }
+        closeSheet();
+      });
+
+      optionsEl.appendChild(btn);
+    });
+
+    sheetOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSheet() {
+    if (!sheetOverlay) return;
+    sheetOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+    sheetPerson = null;
+    sheetSourceZone = null;
+  }
+
+  // Перехватываем создание чипов
+  function patchTapToAssign() {
+    createSheet();
+
+    // Escape закрывает
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSheet();
+    });
+
+    // --- КЛЮЧЕВОЕ: отключаем drag на мобилке, заменяем на tap ---
+    // Удаляем оригинальные mousedown/touchstart обработчики с чипов
+    // и вешаем простой click → openSheet
+
+    function killDragOnChip(chip) {
+      // Клонируем чип чтобы убить все старые event listeners
+      const newChip = chip.cloneNode(true);
+      chip.parentNode.replaceChild(newChip, chip);
+
+      // Вешаем простой click
+      newChip.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const name = newChip.dataset.person;
+        const zone = newChip.dataset.zone;
+        if (name) openSheet(name, zone);
+      });
+
+      // Блокируем drag-события чтобы не мешали
+      newChip.addEventListener('mousedown', (e) => e.stopPropagation(), true);
+      newChip.addEventListener('touchstart', (e) => e.stopPropagation(), { capture: true, passive: true });
+
+      newChip.style.cursor = 'pointer';
+      newChip._tapPatched = true;
+
+      return newChip;
+    }
+
+    function patchAllChips() {
+      document.querySelectorAll('.person-chip').forEach(chip => {
+        if (chip._tapPatched) return;
+        killDragOnChip(chip);
       });
     }
 
-    if (data.counts) {
-      Object.entries(data.counts).forEach(([id, value]) => {
-        const inp = document.querySelector(`.task-count[data-count-for="${id}"]`);
-        if (inp && inp.value !== String(value)) inp.value = value;
-      });
-    }
+    // Перехватываем createChip — новые чипы сразу с click
+    const origCreateChip = window.createChip;
+    if (typeof origCreateChip === 'function') {
+      window.createChip = function (name, zone) {
+        const chip = origCreateChip.apply(this, arguments);
 
-    if (data.tag_events) {
-      const te = data.tag_events;
-      const elNew = document.getElementById('countNew');
-      const elLost = document.getElementById('countLost');
-      const elNotesNew = document.getElementById('notesNew');
-      const elNotesLost = document.getElementById('notesLost');
-      if (elNew && elNew.textContent !== te.countNew) elNew.textContent = te.countNew;
-      if (elLost && elLost.textContent !== te.countLost) elLost.textContent = te.countLost;
-      if (elNotesNew && elNotesNew.value !== te.notesNew) elNotesNew.value = te.notesNew;
-      if (elNotesLost && elNotesLost.value !== te.notesLost) elNotesLost.value = te.notesLost;
-    }
-
-    if (data.deployment && typeof applyDeploymentState === 'function') {
-      try { applyDeploymentState(data.deployment); } catch (e) {}
-    }
-
-    if (data.meta?.inetTimes) {
-      const times = data.meta.inetTimes;
-      if (typeof renderInetTimes === 'function' && times.length > 0) {
-        const inetCountEl = document.getElementById('inetCount');
-        if (inetCountEl && parseInt(inetCountEl.value) !== times.length) {
-          inetCountEl.value = times.length;
-          renderInetTimes(times.length);
-        }
-        times.forEach((t, i) => {
-          const rows = document.querySelectorAll('.inet-time-row');
-          if (rows[i]) {
-            const fromEl = rows[i].querySelector('.inet-from');
-            const toEl = rows[i].querySelector('.inet-to');
-            if (fromEl && fromEl.value !== t.from) fromEl.value = t.from;
-            if (toEl && toEl.value !== t.to) toEl.value = t.to;
-          }
+        // Убираем drag-обработчики
+        const newChip = chip.cloneNode(true);
+        newChip.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openSheet(name, newChip.dataset.zone);
         });
-      }
+        newChip.addEventListener('mousedown', (e) => e.stopPropagation(), true);
+        newChip.addEventListener('touchstart', (e) => e.stopPropagation(), { capture: true, passive: true });
+        newChip.style.cursor = 'pointer';
+        newChip._tapPatched = true;
+
+        return newChip;
+      };
     }
 
-    if (typeof updateAllProgress === 'function') updateAllProgress();
-  }
+    // Патчим существующие чипы
+    patchAllChips();
 
-  // ===== ЗАГРУЗКА =====
-
-  async function loadRemoteState() {
-    if (!supabase) return;
-    showSyncStatus('syncing', 'Загрузка…');
-
-    try {
-      const { data, error } = await supabase
-        .from(TABLE).select('*').eq('id', ROW_ID).single();
-
-      if (error) {
-        if (error.code === 'PGRST116') {
-          await supabase.from(TABLE).insert({ id: ROW_ID });
-          showSyncStatus('synced', 'Готово — данных пока нет');
-        } else {
-          throw error;
-        }
-        return;
-      }
-
-      if (data) {
-        lastRemoteUpdate = data.meta?.lastUpdatedAt || 0;
-
-        // Гость: применяем состояние (только чтение)
-        // Остальные: тоже применяем (синхронизация)
-        applyState(data);
-
-        const who = data.meta?.lastUpdatedBy || '';
-        const when = data.meta?.lastUpdatedAt
-          ? new Date(data.meta.lastUpdatedAt).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
-          : '';
-
-        const prefix = isGuest() ? '👁 Просмотр' : 'Синхронизировано';
-        showSyncStatus('synced', who && when ? `${prefix} · ${who}, ${when}` : prefix);
-      }
-    } catch (e) {
-      console.error('[Sync] Ошибка загрузки:', e);
-      showSyncStatus('error', 'Ошибка загрузки');
-    }
-  }
-
-  // ===== ОТПРАВКА =====
-
-  async function pushToRemote() {
-    if (!supabase || !isOnline || !canWrite()) return;
-
-    const state = collectState();
-    const hash = simpleHash(state);
-
-    // Не отправляем если ничего не изменилось
-    if (hash === lastPushedHash) return;
-
-    showSyncStatus('syncing', 'Сохранение…');
-    ignoreNextRemote = true;
-
-    try {
-      const { error } = await supabase
-        .from(TABLE)
-        .upsert({
-          id: ROW_ID,
-          tasks: state.tasks,
-          counts: state.counts,
-          tag_events: state.tag_events,
-          deployment: state.deployment,
-          meta: state.meta,
-          updated_at: new Date().toISOString()
-        });
-
-      if (error) throw error;
-
-      lastPushedHash = hash;
-      lastRemoteUpdate = state.meta.lastUpdatedAt;
-      const time = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-      showSyncStatus('synced', `Сохранено · ${time}`);
-    } catch (e) {
-      console.error('[Sync] Ошибка записи:', e);
-      showSyncStatus('error', 'Ошибка сохранения');
-      ignoreNextRemote = false;
-    }
-  }
-
-  // ===== АВТОСОХРАНЕНИЕ КАЖДЫЕ 10 СЕКУНД =====
-
-  function startAutoSave() {
-    if (!canWrite()) return;
-
-    autoSaveTimer = setInterval(() => {
-      if (isOnline && supabase) {
-        pushToRemote();
-      }
-    }, AUTO_SAVE_INTERVAL);
-
-    // Сохраняем при уходе со страницы
-    window.addEventListener('beforeunload', () => {
-      if (canWrite()) pushToRemote();
+    // Наблюдаем за новыми чипами
+    const observer = new MutationObserver(() => {
+      setTimeout(patchAllChips, 50);
     });
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden && canWrite()) pushToRemote();
+    const poolEl = document.getElementById('pool');
+    if (poolEl) observer.observe(poolEl, { childList: true, subtree: true });
+
+    ['spg1', 'spg2', 'spg3', 'spg4', 'dayoff'].forEach(z => {
+      const el = document.getElementById('zone-' + z);
+      if (el) observer.observe(el, { childList: true, subtree: true });
     });
 
-    console.log(`[Sync] Автосохранение каждые ${AUTO_SAVE_INTERVAL / 1000} сек.`);
+    // Повторный патч через время (на случай если чеклист инициализируется позже)
+    setTimeout(patchAllChips, 3000);
+    setTimeout(patchAllChips, 6000);
   }
 
-  // ===== REALTIME =====
+  // =============================================
+  //  ЗАПУСК
+  // =============================================
 
-  function subscribeRealtime() {
-    if (!supabase) return;
-
-    channel = supabase
-      .channel('checklist-sync-v2')
-      .on('postgres_changes', {
-        event: 'UPDATE',
-        schema: 'public',
-        table: TABLE,
-        filter: `id=eq.${ROW_ID}`
-      }, (payload) => {
-        if (ignoreNextRemote) {
-          ignoreNextRemote = false;
-          return;
-        }
-
-        const data = payload.new;
-        if (!data) return;
-
-        const remoteTs = data.meta?.lastUpdatedAt || 0;
-        if (remoteTs <= lastRemoteUpdate) return;
-
-        lastRemoteUpdate = remoteTs;
-
-        // Гость: НЕ применяем изменения к UI (только просмотр того что было при входе)
-        if (isGuest()) {
-          const who = data.meta?.lastUpdatedBy || 'Кто-то';
-          const when = new Date(remoteTs).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-          showSyncStatus('synced', `👁 ${who} обновил · ${when} (вы в режиме просмотра)`);
-          return;
-        }
-
-        applyState(data);
-
-        const who = data.meta?.lastUpdatedBy || 'Кто-то';
-        const when = new Date(remoteTs).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-        showSyncStatus('synced', `${who} обновил · ${when}`);
-
-        // Сохраняем в localStorage
-        if (typeof clSaveState === 'function') {
-          try { clSaveState(); } catch (e) {}
-        }
-
-        console.log(`[Sync] Обновление от ${who}`);
-      })
-      .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          console.log('[Sync] Realtime подписка активна');
-        } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
-          showSyncStatus('offline', 'Переподключение…');
-          setTimeout(subscribeRealtime, 5000);
-        }
-      });
+  function initPatches() {
+    patchNavbar();
+    // Ждём чтобы createChip и pool были готовы
+    setTimeout(patchTapToAssign, 2000);
   }
 
-  // ===== ПЕРЕХВАТ clSaveState =====
-
-  function hookIntoSaveState() {
-    if (!canWrite()) return;
-
-    const checkInterval = setInterval(() => {
-      if (typeof window.clSaveState === 'function' && !window._clSaveStateHooked) {
-        const originalSave = window.clSaveState;
-        window.clSaveState = function () {
-          originalSave.apply(this, arguments);
-          // Не делаем мгновенную отправку — автосохранение сделает это через ≤10 сек
-          // Но при важных действиях (закрытие страницы) pushToRemote вызовется напрямую
-        };
-        window._clSaveStateHooked = true;
-        clearInterval(checkInterval);
-        console.log('[Sync] Перехват clSaveState установлен');
-      }
-    }, 500);
-
-    setTimeout(() => clearInterval(checkInterval), 15000);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(initPatches, 300));
+  } else {
+    setTimeout(initPatches, 300);
   }
-
-  // ===== ПЕРЕХВАТ ОРИГИНАЛЬНОЙ АВТОРИЗАЦИИ =====
-
-  function interceptOriginalAuth() {
-    // Убираем оригинальную проверку из sessionStorage
-    // чтобы наша новая форма работала вместо старой
-    sessionStorage.removeItem('portal_auth');
-
-    // Ждём DOM
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        patchAuthOverlay();
-      });
-    } else {
-      patchAuthOverlay();
-    }
-  }
-
-  // ===== ЗАПУСК =====
-
-  // Проверяем сессию сразу
-  try {
-    const saved = JSON.parse(sessionStorage.getItem(AUTH_SESSION_KEY));
-    if (saved && USERS[saved.login]) {
-      currentUser = saved;
-      // Сессия есть — пропускаем auth, помечаем старую сессию
-      sessionStorage.setItem('portal_auth', '1');
-    }
-  } catch (e) {}
-
-  interceptOriginalAuth();
 
 })();
