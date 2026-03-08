@@ -1877,7 +1877,7 @@ header {
       document.getElementById('page-' + pageId)?.classList.add('active');
       document.querySelector('.nav-tab[data-page="' + pageId + '"]')?.classList.add('active');
       if (pageId === 'checklist' && !cl_Init) { cl_Init = true; try { clInitPage(); } catch(e) { console.error('clInitPage:', e); } }
-      if (pageId === 'handover' && !hn_Init) { hn_Init = true; try { hnInit(); } catch(e) { console.error('hnInit:', e); } }
+      if (pageId === 'handover') { try { hnInit(); } catch(e) { console.error('hnInit:', e); } }
     }
     function portalInit() { try { spInitPage(); } catch(e) { console.error('spInitPage:', e); } cl_Init = true; try { clInitPage(); } catch(e) { console.error('clInitPage:', e); } }
 </script>
@@ -2983,6 +2983,9 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
   }
 
   document.addEventListener('keydown', e => { if (e.key==='Escape') hnHideReport(); });
+  // Инициализация при загрузке и при каждом показе вкладки
+  function _hnTryInit() { try { hnInit(); } catch(e) { console.error('[HN] init error:', e); } }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _hnTryInit); } else { _hnTryInit(); }
   </script>
    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="auth-sync.js?v=1"></script>
