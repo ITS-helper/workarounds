@@ -647,13 +647,225 @@
   }
 
   // =============================================
+  //  ЧАСТЬ 3: ПЕРЕСТАНОВКА И НОВЫЕ БЛОКИ В ШПАРГАЛКЕ
+  // =============================================
+
+  function patchSpravka() {
+    const container = document.querySelector('#page-spravka .container');
+    if (!container) return;
+
+    // Находим существующие блоки по data-group
+    const blocks = {};
+    container.querySelectorAll('.guide-group').forEach(g => {
+      blocks[g.dataset.group] = g;
+    });
+
+    // Сохраняем поиск (первый элемент)
+    const searchBar = container.querySelector('.search-bar');
+    const searchNoResults = container.querySelector('.search-no-results');
+
+    // --- Создаём новые блоки ---
+
+    // Блок «Фронт (табель и Telegram-бот)»
+    const frontBlock = document.createElement('div');
+    frontBlock.className = 'guide-group';
+    frontBlock.dataset.group = 'front-guide';
+    frontBlock.innerHTML = `
+      <div class="group-header" onclick="toggleGroup(this)">
+        <h2>
+          <span class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </span>
+          Фронт (табель и Telegram-бот)
+        </h2>
+        <span class="group-chevron">▼</span>
+      </div>
+      <div class="guide-body">
+        <div class="guide-inner">
+
+          <div class="guide-section">
+            <div class="subsection-wrap" onclick="this.classList.toggle('open')">
+              <div class="subsection-toggle">
+                <span class="subsection-toggle-title"><span class="dot"></span>Табель: основные принципы</span>
+                <span class="subsection-chevron">▼</span>
+              </div>
+              <div class="subsection-body">
+                <div style="padding-top: 10px;">
+                  <div class="steps">
+                    <div class="step">
+                      <div class="step-num">1</div>
+                      <div class="step-content"><div class="step-text">Табель ведётся ежедневно. Все изменения (выход, больничный, отпуск, выходной) фиксируются в день события.</div></div>
+                    </div>
+                    <div class="step">
+                      <div class="step-num">2</div>
+                      <div class="step-content"><div class="step-text">При обращении сотрудника по табелю — уточнить ФИО, дату и суть проблемы. Проверить данные в системе.</div></div>
+                    </div>
+                    <div class="step">
+                      <div class="step-num">3</div>
+                      <div class="step-content"><div class="step-text">Если ошибка подтверждена — внести корректировку и уведомить сотрудника о решении.</div></div>
+                    </div>
+                  </div>
+                  <div class="note note-warn"><span class="note-icon">⚠️</span><span>Корректировки табеля за прошлые периоды (более 3 дней) — только через старшего инженера.</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-section" style="margin-bottom:0;">
+            <div class="subsection-wrap" onclick="this.classList.toggle('open')">
+              <div class="subsection-toggle">
+                <span class="subsection-toggle-title"><span class="dot"></span>Telegram-бот: регистрация и работа</span>
+                <span class="subsection-chevron">▼</span>
+              </div>
+              <div class="subsection-body">
+                <div style="padding-top: 10px;">
+                  <div class="steps">
+                    <div class="step">
+                      <div class="step-num">1</div>
+                      <div class="step-content"><div class="step-text">Новый сотрудник должен найти бота в Telegram и нажать <kbd>/start</kbd>.</div></div>
+                    </div>
+                    <div class="step">
+                      <div class="step-num">2</div>
+                      <div class="step-content"><div class="step-text">Бот запросит <strong>ФИО</strong> и <strong>табельный номер</strong>. Данные должны совпадать с данными в системе.</div></div>
+                    </div>
+                    <div class="step">
+                      <div class="step-num">3</div>
+                      <div class="step-content"><div class="step-text">После успешной регистрации сотрудник получает доступ к функциям бота: просмотр смен, подача заявлений, уведомления.</div></div>
+                    </div>
+                  </div>
+                  <div class="note note-info"><span class="note-icon">ℹ️</span><span>Если бот не находит сотрудника — проверить корректность ФИО и табельного номера в базе. При необходимости добавить вручную.</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    `;
+
+    // Блок «Журнал BLE»
+    const bleJournalBlock = document.createElement('div');
+    bleJournalBlock.className = 'guide-group';
+    bleJournalBlock.dataset.group = 'ble-journal';
+    bleJournalBlock.innerHTML = `
+      <div class="group-header" onclick="toggleGroup(this)">
+        <h2>
+          <span class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:-2px">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+          </span>
+          Журнал BLE
+        </h2>
+        <span class="group-chevron">▼</span>
+      </div>
+      <div class="guide-body">
+        <div class="guide-inner">
+
+          <div class="guide-section">
+            <div class="subsection-wrap" onclick="this.classList.toggle('open')">
+              <div class="subsection-toggle">
+                <span class="subsection-toggle-title"><span class="dot"></span>Структура журнала</span>
+                <span class="subsection-chevron">▼</span>
+              </div>
+              <div class="subsection-body">
+                <div style="padding-top: 10px;">
+                  <div class="steps">
+                    <div class="step">
+                      <div class="step-num">1</div>
+                      <div class="step-content"><div class="step-text">Журнал BLE — основная таблица учёта всех BLE-меток. Расположен в Google Sheets: <a class="guide-link" href="https://docs.google.com/spreadsheets/d/1CU56AZdWC9dCvkf_z6CWMtrgfuWRCG3HYx7hp79vI_c/edit?gid=1105933443#gid=1105933443" target="_blank" rel="noopener" onclick="event.stopPropagation()">открыть журнал</a>.</div></div>
+                    </div>
+                    <div class="step">
+                      <div class="step-num">2</div>
+                      <div class="step-content"><div class="step-text">В журнале ведётся учёт: <strong>номера меток</strong>, <strong>MAC-адреса</strong>, <strong>статуса</strong> (установлена / на складе / утеряна), <strong>маршрута</strong> и <strong>зоны установки</strong>.</div></div>
+                    </div>
+                    <div class="step">
+                      <div class="step-num">3</div>
+                      <div class="step-content"><div class="step-text">При установке, замене или потере метки — <strong>обязательно</strong> обновить журнал в тот же день.</div></div>
+                    </div>
+                  </div>
+                  <div class="note note-danger"><span class="note-icon">⛔</span><span>Журнал BLE — единственный источник правды по номерам меток. Не допускать рассинхронизации с BackEnd и web-картой.</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-section" style="margin-bottom:0;">
+            <div class="subsection-wrap" onclick="this.classList.toggle('open')">
+              <div class="subsection-toggle">
+                <span class="subsection-toggle-title"><span class="dot"></span>Свободные номера меток</span>
+                <span class="subsection-chevron">▼</span>
+              </div>
+              <div class="subsection-body">
+                <div style="padding-top: 10px;">
+                  <div class="steps">
+                    <div class="step">
+                      <div class="step-num">1</div>
+                      <div class="step-content"><div class="step-text">Перед регистрацией новой метки — найти свободный номер в журнале BLE на листе свободных номеров.</div></div>
+                    </div>
+                    <div class="step">
+                      <div class="step-num">2</div>
+                      <div class="step-content"><div class="step-text">После присвоения номера — сразу отметить его как «занят» в журнале, указав MAC-адрес метки.</div></div>
+                    </div>
+                  </div>
+                  <div class="note note-warn"><span class="note-icon">⚠️</span><span>Не использовать номера, которые уже помечены как занятые — даже если метка с этим номером утеряна. Для утерянных меток используются новые свободные номера.</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    `;
+
+    // --- Собираем новый порядок ---
+    const newOrder = [
+      blocks['glossary'],       // 1. Глоссарий
+      blocks['workwatch'],      // 2. Часы
+      blocks['ble'],            // 3. BLE-метки
+      blocks['users'],          // 4. Регистрация новых
+      frontBlock,               // 5. Фронт (новый)
+      bleJournalBlock,          // 6. Журнал BLE (новый)
+      blocks['vacation'],       // 7. Заявление на отпуск
+      blocks['ozon-cdek'],      // 8. Заявки OZON/CDEK
+    ].filter(Boolean);
+
+    // Удаляем все guide-group из контейнера
+    container.querySelectorAll('.guide-group').forEach(g => g.remove());
+
+    // Вставляем в новом порядке (после search)
+    const insertAfter = searchNoResults || searchBar;
+    let lastInserted = insertAfter;
+
+    newOrder.forEach(block => {
+      if (lastInserted && lastInserted.nextSibling) {
+        container.insertBefore(block, lastInserted.nextSibling);
+      } else {
+        container.appendChild(block);
+      }
+      lastInserted = block;
+    });
+
+    console.log('[UX Patch] Шпаргалка: блоки переставлены, новые добавлены');
+  }
+
+  // =============================================
   //  ЗАПУСК
   // =============================================
 
   function initPatches() {
     patchNavbar();
-    // Ждём чтобы createChip и pool были готовы
     setTimeout(patchTapToAssign, 2000);
+    setTimeout(patchSpravka, 500);
   }
 
   if (document.readyState === 'loading') {
