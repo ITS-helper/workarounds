@@ -33,18 +33,22 @@
         .topnav {
           display: flex !important;
           align-items: center !important;
+          justify-content: space-between !important;
           padding: 0 24px !important;
           border-bottom: 2.5px solid var(--accent, #2196F3) !important;
           box-shadow: 0 2px 12px rgba(21,101,192,0.08) !important;
           grid-template-columns: unset !important;
           gap: 0 !important;
           min-height: 56px !important;
+          flex-direction: row !important;
         }
 
         .topnav-logo {
-          border-right: none !important;
+          border-right: 1px solid var(--border, #E8EDF2) !important;
+          border-bottom: none !important;
           padding: 0 20px 0 0 !important;
           gap: 10px !important;
+          flex-shrink: 0 !important;
         }
         .topnav-logo img {
           height: 36px !important;
@@ -61,8 +65,10 @@
           display: flex !important;
           align-items: center !important;
           gap: 6px !important;
-          padding: 8px 0 !important;
-          margin-left: auto !important;
+          padding: 8px 0 8px 20px !important;
+          margin-left: 0 !important;
+          flex: 1 !important;
+          justify-content: flex-start !important;
         }
 
         .nav-tab {
@@ -161,10 +167,29 @@
         }
 
         body { padding-bottom: 0 !important; }
-        .page .container { margin-bottom: 0 !important; padding-bottom: 140px !important; }
-        .deployment-footer { padding-bottom: 20px !important; }
-        .deployment-block { margin-bottom: 16px !important; }
-        #page-checklist .report-section { margin-bottom: 80px !important; }
+        .page .container { margin-bottom: 0 !important; padding-bottom: 80px !important; }
+      }
+
+      /* ==================================================
+         СКРОЛЛИРУЕМЫЙ БЛОК РАССТАНОВКИ (все размеры)
+         ================================================== */
+      .deployment-block.open .deployment-body {
+        max-height: 55vh !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
+      }
+      .deployment-inner {
+        padding-bottom: 16px !important;
+      }
+      .deployment-footer {
+        position: sticky !important;
+        bottom: 0 !important;
+        background: #fff !important;
+        padding: 12px 16px 14px !important;
+        margin: 0 -16px !important;
+        border-top: 1px solid var(--border, #E8EDF2) !important;
+        z-index: 5 !important;
+        box-shadow: 0 -4px 12px rgba(0,0,0,0.04) !important;
       }
 
       /* Прячем навбар при fullscreen карте */
