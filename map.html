@@ -203,9 +203,10 @@
     .ble-dot:hover { transform: scale(1.2); }
     .ble-dot-ok { background: #0ABAB5; }
     .ble-dot-battery { background: #FFA726; animation: pulse-orange 2s infinite; }
-    .ble-dot-inspection { background: #4DB6AC; border-color: #80CBC4; }
+    .ble-dot-inspection { background: #F9A825; border-color: #FDD835; animation: pulse-yellow-green 2s ease-in-out infinite; }
     @keyframes pulse-red { 0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); } 50% { box-shadow: 0 0 0 6px rgba(239,68,68,0); } }
     @keyframes pulse-orange { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,167,38,0.5); } 50% { box-shadow: 0 0 0 6px rgba(255,167,38,0); } }
+    @keyframes pulse-yellow-green { 0%, 100% { background: #F9A825; box-shadow: 0 0 0 0 rgba(249,168,37,0.6); } 50% { background: #43A047; box-shadow: 0 0 0 7px rgba(67,160,71,0); } }
     .marker-cluster-small { background-color: rgba(10,186,181,0.2); } .marker-cluster-small div { background-color: rgba(10,186,181,0.75); }
     .marker-cluster-medium { background-color: rgba(0,150,136,0.2); } .marker-cluster-medium div { background-color: rgba(0,150,136,0.75); }
     .marker-cluster-large { background-color: rgba(0,105,92,0.2); } .marker-cluster-large div { background-color: rgba(0,105,92,0.75); }
