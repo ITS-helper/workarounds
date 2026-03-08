@@ -27,9 +27,12 @@
     .auth-error { font-size: 13px; color: #EF5350; text-align: center; min-height: 18px; }
     .topnav { background: #fff; border-bottom: 2px solid var(--accent); box-shadow: 0 1px 6px rgba(21,101,192,0.08); position: sticky; top: 0; z-index: 200; display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; padding: 0; min-width: 0; }
     .topnav-logo { display: flex; align-items: center; padding: 0 16px 0 12px; border-right: 1px solid var(--border); gap: 8px; grid-column: 1; justify-self: start; min-width: 0; }
-    .topnav-logo img { height: 28px; width: auto; max-width: 120px; object-fit: contain; }
+    .topnav-logo img { height: 36px; width: auto; max-width: 160px; object-fit: contain; }
     .topnav-logo-text { font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 700; color: var(--primary); letter-spacing: 0.1em; text-transform: uppercase; display: none; }
     .topnav-tabs { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; grid-column: 2; min-width: 0; }
+    .topnav-weather { grid-column: 3; justify-self: end; align-self: center; padding: 6px 14px; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; font-family: 'Source Sans 3', sans-serif; }
+    .topnav-weather strong { color: var(--primary); font-weight: 600; }
+    .topnav-weather img { width: 24px; height: 24px; object-fit: contain; }
     .nav-tab { display: flex; align-items: center; gap: 8px; padding: 8px 22px; border-radius: 8px; border: 1.5px solid transparent; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 0.96em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); transition: all 0.18s ease; user-select: none; background: transparent; white-space: nowrap; }
     .nav-tab:hover { background: #EEF6FF; color: var(--primary); border-color: rgba(33,150,243,0.2); }
     .nav-tab.active { background: #EEF6FF; color: var(--primary); border-color: rgba(33,150,243,0.35); box-shadow: 0 1px 4px rgba(33,150,243,0.12); }
@@ -41,8 +44,9 @@
     @media (max-width: 600px) {
       .topnav { display: flex; flex-direction: column; grid-template-columns: unset; }
       .topnav-logo { border-right: none; border-bottom: 1px solid var(--border); padding: 6px 10px; justify-content: center; grid-column: unset; }
-      .topnav-logo img { max-height: 22px; max-width: 100px; }
+      .topnav-logo img { max-height: 28px; max-width: 120px; }
       .topnav-tabs { flex-wrap: wrap; justify-content: center; padding: 6px 8px; gap: 6px; grid-column: unset; }
+      .topnav-weather { grid-column: unset; padding: 4px 10px; font-size: 12px; }
       .nav-tab { padding: 6px 10px; font-size: 0.75em; letter-spacing: 0.04em; }
       .nav-tab svg { display: none; }
     }
@@ -754,11 +758,13 @@ header {
     .hn-header { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 18px 20px; margin-bottom: 16px; }
     .hn-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
     .hn-date-label { font-family: 'Oswald', sans-serif; font-size: 1em; font-weight: 600; color: var(--primary); letter-spacing: 0.04em; text-transform: uppercase; }
-    .hn-shift-toggle { display: flex; gap: 4px; }
-    .hn-shift-btn { font-family: 'Oswald', sans-serif; font-size: 0.75em; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 5px 14px; border-radius: 999px; border: 1.5px solid var(--border); background: #F9FAFB; color: var(--muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
-    .hn-shift-btn.day.active { background: #FFF8E1; border-color: #FFA726; color: #E65100; }
-    .hn-shift-btn.night.active { background: #EDE7F6; border-color: #7E57C2; color: #4527A0; }
+    .hn-shift-toggle { display: flex; align-items: center; gap: 0; background: #F3F4F6; border-radius: 999px; padding: 3px; border: 1px solid var(--border); }
+    .hn-shift-btn { font-family: 'Oswald', sans-serif; font-size: 0.8em; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 16px; border-radius: 999px; border: none; cursor: pointer; transition: all 0.2s ease; color: var(--muted); background: transparent; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .hn-shift-btn.active { color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+    .hn-shift-btn.day.active { background: linear-gradient(90deg, #F59E0B, #FBBF24); color: #78350F; }
+    .hn-shift-btn.night.active { background: linear-gradient(90deg, #3730A3, #4F46E5); }
     .hn-people { display: grid; grid-template-columns: 1fr 28px 1fr; gap: 8px; align-items: end; }
+    .hn-people-single { grid-template-columns: 1fr; }
     .hn-person { display: flex; flex-direction: column; gap: 4px; }
     .hn-label { font-family: 'Oswald', sans-serif; font-size: 0.7em; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
     .hn-input { width: 100%; padding: 8px 11px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; font-family: 'Source Sans 3', sans-serif; background: #F9FAFB; color: #37474F; transition: border-color 0.2s; }
@@ -784,7 +790,8 @@ header {
     .prio-critical { background: #FFEBEE; color: #C62828; }
     .prio-high { background: #FFF3E0; color: #E65100; }
     .prio-normal { display: none; }
-    .hn-task-text { flex: 1; font-size: 14px; color: #37474F; line-height: 1.4; min-width: 0; word-break: break-word; }
+    .hn-task > div { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+    .hn-task-text { font-size: 14px; color: #37474F; line-height: 1.4; word-break: break-word; }
     .hn-del { width: 20px; height: 20px; border-radius: 50%; border: none; background: transparent; cursor: pointer; color: #CBD5E1; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0; line-height: 1; transition: all 0.15s; }
     .hn-del:hover { background: #FFEBEE; color: #EF5350; }
     .hn-event { display: flex; gap: 8px; padding: 9px 12px; background: #F9FAFB; border-radius: 9px; border-left: 3px solid var(--border); align-items: flex-start; transition: background 0.15s; }
@@ -827,6 +834,36 @@ header {
     .hn-modal-footer { padding: 14px 20px; display: flex; gap: 8px; border-top: 1px solid var(--border); flex-shrink: 0; flex-wrap: wrap; }
     .hn-copy-btn { flex: 1; font-family: 'Oswald', sans-serif; font-size: 0.88em; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; padding: 10px; border-radius: 999px; border: none; background: var(--accent); color: #fff; cursor: pointer; min-width: 120px; }
     .hn-close-btn { font-family: 'Oswald', sans-serif; font-size: 0.88em; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; padding: 10px 18px; border-radius: 999px; border: 1.5px solid var(--border); background: #F9FAFB; color: var(--muted); cursor: pointer; }
+    .hn-storage-list { padding: 10px 14px 14px; display: flex; flex-direction: column; gap: 10px; }
+    .hn-storage-item { background: #F9FAFB; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: background 0.15s; }
+    .hn-storage-item:hover { background: #F0F7FF; }
+    .hn-storage-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; cursor: pointer; flex-wrap: wrap; }
+    .hn-storage-meta { font-size: 13px; color: #37474F; display: flex; flex-direction: column; gap: 2px; }
+    .hn-storage-meta strong { font-family: 'Oswald', sans-serif; letter-spacing: 0.04em; color: var(--primary); }
+    .hn-storage-stats { font-size: 12px; color: var(--muted); }
+    .hn-storage-expand { font-size: 12px; color: var(--accent); flex-shrink: 0; }
+    .hn-storage-body { padding: 0 14px 14px; display: none; border-top: 1px solid var(--border); }
+    .hn-storage-item.open .hn-storage-body { display: block; padding-top: 12px; }
+    .hn-storage-item.open .hn-storage-expand { transform: rotate(180deg); }
+    .hn-storage-tasks { margin-bottom: 12px; }
+    .hn-storage-tasks-title { font-family: 'Oswald', sans-serif; font-size: 0.75em; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; }
+    .hn-storage-task-line { font-size: 13px; padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+    .hn-storage-task-line .hn-status-ico { flex-shrink: 0; width: 18px; text-align: center; }
+    .hn-storage-task-line .hn-storage-by { color: var(--muted); font-size: 0.95em; }
+    .hn-storage-events-title { font-family: 'Oswald', sans-serif; font-size: 0.75em; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; }
+    .hn-storage-event-line { font-size: 13px; padding: 3px 0; color: #37474F; }
+    .hn-storage-notes { font-size: 13px; color: #37474F; white-space: pre-wrap; padding: 8px 0; border-top: 1px dashed var(--border); margin-top: 8px; }
+    .hn-storage-del { font-size: 11px; padding: 4px 10px; margin-top: 8px; border-radius: 6px; border: 1px solid #FFCDD2; background: #FFEBEE; color: #C62828; cursor: pointer; }
+    .hn-storage-del:hover { background: #FFCDD2; }
+    .hn-saved-msg { font-size: 14px; line-height: 1.6; color: #37474F; margin: 0; }
+    .hn-alerts { background: #FFF8E1; border: 1px solid #FFA726; border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; }
+    .hn-alerts.hidden { display: none; }
+    .hn-alerts-title { font-family: 'Oswald', sans-serif; font-size: 0.9em; font-weight: 700; letter-spacing: 0.06em; color: #E65100; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .hn-alerts-list { display: flex; flex-direction: column; gap: 6px; }
+    .hn-alert-item { font-size: 13px; color: #37474F; padding: 6px 10px; background: #fff; border-radius: 8px; border-left: 3px solid #FFA726; cursor: pointer; transition: background 0.15s; }
+    .hn-alert-item:hover { background: #FFF3E0; }
+    .hn-task-completed-by { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .hn-task-completed-by span { font-weight: 600; color: var(--primary); }
   </style>
 </head>
 <body>
@@ -861,6 +898,9 @@ header {
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
         Передача смены
       </button>
+    </div>
+    <div class="topnav-weather" id="topnavWeather" title="Усть-Луга, Россия">
+      <span class="weather-loading">…</span>
     </div>
   </nav>
   <div id="page-checklist" class="page active">
@@ -1721,25 +1761,35 @@ header {
         <div class="hn-top-row">
           <span class="hn-date-label" id="hnDateLabel">—</span>
           <div class="hn-shift-toggle">
-            <button class="hn-shift-btn day active" onclick="hnSetShift('day')">☀ День</button>
-            <button class="hn-shift-btn night" onclick="hnSetShift('night')">☾ Ночь</button>
+            <button class="hn-shift-btn day active" onclick="hnSetShift('day')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+              День
+            </button>
+            <button class="hn-shift-btn night" onclick="hnSetShift('night')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              Ночь
+            </button>
           </div>
         </div>
-        <div class="hn-people">
+        <div class="hn-people hn-people-single">
           <div class="hn-person">
             <div class="hn-label">Сдаёт</div>
             <input class="hn-input" id="hnFrom" placeholder="ФИО / должность" oninput="hnSave()">
           </div>
-          <div class="hn-arrow">→</div>
-          <div class="hn-person">
-            <div class="hn-label">Принимает</div>
-            <input class="hn-input" id="hnTo" placeholder="ФИО / должность" oninput="hnSave()">
-          </div>
         </div>
       </div>
 
+      <!-- Оповещения о невыполненных задачах -->
+      <div class="hn-alerts hidden" id="hnAlerts">
+        <div class="hn-alerts-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Невыполненные задачи <span class="hn-cnt" id="hnAlertsCnt">0</span>
+        </div>
+        <div class="hn-alerts-list" id="hnAlertsList"></div>
+      </div>
+
       <!-- Задачи -->
-      <div class="hn-section">
+      <div class="hn-section" id="hnTasksSection">
         <div class="hn-section-header">
           <span class="hn-section-title">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
@@ -1802,11 +1852,24 @@ header {
         </div>
       </div>
 
+      <!-- Хранилище смен -->
+      <div class="hn-section" id="hnStorageSection">
+        <div class="hn-section-header">
+          <span class="hn-section-title">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            Хранилище смен <span class="hn-cnt" id="hnArchiveCnt" style="display:none">0</span>
+          </span>
+        </div>
+        <div id="hnStorageList" class="hn-storage-list">
+          <div class="hn-empty" id="hnStorageEmpty">Пока нет сохранённых смен. Нажмите «Сохранить в хранилище» после заполнения формы.</div>
+        </div>
+      </div>
+
       <!-- Футер -->
       <div class="hn-footer">
-        <button class="hn-btn-primary" onclick="hnShowReport()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          Передать смену
+        <button class="hn-btn-primary" onclick="hnSaveToStorage()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8 15 3"/></svg>
+          Сохранить в хранилище
         </button>
         <button class="hn-btn-reset" onclick="hnNewShift()">Новая смена</button>
       </div>
@@ -1814,19 +1877,19 @@ header {
     </div>
   </div>
 
-  <!-- HANDOVER MODAL -->
+  <!-- HANDOVER MODAL (подтверждение сохранения) -->
   <div id="hnModal" class="hn-modal-overlay hidden" onclick="if(event.target===this)hnHideReport()">
     <div class="hn-modal">
       <div class="hn-modal-handle"></div>
       <div class="hn-modal-head">
-        <span class="hn-modal-title">Сводка передачи смены</span>
+        <span class="hn-modal-title">Передача сохранена</span>
         <button class="hn-close-btn" onclick="hnHideReport()">✕</button>
       </div>
       <div class="hn-modal-body">
-        <pre class="hn-report-pre" id="hnReportText"></pre>
+        <p class="hn-saved-msg">Передача смены добавлена в хранилище. Вы можете просматривать и разворачивать записи в блоке «Хранилище смен» ниже.</p>
       </div>
       <div class="hn-modal-footer">
-        <button class="hn-copy-btn" id="hnCopyBtn" onclick="hnCopyReport()">📋 Скопировать</button>
+        <button class="hn-copy-btn" id="hnGoStorageBtn" onclick="hnGoToStorage()">Перейти к хранилищу</button>
         <button class="hn-close-btn" onclick="hnHideReport()">Закрыть</button>
       </div>
     </div>
@@ -1846,6 +1909,25 @@ header {
   <canvas id="confetti"></canvas>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script>
+    (function loadWeather() {
+      var el = document.getElementById('topnavWeather');
+      if (!el) return;
+      var codeToLabel = { 0:'Ясно', 1:'Преим. ясно', 2:'Перем. облачно', 3:'Пасмурно', 45:'Туман', 48:'Изморозь', 51:'Морось', 53:'Морось', 55:'Морось', 61:'Дождь', 63:'Дождь', 65:'Ливень', 71:'Снег', 73:'Снег', 75:'Снег', 77:'Снегопад', 80:'Ливень', 81:'Ливень', 82:'Ливень', 85:'Снег', 86:'Снег', 95:'Гроза', 96:'Гроза', 99:'Гроза' };
+      fetch('https://api.open-meteo.com/v1/forecast?latitude=59.665&longitude=28.294&current=temperature_2m,weather_code&timezone=Europe/Moscow')
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          var cur = data.current;
+          if (!cur) return;
+          var temp = Math.round(cur.temperature_2m);
+          var code = cur.weather_code || 0;
+          var label = codeToLabel[code] || (code <= 3 ? 'Облачно' : 'Осадки');
+          el.innerHTML = '<strong>' + temp + '°C</strong> ' + label;
+          el.classList.remove('weather-loading');
+        })
+        .catch(function(){ el.innerHTML = '<span class="weather-loading">Погода недоступна</span>'; });
+    })();
+  </script>
   <script>
     const AUTH_SESSION_KEY = 'portal_auth';
     const AUTH_PASSWORDS = ['VELES_2024', 'impl_dept'];
@@ -2807,12 +2889,21 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
   <script>
   /* ===== ПЕРЕДАЧА СМЕНЫ ===== */
   const HN_KEY = 'hn_state_v1';
-  let hnData = { from:'', to:'', shift:'day', tasks:[], events:[], notes:'' };
+  const HN_ARCHIVE_KEY = 'hn_archive_v1';
+  let hnData = { from:'', shift:'day', tasks:[], events:[], notes:'' };
   let hnSelPrio = 'normal', hnSelCat = 'ble';
   const HN_CAT_LABEL = { ble:'BLE', avaria:'Авария', request:'Обращение', replace:'Замена', other:'Другое' };
   const HN_CAT_SHORT = { ble:'BLE', avaria:'АВАРИЯ', request:'ОБРАЩЕНИЕ', replace:'ЗАМЕНА', other:'ДРУГОЕ' };
   const HN_MONTHS = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
   const HN_DAYS = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
+  const HN_STATUS_LABEL = { todo: '○ Сделать', doing: '→ В работе', done: '✓ Выполнено' };
+
+  function hnGetArchive() {
+    try { const s = localStorage.getItem(HN_ARCHIVE_KEY); return s ? JSON.parse(s) : []; } catch { return []; }
+  }
+  function hnSetArchive(arr) {
+    localStorage.setItem(HN_ARCHIVE_KEY, JSON.stringify(arr));
+  }
 
   function hnInit() {
     try { const s = localStorage.getItem(HN_KEY); if (s) hnData = JSON.parse(s); } catch {}
@@ -2820,16 +2911,15 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     const now = new Date();
     if (el('hnDateLabel')) el('hnDateLabel').textContent = `${now.getDate()} ${HN_MONTHS[now.getMonth()]} ${now.getFullYear()}, ${HN_DAYS[now.getDay()]}`;
     if (el('hnFrom')) el('hnFrom').value = hnData.from || '';
-    if (el('hnTo')) el('hnTo').value = hnData.to || '';
     if (el('hnNotes')) el('hnNotes').value = hnData.notes || '';
     document.querySelectorAll('.hn-shift-btn').forEach(b => b.classList.toggle('active', b.classList.contains(hnData.shift || 'day')));
-    hnRenderTasks(); hnRenderEvents();
+    hnRenderTasks(); hnRenderEvents(); hnRenderAlerts(); hnRenderStorage();
   }
 
   function hnSave() {
-    hnData.from = document.getElementById('hnFrom').value;
-    hnData.to = document.getElementById('hnTo').value;
-    hnData.notes = document.getElementById('hnNotes').value;
+    const fromEl = document.getElementById('hnFrom');
+    hnData.from = fromEl ? fromEl.value : '';
+    hnData.notes = (document.getElementById('hnNotes') || {}).value || '';
     localStorage.setItem(HN_KEY, JSON.stringify(hnData));
   }
 
@@ -2856,9 +2946,10 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
       list.innerHTML = sorted.map(t => {
         const icon = t.status==='done' ? '✓' : t.status==='doing' ? '→' : '';
         const badge = t.priority!=='normal' ? `<span class="hn-prio-badge prio-${t.priority}">${t.priority==='critical'?'Срочно':'Важно'}</span>` : '';
-        return `<div class="hn-task" data-status="${hnEsc(t.status)}" data-id="${hnEsc(t.id)}">
+        const completedByLine = t.status==='done' && (t.completedBy || '').trim() ? `<div class="hn-task-completed-by">Выполнил: <span>${hnEsc(t.completedBy)}</span></div>` : '';
+        return `<div class="hn-task" data-status="${hnEsc(t.status)}" data-id="${hnEsc(t.id)}" id="hn-task-${hnEsc(t.id)}">
           <button class="hn-status-btn" onclick="hnCycleStatus('${hnEsc(t.id)}')" title="Изменить статус">${icon}</button>
-          ${badge}<span class="hn-task-text">${hnEsc(t.text)}</span>
+          <div>${badge}<span class="hn-task-text">${hnEsc(t.text)}</span>${completedByLine}</div>
           <button class="hn-del" onclick="hnDelTask('${hnEsc(t.id)}')" title="Удалить">×</button>
         </div>`;
       }).join('');
@@ -2866,11 +2957,39 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     const active = tasks.filter(t => t.status !== 'done').length;
     const cnt = document.getElementById('hnTaskCnt');
     cnt.textContent = active || tasks.length; cnt.style.display = tasks.length ? '' : 'none';
+    hnRenderAlerts();
+  }
+
+  function hnRenderAlerts() {
+    const block = document.getElementById('hnAlerts');
+    const listEl = document.getElementById('hnAlertsList');
+    const cntEl = document.getElementById('hnAlertsCnt');
+    if (!block || !listEl) return;
+    const unfinished = (hnData.tasks || []).filter(t => t.status !== 'done');
+    if (!unfinished.length) {
+      block.classList.add('hidden');
+      return;
+    }
+    block.classList.remove('hidden');
+    if (cntEl) cntEl.textContent = unfinished.length;
+    listEl.innerHTML = unfinished.map(t => {
+      const prio = t.priority !== 'normal' ? (t.priority === 'critical' ? ' [Срочно]' : ' [Важно]') : '';
+      return `<div class="hn-alert-item" onclick="document.getElementById('hn-task-${hnEsc(t.id)}')?.scrollIntoView({behavior:'smooth',block:'center'})">${hnEsc(t.text)}${prio}</div>`;
+    }).join('');
   }
 
   function hnCycleStatus(id) {
     const t = (hnData.tasks||[]).find(x => x.id===id); if (!t) return;
-    t.status = {todo:'doing', doing:'done', done:'todo'}[t.status] || 'todo';
+    const next = {todo:'doing', doing:'done', done:'todo'}[t.status] || 'todo';
+    if (next === 'done') {
+      const who = prompt('Кто выполнил задачу?', hnData.from || '');
+      t.completedBy = (who || '').trim() || '';
+      t.completedAt = Date.now();
+    } else {
+      t.completedBy = '';
+      t.completedAt = null;
+    }
+    t.status = next;
     hnSave(); hnRenderTasks();
   }
 
@@ -2943,46 +3062,91 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     hnSave(); hnRenderEvents(); hnHideEventForm();
   }
 
-  function hnShowReport() {
+  function hnSaveToStorage() {
     hnSave();
-    const d = hnData;
-    const now = new Date();
-    const ds = `${String(now.getDate()).padStart(2,'0')}.${String(now.getMonth()+1).padStart(2,'0')}.${now.getFullYear()}`;
-    const shift = d.shift==='day' ? 'Дневная' : 'Ночная';
-    const sLabel = { todo:'○ Сделать', doing:'→ В работе', done:'✓ Готово' };
-    const pLabel = { critical:'[СРОЧНО] ', high:'[ВАЖНО] ', normal:'' };
-    let txt = `━━━ ПЕРЕДАЧА СМЕНЫ ━━━\n${ds} · ${shift} смена\nСдаёт: ${d.from||'—'}\nПринимает: ${d.to||'—'}\n`;
-    if (d.tasks && d.tasks.length) {
-      const active = d.tasks.filter(t=>t.status!=='done').length;
-      const done = d.tasks.filter(t=>t.status==='done').length;
-      txt += `\n📋 ЗАДАЧИ (${active} активных / ${done} выполнено)\n`;
-      d.tasks.forEach(t => { txt += `  ${sLabel[t.status]||'○'} ${pLabel[t.priority]||''}${t.text}\n`; });
-    }
-    if (d.events && d.events.length) {
-      txt += `\n📌 СОБЫТИЯ СМЕНЫ (${d.events.length})\n`;
-      d.events.forEach(e => { txt += `  ${e.time} [${HN_CAT_SHORT[e.category]||e.category}] ${e.text}\n`; });
-    }
-    if (d.notes && d.notes.trim()) txt += `\n💬 ЗАМЕТКИ\n${d.notes.trim()}\n`;
-    txt += `\n━━━━━━━━━━━━━━━━━━━━━━`;
-    document.getElementById('hnReportText').textContent = txt;
+    const snapshot = {
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2),
+      savedAt: Date.now(),
+      from: hnData.from || '—',
+      shift: hnData.shift || 'day',
+      tasks: (hnData.tasks || []).map(t => ({ ...t })),
+      events: (hnData.events || []).map(e => ({ ...e })),
+      notes: hnData.notes || ''
+    };
+    const archive = hnGetArchive();
+    archive.unshift(snapshot);
+    hnSetArchive(archive);
+    hnRenderStorage();
     document.getElementById('hnModal').classList.remove('hidden');
-    document.getElementById('hnCopyBtn').textContent = '📋 Скопировать';
+  }
+
+  function hnGoToStorage() {
+    const el = document.getElementById('hnStorageSection');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    hnHideReport();
   }
 
   function hnHideReport() { document.getElementById('hnModal').classList.add('hidden'); }
 
-  function hnCopyReport() {
-    const txt = document.getElementById('hnReportText').textContent;
-    const btn = document.getElementById('hnCopyBtn');
-    const done = () => { btn.textContent='✓ Скопировано!'; setTimeout(()=>{ btn.textContent='📋 Скопировать'; }, 2000); };
-    if (navigator.clipboard) { navigator.clipboard.writeText(txt).then(done).catch(()=>{ hnFallbackCopy(txt); done(); }); }
-    else { hnFallbackCopy(txt); done(); }
+  function hnRenderStorage() {
+    const list = document.getElementById('hnStorageList');
+    const cntEl = document.getElementById('hnArchiveCnt');
+    if (!list) return;
+    const archive = hnGetArchive();
+    if (!archive.length) {
+      list.innerHTML = '<div class="hn-empty" id="hnStorageEmpty">Пока нет сохранённых смен. Нажмите «Сохранить в хранилище» после заполнения формы.</div>';
+      if (cntEl) cntEl.style.display = 'none';
+      return;
+    }
+    if (cntEl) { cntEl.textContent = archive.length; cntEl.style.display = ''; }
+    list.innerHTML = archive.map(item => {
+      const date = new Date(item.savedAt);
+      const dateStr = date.toLocaleDateString('ru-RU', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      const shift = item.shift === 'day' ? 'День' : 'Ночь';
+      const tasks = item.tasks || [];
+      const doneCount = tasks.filter(t => t.status === 'done').length;
+      const tasksSummary = tasks.length ? `${tasks.length} задач, ${doneCount} выполнено` : 'нет задач';
+      const eventsCount = (item.events || []).length;
+      const bodyId = 'hn-body-' + item.id;
+      const tasksHtml = tasks.length ? tasks.map(t => {
+        const ico = t.status === 'done' ? '✓' : t.status === 'doing' ? '→' : '○';
+        const by = t.status === 'done' && (t.completedBy || '').trim() ? ` <span class="hn-storage-by">выполнил: ${hnEsc(t.completedBy)}</span>` : '';
+        return `<div class="hn-storage-task-line"><span class="hn-status-ico">${ico}</span><span>${hnEsc(t.text)}${by}</span></div>`;
+      }).join('') : '<div class="hn-storage-task-line">Нет задач</div>';
+      const eventsHtml = (item.events || []).map(e => `${hnEsc(e.time)} [${HN_CAT_SHORT[e.category]||e.category}] ${hnEsc(e.text)}`).join('<br>');
+      const notesHtml = (item.notes || '').trim() ? hnEsc(item.notes.trim()) : '';
+      return `<div class="hn-storage-item" data-id="${hnEsc(item.id)}">
+        <div class="hn-storage-head" onclick="hnToggleStorageItem('${hnEsc(item.id)}')">
+          <div class="hn-storage-meta">
+            <strong>${hnEsc(dateStr)} · ${shift}</strong>
+            <span class="hn-storage-stats">${hnEsc(item.from)} · ${tasksSummary} · ${eventsCount} событий</span>
+          </div>
+          <span class="hn-storage-expand">▼</span>
+        </div>
+        <div class="hn-storage-body" id="${bodyId}">
+          <div class="hn-storage-tasks"><div class="hn-storage-tasks-title">Задачи (отслеживание выполнения)</div>${tasksHtml}</div>
+          ${eventsCount ? `<div class="hn-storage-events-title">События</div><div class="hn-storage-event-line">${eventsHtml}</div>` : ''}
+          ${notesHtml ? `<div class="hn-storage-notes">${notesHtml}</div>` : ''}
+          <button type="button" class="hn-storage-del" onclick="hnDeleteFromArchive('${hnEsc(item.id)}'); event.stopPropagation();">Удалить из хранилища</button>
+        </div>
+      </div>`;
+    }).join('');
   }
-  function hnFallbackCopy(txt) { const ta=document.createElement('textarea'); ta.value=txt; ta.style.cssText='position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch{} document.body.removeChild(ta); }
+
+  function hnToggleStorageItem(id) {
+    const item = document.querySelector(`.hn-storage-item[data-id="${id}"]`);
+    if (item) item.classList.toggle('open');
+  }
+
+  function hnDeleteFromArchive(id) {
+    const archive = hnGetArchive().filter(item => item.id !== id);
+    hnSetArchive(archive);
+    hnRenderStorage();
+  }
 
   function hnNewShift() {
     if (!confirm('Начать новую смену? Все данные текущей смены будут очищены.')) return;
-    hnData = { from: hnData.to||'', to:'', shift: hnData.shift||'day', tasks:[], events:[], notes:'' };
+    hnData = { from: '', shift: hnData.shift || 'day', tasks: [], events: [], notes: '' };
     localStorage.setItem(HN_KEY, JSON.stringify(hnData));
     hnInit();
   }
