@@ -2572,8 +2572,8 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
         counts: Array.from(document.querySelectorAll('#page-checklist .task-count')).map(inp => ({ id: inp.dataset.countFor, value: inp.value })),
         countNew: document.getElementById('countNew').textContent,
         countLost: document.getElementById('countLost').textContent,
-        notesNew: document.getElementById('notesNew').value,
-        notesLost: document.getElementById('notesLost').value,
+        notesNew: (document.getElementById('notesNew')?.value ?? '') || '',
+        notesLost: (document.getElementById('notesLost')?.value ?? '') || '',
         inetTimes: Array.from(document.querySelectorAll('.inet-time-row')).map(row => ({ from: row.querySelector('.inet-from').value, to: row.querySelector('.inet-to').value }))
       };
       localStorage.setItem(CL_STORAGE_KEY, JSON.stringify(state));
@@ -2600,8 +2600,10 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
           saved.counts?.forEach(({ id, value }) => { const inp = document.querySelector(`.task-count[data-count-for="${id}"]`); if (inp) inp.value = value; });
           if (saved.countNew != null) document.getElementById('countNew').textContent = String(saved.countNew);
           if (saved.countLost != null) document.getElementById('countLost').textContent = String(saved.countLost);
-          if (saved.notesNew) document.getElementById('notesNew').value = saved.notesNew;
-          if (saved.notesLost) document.getElementById('notesLost').value = saved.notesLost;
+          var nNew = saved.notesNew;
+          var nLost = saved.notesLost;
+          if (nNew != null && String(nNew) !== 'undefined') document.getElementById('notesNew').value = String(nNew); else document.getElementById('notesNew').value = '';
+          if (nLost != null && String(nLost) !== 'undefined') document.getElementById('notesLost').value = String(nLost); else document.getElementById('notesLost').value = '';
           if (saved.inetTimes) {
             renderInetTimes(saved.inetTimes.length);
             saved.inetTimes.forEach((t, i) => { const rows = document.querySelectorAll('.inet-time-row'); if (rows[i]) { rows[i].querySelector('.inet-from').value = t.from || ''; rows[i].querySelector('.inet-to').value = t.to || ''; } });
