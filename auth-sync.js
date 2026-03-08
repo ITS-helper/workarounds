@@ -24,7 +24,7 @@
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqbGtmeWxnZ2x1cnd5aGJ4dWRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NDMxODEsImV4cCI6MjA4ODUxOTE4MX0.FspLFmsXUCrIfmvOSrJolhhDhbKDxJO8hfJFNl0LrdM';
   const TABLE = 'checklist_state';
   const ROW_ID = 'shared';
-  const AUTO_SAVE_INTERVAL = 10000; // 10 секунд
+  const AUTO_SAVE_INTERVAL = 30000; // 30 секунд
   const AUTH_SESSION_KEY = 'portal_auth_v2';
 
   // ===== ПОЛЬЗОВАТЕЛИ =====
@@ -45,6 +45,7 @@
   let autoSaveTimer = null;
   let lastPushedHash = '';
   let currentUser = null; // { login, name, role }
+  let remoteStateLoaded = false; // true после первой успешной загрузки с сервера — до этого не пушим, чтобы не перезаписать чужими кэшем
 
   // ===== УТИЛИТЫ =====
   function simpleHash(obj) {
@@ -421,6 +422,7 @@
       if (error) {
         if (error.code === 'PGRST116') {
           await supabase.from(TABLE).insert({ id: ROW_ID });
+          remoteStateLoaded = true; // пустой сервер — можно пушить
           showSyncStatus('synced', 'Готово — данных пока нет');
         } else {
           throw error;
@@ -434,6 +436,11 @@
         // Гость: применяем состояние (только чтение)
         // Остальные: тоже применяем (синхронизация)
         applyState(data);
+        remoteStateLoaded = true;
+        // Синхронизируем localStorage с сервером, чтобы при следующем открытии не подтянуть старый кэш
+        if (typeof clSaveState === 'function') {
+          try { clSaveState(); } catch (e) {}
+        }
 
         const who = data.meta?.lastUpdatedBy || '';
         const when = data.meta?.lastUpdatedAt
@@ -453,6 +460,8 @@
 
   async function pushToRemote() {
     if (!supabase || !isOnline || !canWrite()) return;
+    // Не пушим, пока не загрузили состояние с сервера — иначе можно отправить старый кэш и затереть чужие галочки
+    if (!remoteStateLoaded) return;
 
     const state = collectState();
     const hash = simpleHash(state);
