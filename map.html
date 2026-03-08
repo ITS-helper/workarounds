@@ -266,16 +266,6 @@
   </style>
 </head>
 <body>
-<div id="authOverlay">
-  <div class="auth-box">
-    <span class="auth-logo">ITSSupport</span>
-    <span class="auth-title">Чек-лист смены</span>
-    <input class="auth-input" type="password" id="authInput" placeholder="Введите пароль" autocomplete="current-password" onkeydown="if(event.key==='Enter') doAuth()">
-    <button class="auth-btn" onclick="doAuth()">Войти</button>
-    <span class="auth-error" id="authError"></span>
-  </div>
-</div>
-
   <div class="container">
     <div style="display:none"><input type="date" id="workDate"><input type="text" id="workerName"></div>
 
@@ -356,11 +346,6 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script>
-    const AUTH_SESSION_KEY = 'admin';
-    const AUTH_PASSWORDS = ['VELES_2024', 'impl_dept'];
-    function doAuth() { const val = document.getElementById('authInput').value; const err = document.getElementById('authError'); if (AUTH_PASSWORDS.includes(val)) { sessionStorage.setItem(AUTH_SESSION_KEY, '1'); const overlay = document.getElementById('authOverlay'); overlay.classList.add('hidden'); setTimeout(() => overlay.remove(), 350); } else { err.textContent = 'Неверный пароль'; document.getElementById('authInput').value = ''; document.getElementById('authInput').focus(); setTimeout(() => { err.textContent = ''; }, 2500); } }
-    (function checkAuth() { if (sessionStorage.getItem(AUTH_SESSION_KEY) === '1') { document.getElementById('authOverlay').remove(); } else { window.addEventListener('load', () => { document.getElementById('authInput')?.focus(); }); } })();
-
     const SHEET_ID = "1CU56AZdWC9dCvkf_z6CWMtrgfuWRCG3HYx7hp79vI_c";
     const SHEET_NAME = "Для печати🖨️";
     const STATUS_SHEET_NAME = "Свод_журналов_СПГ+ТСБ";
@@ -497,3 +482,4 @@
   </div>
 </body>
 </html>
+
