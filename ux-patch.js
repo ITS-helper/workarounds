@@ -91,6 +91,53 @@
       }
 
       /* ==================================================
+         ЕДИНЫЙ СТИЛЬ БЛОКОВ — все вкладки как в Обходах
+         ================================================== */
+
+      /* Чек-лист: group-header — заголовок слева, шеврон справа */
+      #page-checklist .group-header,
+      #page-checklist .deployment-header,
+      #page-checklist .table-group-header,
+      #page-checklist .map-section-header {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 16px 20px 14px !important;
+      }
+      #page-checklist .group-title-row,
+      #page-checklist .deployment-header-row {
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+      }
+      #page-checklist .task-group h2,
+      #page-checklist .deployment-header h2 {
+        text-align: left !important;
+        justify-content: flex-start !important;
+      }
+
+      /* Шпаргалка: group-header — заголовок слева, шеврон справа */
+      #page-spravka .group-header {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 16px 20px 14px !important;
+      }
+      #page-spravka .guide-group h2 {
+        text-align: left !important;
+        justify-content: flex-start !important;
+      }
+      /* Шеврон не должен переноситься на новую строку */
+      #page-spravka .group-chevron,
+      #page-checklist .group-chevron,
+      #page-checklist .deployment-chevron {
+        margin-left: auto !important;
+        flex-shrink: 0 !important;
+      }
+
+      /* ==================================================
          MOBILE (≤ 768px): нижний навбар, верхние табы скрыты
          ================================================== */
       @media (max-width: 768px) {
