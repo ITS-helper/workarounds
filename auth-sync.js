@@ -26,6 +26,7 @@
   const ROW_ID = 'shared';
   const AUTO_SAVE_INTERVAL = 30000; // 30 секунд
   const AUTH_SESSION_KEY = 'portal_auth_v2';
+  const SYNC_PAUSED_KEY = 'portal_sync_paused';
 
   // ===== ПОЛЬЗОВАТЕЛИ =====
   const USERS = {
@@ -46,6 +47,7 @@
   let lastPushedHash = '';
   let currentUser = null; // { login, name, role }
   let remoteStateLoaded = false; // true после первой успешной загрузки с сервера — до этого не пушим, чтобы не перезаписать чужими кэшем
+  let syncPausedByUser = false; // true = не применять обновления от других (ILGAR и т.д.), пока юзер сам не включит снова
 
   // ===== УТИЛИТЫ =====
   function simpleHash(obj) {
@@ -153,6 +155,8 @@
   function onAuthSuccess() {
     if (!currentUser) return;
 
+    syncPausedByUser = sessionStorage.getItem(SYNC_PAUSED_KEY) === '1';
+
     // Автозаполняем имя сотрудника
     const workerNameEl = document.getElementById('workerName');
     if (workerNameEl && currentUser.role !== 'guest') {
@@ -248,12 +252,38 @@
         ? `<span style="background:#FFF3E0;color:#E65100;border-radius:999px;padding:1px 8px;font-size:11px;font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:0.04em;">ГОСТЬ</span>`
         : `<span style="background:#E8F5E9;color:#2E7D32;border-radius:999px;padding:1px 8px;font-size:11px;font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:0.04em;">${currentUser.login.toUpperCase()}</span>`;
 
+      const saveBtnHtml = canWrite()
+        ? `<button type="button" id="syncSaveBtn" style="margin-left:auto;padding:4px 12px;border-radius:8px;border:1px solid var(--accent,#2196F3);background:#2196F3;color:#fff;font-size:12px;font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;">Сохранить</button>`
+        : '';
+
       indicator.innerHTML = `
         <span id="syncDot" style="width:8px;height:8px;border-radius:50%;background:#78909C;flex-shrink:0;transition:background 0.3s;"></span>
         <span id="syncText" style="flex:1;">Подключение…</span>
+        ${saveBtnHtml}
         ${roleBadge}
       `;
       reportSection.parentNode.insertBefore(indicator, reportSection.nextSibling);
+
+      const saveBtn = document.getElementById('syncSaveBtn');
+      if (saveBtn) {
+        if (syncPausedByUser) saveBtn.textContent = 'Включить автообновление';
+        saveBtn.addEventListener('click', function syncSaveOrResumeClick() {
+          if (syncPausedByUser) {
+            syncPausedByUser = false;
+            sessionStorage.removeItem(SYNC_PAUSED_KEY);
+            saveBtn.textContent = 'Сохранить';
+            showSyncStatus('synced', 'Автообновление включено');
+            loadRemoteState();
+          } else {
+            syncPausedByUser = true;
+            sessionStorage.setItem(SYNC_PAUSED_KEY, '1');
+            saveBtn.textContent = 'Включить автообновление';
+            pushToRemote();
+            var time = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+            showSyncStatus('synced', 'Сохранено · ' + time + ' · Обновления приостановлены');
+          }
+        });
+      }
     };
 
     tryInject();
@@ -433,6 +463,12 @@
       if (data) {
         lastRemoteUpdate = data.meta?.lastUpdatedAt || 0;
 
+        if (syncPausedByUser) {
+          remoteStateLoaded = true;
+          showSyncStatus('synced', 'Обновления приостановлены (нажмите «Включить автообновление»)');
+          return;
+        }
+
         // Гость: применяем состояние (только чтение)
         // Остальные: тоже применяем (синхронизация)
         applyState(data);
@@ -490,7 +526,7 @@
       lastPushedHash = hash;
       lastRemoteUpdate = state.meta.lastUpdatedAt;
       const time = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-      showSyncStatus('synced', `Сохранено · ${time}`);
+      showSyncStatus('synced', syncPausedByUser ? `Сохранено · ${time} · Обновления приостановлены` : `Сохранено · ${time}`);
     } catch (e) {
       console.error('[Sync] Ошибка записи:', e);
       showSyncStatus('error', 'Ошибка сохранения');
@@ -541,6 +577,8 @@
 
         const data = payload.new;
         if (!data) return;
+
+        if (syncPausedByUser) return;
 
         const remoteTs = data.meta?.lastUpdatedAt || 0;
         if (remoteTs <= lastRemoteUpdate) return;
