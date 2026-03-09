@@ -713,18 +713,20 @@
                   <div class="steps">
                     <div class="step">
                       <div class="step-num">1</div>
-                      <div class="step-content"><div class="step-text">Табель ведётся ежедневно. Все изменения (выход, больничный, отпуск, выходной) фиксируются в день события.</div></div>
+                      <div class="step-content"><div class="step-text">При обращении сотрудника — проверить данные на фронте: вкладка табель. Если смена есть в табеле, то уведомляем работника, что данные у нас есть. Необходимо обратиться к своему мастеру за разъяснениями.</div></div>
                     </div>
+                  </div>
+                  <div class="note note-warn"><span class="note-icon">⚠️</span><span>У нас нет полномочий и технических возможностей редактировать табель.</span></div>
+                  <div class="steps">
                     <div class="step">
                       <div class="step-num">2</div>
-                      <div class="step-content"><div class="step-text">При обращении сотрудника по табелю — уточнить ФИО, дату и суть проблемы. Проверить данные в системе.</div></div>
+                      <div class="step-content"><div class="step-text">Если у человека нет смены в табеле, но он утверждает, что был на объекте и смена была запущена — сообщаем о ситуации старшему инженеру \\ в рабочий чат.</div></div>
                     </div>
                     <div class="step">
                       <div class="step-num">3</div>
-                      <div class="step-content"><div class="step-text">Если ошибка подтверждена — внести корректировку и уведомить сотрудника о решении.</div></div>
+                      <div class="step-content"><div class="step-text">Вопросы, касаемые оплаты труда \\ штрафов — мы не решаем. Система передаёт данные об отработанной смене автоматически. При возникновении спорной ситуации — просим сотрудника обратиться к мастеру. В свою очередь сообщаем о ситуации старшему инженеру.</div></div>
                     </div>
                   </div>
-                  <div class="note note-warn"><span class="note-icon">⚠️</span><span>Корректировки табеля за прошлые периоды (более 3 дней) — только через старшего инженера.</span></div>
                 </div>
               </div>
             </div>
@@ -745,14 +747,14 @@
                     </div>
                     <div class="step">
                       <div class="step-num">2</div>
-                      <div class="step-content"><div class="step-text">Бот запросит <strong>ФИО</strong> и <strong>табельный номер</strong>. Данные должны совпадать с данными в системе.</div></div>
+                      <div class="step-content"><div class="step-text">Бот ответным сообщением пришлёт TGID, который необходимо заполнить в карточке сотрудника на фронте.</div></div>
                     </div>
                     <div class="step">
                       <div class="step-num">3</div>
-                      <div class="step-content"><div class="step-text">После успешной регистрации сотрудник получает доступ к функциям бота: просмотр смен, подача заявлений, уведомления.</div></div>
+                      <div class="step-content"><div class="step-text">После заполнения TGID пройти по <a class="guide-link" href="https://docs.google.com/spreadsheets/d/15jmhbwwxMdhpV4ueQLrDrTCWCw8MMNx86ueIrO3_juk/edit?gid=0#gid=0" target="_blank" rel="noopener">ссылке</a>, найти нужный TGID (Ctrl+F), заполнить имя, роль (worker — рабочий; foreman — мастер; landlord — начальник участка; visioner — администратор).</div></div>
                     </div>
                   </div>
-                  <div class="note note-info"><span class="note-icon">ℹ️</span><span>Если бот не находит сотрудника — проверить корректность ФИО и табельного номера в базе. При необходимости добавить вручную.</span></div>
+                  <div class="note note-danger"><span class="note-icon">⛔</span><span>Действия должны быть последовательны. Когда внесли необходимые данные — в поле «ready» ставим «1» (тогда скрипт запустится правильно и сотрудник будет получать рассылку).</span></div>
                 </div>
               </div>
             </div>
