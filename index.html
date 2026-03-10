@@ -1172,7 +1172,7 @@ header {
         </div>
         <div class="subtask" style="flex-wrap:wrap;">
           <input type="checkbox" data-task-id="evening-2">
-          <span>Проблемы с интернет соединением</span>
+          <span>Проблемы с интернет-соединением</span>
           <input type="number" min="0" value="0" class="task-count" data-count-for="evening-2" id="inetCount" placeholder="0">
           <div id="inetTimesContainer" style="width:100%;display:none;margin-top:8px;display:flex;flex-direction:column;gap:6px;"></div>
         </div>
@@ -2730,7 +2730,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
       const frontFields = [
         { id: 'front-1', label: 'Регистрация новичков' }, { id: 'front-2', label: 'Регистрация в боте' },
         { id: 'front-3', label: 'Обращения, связанные с табелем' }, { id: 'front-4', label: 'Замена наклейки NFC' },
-        { id: 'evening-1', label: 'Нарушения' }, { id: 'evening-2', label: 'Проблемы с интернет соединением' },
+        { id: 'evening-1', label: 'Нарушения' }, { id: 'evening-2', label: 'Проблемы с интернет-соединением' },
       ];
       const statsLines = frontFields.map(f => {
         const value = parseInt(document.querySelector(`.task-count[data-count-for="${f.id}"]`)?.value || '0') || 0;
