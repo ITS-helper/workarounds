@@ -8,7 +8,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <!-- version: 5 -->
+  <!-- version: 6 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
@@ -2860,6 +2860,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     const userEl = document.getElementById('hnUser');
     hnData.user = userEl ? userEl.value : '';
     localStorage.setItem(HN_KEY, JSON.stringify(hnData));
+    if (typeof window.pushTasksToRemote === 'function') window.pushTasksToRemote();
   }
 
   function hnEsc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -2996,7 +2997,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _hnTryInit); } else { _hnTryInit(); }
   </script>
    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="auth-sync.js?v=4"></script>
+  <script src="auth-sync.js?v=6"></script>
   <script src="map-fullscreen-patch.js"></script>
   <script src="ux-patch.js?v=5"></script>
 </body>
