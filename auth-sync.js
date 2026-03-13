@@ -30,7 +30,7 @@
 
   // ===== ПОЛЬЗОВАТЕЛИ =====
   const USERS = {
-    admin:  { password: 'VELES_2024', name: 'Администратор', role: 'admin' },
+    admin:  { password: 'kejexu8hem', name: 'Администратор', role: 'admin' },
     ilgar:  { password: 'VELES_2024', name: 'Ильгар Гаджиев', role: 'user' },
     ivan:   { password: 'VELES_2024', name: 'Иван Шуйский', role: 'user' },
     rustam: { password: 'VELES_2024', name: 'Рустам Газизуллин', role: 'user' },
@@ -81,8 +81,9 @@
 
     // Полностью перестраиваем содержимое
     authBox.innerHTML = `
-      <span class="auth-logo">ITSSupport</span>
-      <span class="auth-title">Портал инженера</span>
+      <div class="auth-brand">
+        <img class="auth-logo-img" src="./images/ITS_logo_horizont.png" alt="ITS">
+      </div>
       <input class="auth-input" type="text" id="authLogin" placeholder="Логин"
              autocomplete="username" autocapitalize="none" spellcheck="false"
              style="text-transform:lowercase;">

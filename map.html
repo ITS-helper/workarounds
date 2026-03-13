@@ -16,19 +16,20 @@
     /* ===== AUTH OVERLAY ===== */
     #authOverlay {
       position: fixed; inset: 0; z-index: 99999;
-      background: linear-gradient(135deg, #1565C0 0%, #1976D2 50%, #2196F3 100%);
+      background: radial-gradient(circle at top, rgba(255,255,255,0.14) 0, transparent 55%), linear-gradient(135deg, #1565C0 0%, #1976D2 50%, #2196F3 100%);
       display: flex; align-items: center; justify-content: center;
-      padding: 20px; transition: opacity 0.3s ease;
+      padding: 24px; transition: opacity 0.3s ease;
     }
     #authOverlay.hidden { opacity: 0; pointer-events: none; }
     .auth-box {
-      background: #fff; border-radius: 16px; padding: 36px 32px;
+      background: rgba(255,255,255,0.96); backdrop-filter: blur(18px); border-radius: 18px; padding: 32px 30px 30px;
       width: 100%; max-width: 360px;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+      box-shadow: 0 26px 70px rgba(0,0,0,0.32);
       display: flex; flex-direction: column; gap: 20px; align-items: center;
+      border: 1px solid rgba(255,255,255,0.7);
     }
-    .auth-logo { font-family: 'Oswald', sans-serif; font-size: 1.1em; font-weight: 600; color: #37474F; letter-spacing: 0.1em; text-transform: uppercase; }
-    .auth-title { font-family: 'Oswald', sans-serif; font-size: 0.82em; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #78909C; margin-top: -10px; }
+    .auth-brand { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .auth-logo-img { height: 40px; max-width: 190px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(13,71,161,0.45)); border-radius: 6px; }
     .auth-input { width: 100%; padding: 11px 14px; border: 1.5px solid #E5E7EB; border-radius: 9px; font-size: 15px; font-family: 'Source Sans 3', sans-serif; color: #37474F; background: #F9FAFB; transition: border-color 0.2s; text-align: center; letter-spacing: 0.08em; }
     .auth-input:focus { outline: none; border-color: #2196F3; background: #fff; }
     .auth-btn { width: 100%; font-family: 'Oswald', sans-serif; font-size: 0.95em; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 600; padding: 12px; border-radius: 999px; border: none; background: #2196F3; color: #fff; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(33,150,243,0.3); }
