@@ -50,7 +50,7 @@
       .topnav-logo { border-right: none; border-bottom: 1px solid var(--border); padding: 6px 10px; justify-content: center; grid-column: unset; }
       .topnav-logo img { max-height: 28px; max-width: 120px; }
       .topnav-tabs { flex-wrap: wrap; justify-content: center; padding: 6px 8px; gap: 6px; grid-column: unset; }
-      .topnav-weather { grid-column: unset; padding: 4px 10px; font-size: 12px; }
+      .topnav-weather { grid-column: unset; padding: 6px 10px; font-size: 12px; width: 100%; align-self: stretch; justify-content: center; border-top: 1px solid var(--border); }
       .nav-tab { padding: 6px 10px; font-size: 0.75em; letter-spacing: 0.04em; }
       .nav-tab svg { display: none; }
     }
@@ -867,6 +867,8 @@ header {
     .hn-alerts-list { display: flex; flex-direction: column; gap: 6px; }
     .hn-alert-item { font-size: 13px; color: #37474F; padding: 6px 10px; background: #fff; border-radius: 8px; border-left: 3px solid #FFA726; cursor: pointer; transition: background 0.15s; }
     .hn-alert-item:hover { background: #FFF3E0; }
+    .hn-task-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .hn-task-meta span { font-weight: 600; color: var(--primary); }
     .hn-task-completed-by { font-size: 12px; color: var(--muted); margin-top: 2px; }
     .hn-task-completed-by span { font-weight: 600; color: var(--primary); }
   </style>
@@ -901,7 +903,7 @@ header {
       </button>
       <button class="nav-tab" data-page="handover" onclick="showPage('handover')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
-        Передача смены
+        Задачник
       </button>
     </div>
     <div class="topnav-weather" id="topnavWeather" title="Усть-Луга, Россия">
@@ -1416,7 +1418,7 @@ header {
     <!-- /BLE-метки -->
 
     <!-- РЕГИСТРАЦИЯ НОВЫХ ПОЛЬЗОВАТЕЛЕЙ -->
-    <div class="guide-group" data-group="users">
+    <div class="guide-group" data-group="users" style="display:none">
       <div class="group-header" onclick="toggleGroup(this)">
         <h2>
           <span class="icon">
@@ -1439,7 +1441,7 @@ header {
     </div>
 
     <!-- ОФОРМЛЕНИЕ ЗАЯВКИ OZON/CDEK -->
-    <div class="guide-group" data-group="ozon-cdek">
+    <div class="guide-group" data-group="ozon-cdek" style="display:none">
       <div class="group-header" onclick="toggleGroup(this)">
         <h2>
           <span class="icon">
@@ -1787,32 +1789,9 @@ header {
 
   </div>
   </div>
-  <!-- ПЕРЕДАЧА СМЕНЫ -->
+  <!-- ЗАДАЧНИК -->
   <div id="page-handover" class="page" style="min-height:60vh;">
     <div class="container" id="handover-container">
-
-      <!-- Шапка -->
-      <div class="hn-header">
-        <div class="hn-top-row">
-          <span class="hn-date-label" id="hnDateLabel">—</span>
-          <div class="hn-shift-toggle">
-            <button class="hn-shift-btn day active" onclick="hnSetShift('day')">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M4.93 7.93l2.83 2.83M2 16h4M18 16h4M16.24 10.76l2.83-2.83M5 16a7 7 0 0 1 14 0"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
-              День
-            </button>
-            <button class="hn-shift-btn night" onclick="hnSetShift('night')">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-              Ночь
-            </button>
-          </div>
-        </div>
-        <div class="hn-people hn-people-single">
-          <div class="hn-person">
-            <div class="hn-label">Сдаёт</div>
-            <input class="hn-input" id="hnFrom" placeholder="ФИО / должность" oninput="hnSave()">
-          </div>
-        </div>
-      </div>
 
       <!-- Оповещения о невыполненных задачах -->
       <div class="hn-alerts hidden" id="hnAlerts">
@@ -1828,12 +1807,21 @@ header {
         <div class="hn-section-header">
           <span class="hn-section-title">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            Задачи смены <span class="hn-cnt" id="hnTaskCnt" style="display:none">0</span>
+            Задачи <span class="hn-cnt" id="hnTaskCnt" style="display:none">0</span>
           </span>
-          <button class="hn-add-btn" onclick="hnShowTaskForm()">+ Задача</button>
+          <div class="hn-add-row" style="padding: 0; gap: 6px; flex: 1; justify-content: flex-end;">
+            <button class="hn-pill ecat-btn active" data-filter="active" onclick="hnSetFilter(this)">Активные</button>
+            <button class="hn-pill ecat-btn" data-filter="all" onclick="hnSetFilter(this)">Все</button>
+            <button class="hn-pill ecat-btn" data-filter="done" onclick="hnSetFilter(this)">Выполненные</button>
+            <button class="hn-add-btn" onclick="hnShowTaskForm()">+ Задача</button>
+          </div>
         </div>
-        <div id="hnTaskList" class="hn-list"><div class="hn-empty">Нет задач. Добавьте что нужно сделать следующей смене.</div></div>
+        <div id="hnTaskList" class="hn-list"><div class="hn-empty">Нет задач. Добавьте новую задачу и отмечайте выполнение.</div></div>
         <div id="hnTaskForm" class="hn-add-form" style="display:none">
+          <div class="hn-add-row">
+            <input type="date" class="hn-add-input" id="hnTaskDate" style="max-width: 160px;">
+            <input class="hn-add-input" id="hnTaskAuthor" placeholder="ФИО, кто ставит задачу">
+          </div>
           <input class="hn-add-input" id="hnTaskInput" placeholder="Описание задачи..." onkeydown="if(event.key==='Enter')hnConfirmTask()">
           <div class="hn-add-row">
             <button class="hn-pill p-normal active" data-prio="normal" onclick="hnSelPrioBtn(this)">Обычно</button>
@@ -1847,89 +1835,12 @@ header {
         </div>
       </div>
 
-      <!-- События -->
-      <div class="hn-section">
-        <div class="hn-section-header">
-          <span class="hn-section-title">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            События смены <span class="hn-cnt" id="hnEventCnt" style="display:none">0</span>
-          </span>
-          <button class="hn-add-btn" onclick="hnShowEventForm()">+ Событие</button>
-        </div>
-        <div id="hnEventList" class="hn-list"><div class="hn-empty">Нет записей. Фиксируйте всё важное, что произошло за смену.</div></div>
-        <div id="hnEventForm" class="hn-add-form" style="display:none">
-          <div class="hn-add-row">
-            <input type="time" class="hn-add-input" id="hnEventTime" style="width:100px;flex:0 0 auto">
-            <button class="hn-pill ecat-btn active" data-cat="ble" onclick="hnSelCatBtn(this)">BLE</button>
-            <button class="hn-pill ecat-btn" data-cat="avaria" onclick="hnSelCatBtn(this)">Авария</button>
-            <button class="hn-pill ecat-btn" data-cat="request" onclick="hnSelCatBtn(this)">Обращение</button>
-            <button class="hn-pill ecat-btn" data-cat="replace" onclick="hnSelCatBtn(this)">Замена</button>
-            <button class="hn-pill ecat-btn" data-cat="other" onclick="hnSelCatBtn(this)">Другое</button>
-          </div>
-          <input class="hn-add-input" id="hnEventInput" placeholder="Краткое описание..." onkeydown="if(event.key==='Enter')hnConfirmEvent()">
-          <div class="hn-add-row">
-            <button class="hn-confirm-btn" onclick="hnConfirmEvent()">Добавить</button>
-            <button class="hn-cancel-btn" onclick="hnHideEventForm()">Отмена</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Заметки -->
-      <div class="hn-section">
-        <div class="hn-section-header">
-          <span class="hn-section-title">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-            Заметки для следующей смены
-          </span>
-        </div>
-        <div class="hn-notes-wrap">
-          <textarea class="hn-notes" id="hnNotes" placeholder="Важная информация, которую нужно передать: незакрытые вопросы, ожидаемые события, контакты, особые указания..." oninput="hnSave()"></textarea>
-        </div>
-      </div>
-
-      <!-- Хранилище смен -->
-      <div class="hn-section" id="hnStorageSection">
-        <div class="hn-section-header">
-          <span class="hn-section-title">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-            Хранилище смен <span class="hn-cnt" id="hnArchiveCnt" style="display:none">0</span>
-          </span>
-        </div>
-        <div id="hnStorageList" class="hn-storage-list">
-          <div class="hn-empty" id="hnStorageEmpty">Пока нет сохранённых смен. Нажмите «Сохранить в хранилище» после заполнения формы.</div>
-        </div>
-      </div>
-
-      <!-- Футер -->
       <div class="hn-footer">
-        <button class="hn-btn-primary" onclick="hnSaveToStorage()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8 15 3"/></svg>
-          Сохранить в хранилище
-        </button>
-        <button class="hn-btn-reset" onclick="hnNewShift()">Новая смена</button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- HANDOVER MODAL (подтверждение сохранения) -->
-  <div id="hnModal" class="hn-modal-overlay hidden" onclick="if(event.target===this)hnHideReport()">
-    <div class="hn-modal">
-      <div class="hn-modal-handle"></div>
-      <div class="hn-modal-head">
-        <span class="hn-modal-title">Передача сохранена</span>
-        <button class="hn-close-btn" onclick="hnHideReport()">✕</button>
-      </div>
-      <div class="hn-modal-body">
-        <p class="hn-saved-msg">Передача смены добавлена в хранилище. Вы можете просматривать и разворачивать записи в блоке «Хранилище смен» ниже.</p>
-      </div>
-      <div class="hn-modal-footer">
-        <button class="hn-copy-btn" id="hnGoStorageBtn" onclick="hnGoToStorage()">Перейти к хранилищу</button>
-        <button class="hn-close-btn" onclick="hnHideReport()">Закрыть</button>
+        <button class="hn-btn-reset" onclick="hnResetAll()">Сбросить всё</button>
       </div>
     </div>
   </div>
-  <!-- /ПЕРЕДАЧА СМЕНЫ -->
+  <!-- /ЗАДАЧНИК -->
 
   <!-- IMAGE MODAL -->
   <div id="imgModal" onclick="handleModalClick(event)">
@@ -2926,46 +2837,28 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     document.addEventListener('visibilitychange', () => { if (!document.hidden) clSaveState(); });
   </script>
   <script>
-  /* ===== ПЕРЕДАЧА СМЕНЫ ===== */
-  const HN_KEY = 'hn_state_v1';
-  const HN_ARCHIVE_KEY = 'hn_archive_v1';
-  let hnData = { from:'', shift:'day', tasks:[], events:[], notes:'' };
-  let hnSelPrio = 'normal', hnSelCat = 'ble';
-  const HN_CAT_LABEL = { ble:'BLE', avaria:'Авария', request:'Обращение', replace:'Замена', other:'Другое' };
-  const HN_CAT_SHORT = { ble:'BLE', avaria:'АВАРИЯ', request:'ОБРАЩЕНИЕ', replace:'ЗАМЕНА', other:'ДРУГОЕ' };
+  /* ===== ЗАДАЧНИК ===== */
+  const HN_KEY = 'taskbook_state_v1';
+  let hnData = { user:'', tasks:[] };
+  let hnSelPrio = 'normal';
+  let hnFilter = 'active'; // active | all | done
   const HN_MONTHS = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
   const HN_DAYS = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
   const HN_STATUS_LABEL = { todo: '○ Сделать', doing: '→ В работе', done: '✓ Выполнено' };
-
-  function hnGetArchive() {
-    try { const s = localStorage.getItem(HN_ARCHIVE_KEY); return s ? JSON.parse(s) : []; } catch { return []; }
-  }
-  function hnSetArchive(arr) {
-    localStorage.setItem(HN_ARCHIVE_KEY, JSON.stringify(arr));
-  }
 
   function hnInit() {
     try { const s = localStorage.getItem(HN_KEY); if (s) hnData = JSON.parse(s); } catch {}
     const el = id => document.getElementById(id);
     const now = new Date();
     if (el('hnDateLabel')) el('hnDateLabel').textContent = `${now.getDate()} ${HN_MONTHS[now.getMonth()]} ${now.getFullYear()}, ${HN_DAYS[now.getDay()]}`;
-    if (el('hnFrom')) el('hnFrom').value = hnData.from || '';
-    if (el('hnNotes')) el('hnNotes').value = hnData.notes || '';
-    document.querySelectorAll('.hn-shift-btn').forEach(b => b.classList.toggle('active', b.classList.contains(hnData.shift || 'day')));
-    hnRenderTasks(); hnRenderEvents(); hnRenderAlerts(); hnRenderStorage();
+    if (el('hnUser')) el('hnUser').value = hnData.user || '';
+    hnRenderTasks(); hnRenderAlerts();
   }
 
   function hnSave() {
-    const fromEl = document.getElementById('hnFrom');
-    hnData.from = fromEl ? fromEl.value : '';
-    hnData.notes = (document.getElementById('hnNotes') || {}).value || '';
+    const userEl = document.getElementById('hnUser');
+    hnData.user = userEl ? userEl.value : '';
     localStorage.setItem(HN_KEY, JSON.stringify(hnData));
-  }
-
-  function hnSetShift(type) {
-    hnData.shift = type;
-    document.querySelectorAll('.hn-shift-btn').forEach(b => b.classList.toggle('active', b.classList.contains(type)));
-    hnSave();
   }
 
   function hnEsc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -2976,19 +2869,25 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     const tasks = hnData.tasks || [];
     const statusOrder = { doing:0, todo:1, done:2 };
     const prioOrder = { critical:0, high:1, normal:2 };
-    const sorted = [...tasks].sort((a,b) => {
+    const filtered = tasks.filter(t => {
+      if (hnFilter === 'done') return t.status === 'done';
+      if (hnFilter === 'all') return true;
+      return t.status !== 'done';
+    });
+    const sorted = [...filtered].sort((a,b) => {
       if (statusOrder[a.status] !== statusOrder[b.status]) return statusOrder[a.status] - statusOrder[b.status];
       return (prioOrder[a.priority]||2) - (prioOrder[b.priority]||2);
     });
-    if (!sorted.length) { list.innerHTML = '<div class="hn-empty">Нет задач. Добавьте что нужно сделать следующей смене.</div>'; }
+    if (!sorted.length) { list.innerHTML = '<div class="hn-empty">Нет задач. Добавьте новую задачу и отмечайте выполнение.</div>'; }
     else {
       list.innerHTML = sorted.map(t => {
         const icon = t.status==='done' ? '✓' : t.status==='doing' ? '→' : '';
         const badge = t.priority!=='normal' ? `<span class="hn-prio-badge prio-${t.priority}">${t.priority==='critical'?'Срочно':'Важно'}</span>` : '';
+        const metaLine = (t.date || t.author) ? `<div class="hn-task-meta">${t.date ? hnEsc(t.date) : ''}${t.date && t.author ? ' · ' : ''}${t.author ? `<span>${hnEsc(t.author)}</span>` : ''}</div>` : '';
         const completedByLine = t.status==='done' && (t.completedBy || '').trim() ? `<div class="hn-task-completed-by">Выполнил: <span>${hnEsc(t.completedBy)}</span></div>` : '';
         return `<div class="hn-task" data-status="${hnEsc(t.status)}" data-id="${hnEsc(t.id)}" id="hn-task-${hnEsc(t.id)}">
           <button class="hn-status-btn" onclick="hnCycleStatus('${hnEsc(t.id)}')" title="Изменить статус">${icon}</button>
-          <div>${badge}<span class="hn-task-text">${hnEsc(t.text)}</span>${completedByLine}</div>
+          <div>${badge}<span class="hn-task-text">${hnEsc(t.text)}</span>${metaLine}${completedByLine}</div>
           <button class="hn-del" onclick="hnDelTask('${hnEsc(t.id)}')" title="Удалить">×</button>
         </div>`;
       }).join('');
@@ -3021,7 +2920,7 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     const t = (hnData.tasks||[]).find(x => x.id===id); if (!t) return;
     const next = {todo:'doing', doing:'done', done:'todo'}[t.status] || 'todo';
     if (next === 'done') {
-      const who = prompt('Кто выполнил задачу?', hnData.from || '');
+      const who = prompt('Кто выполнил задачу?', hnData.user || '');
       t.completedBy = (who || '').trim() || '';
       t.completedAt = Date.now();
     } else {
@@ -3038,6 +2937,16 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
     hnSelPrio = 'normal';
     document.querySelectorAll('.hn-pill[data-prio]').forEach(b => b.classList.toggle('active', b.dataset.prio==='normal'));
     document.getElementById('hnTaskForm').style.display = 'flex';
+    const dateInput = document.getElementById('hnTaskDate');
+    if (dateInput) {
+      const today = new Date();
+      const y = today.getFullYear();
+      const m = String(today.getMonth()+1).padStart(2,'0');
+      const d = String(today.getDate()).padStart(2,'0');
+      if (!dateInput.value) dateInput.value = `${y}-${m}-${d}`;
+    }
+    const authorInput = document.getElementById('hnTaskAuthor');
+    if (authorInput) authorInput.value = '';
     document.getElementById('hnTaskInput').value = '';
     document.getElementById('hnTaskInput').focus();
   }
@@ -3050,147 +2959,37 @@ const CL_STORAGE_KEY = 'itssupport_checklist_v5';
   }
 
   function hnConfirmTask() {
-    const text = document.getElementById('hnTaskInput').value.trim(); if (!text) return;
+    const text = document.getElementById('hnTaskInput').value.trim();
+    const date = (document.getElementById('hnTaskDate') || {}).value || '';
+    const author = (document.getElementById('hnTaskAuthor') || {}).value?.trim() || '';
+    if (!text || !date || !author) return;
     if (!hnData.tasks) hnData.tasks = [];
-    hnData.tasks.push({ id: Date.now().toString(36)+Math.random().toString(36).slice(2), text, priority: hnSelPrio, status:'todo' });
+    hnData.tasks.push({
+      id: Date.now().toString(36)+Math.random().toString(36).slice(2),
+      text,
+      date,
+      author,
+      priority: hnSelPrio,
+      status:'todo'
+    });
     hnSave(); hnRenderTasks(); hnHideTaskForm();
   }
-
-  function hnRenderEvents() {
-    const list = document.getElementById('hnEventList');
-    if (!list) return;
-    const events = hnData.events || [];
-    if (!events.length) { list.innerHTML = '<div class="hn-empty">Нет записей. Фиксируйте всё важное, что произошло за смену.</div>'; }
-    else {
-      list.innerHTML = events.map(e => `
-        <div class="hn-event" data-id="${hnEsc(e.id)}">
-          <span class="hn-ev-time">${hnEsc(e.time)}</span>
-          <span class="hn-ev-cat ecat-${hnEsc(e.category)}">${hnEsc(HN_CAT_LABEL[e.category]||e.category)}</span>
-          <span class="hn-ev-text">${hnEsc(e.text)}</span>
-          <button class="hn-del" onclick="hnDelEvent('${hnEsc(e.id)}')" title="Удалить">×</button>
-        </div>`).join('');
-    }
-    const cnt = document.getElementById('hnEventCnt');
-    cnt.textContent = events.length; cnt.style.display = events.length ? '' : 'none';
+  function hnSetFilter(btn) {
+    hnFilter = btn.dataset.filter || 'active';
+    document.querySelectorAll('.hn-pill[data-filter]').forEach(b => b.classList.toggle('active', b.dataset.filter === hnFilter));
+    hnRenderTasks();
   }
 
-  function hnDelEvent(id) { hnData.events = (hnData.events||[]).filter(e => e.id!==id); hnSave(); hnRenderEvents(); }
-
-  function hnShowEventForm() {
-    hnSelCat = 'ble';
-    document.querySelectorAll('.hn-pill[data-cat]').forEach(b => b.classList.toggle('active', b.dataset.cat==='ble'));
-    const now = new Date();
-    document.getElementById('hnEventTime').value = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-    document.getElementById('hnEventForm').style.display = 'flex';
-    document.getElementById('hnEventInput').value = '';
-    document.getElementById('hnEventInput').focus();
-  }
-  function hnHideEventForm() { document.getElementById('hnEventForm').style.display = 'none'; }
-
-  function hnSelCatBtn(btn) {
-    hnSelCat = btn.dataset.cat;
-    document.querySelectorAll('.hn-pill[data-cat]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+  function hnClearDone() {
+    hnData.tasks = (hnData.tasks || []).filter(t => t.status !== 'done');
+    hnSave(); hnRenderTasks();
   }
 
-  function hnConfirmEvent() {
-    const text = document.getElementById('hnEventInput').value.trim(); if (!text) return;
-    const time = document.getElementById('hnEventTime').value || '--:--';
-    if (!hnData.events) hnData.events = [];
-    hnData.events.push({ id: Date.now().toString(36)+Math.random().toString(36).slice(2), time, category: hnSelCat, text });
-    hnSave(); hnRenderEvents(); hnHideEventForm();
+  function hnResetAll() {
+    if (!confirm('Сбросить все задачи?')) return;
+    hnData = { user: hnData.user || '', tasks: [] };
+    hnSave(); hnInit();
   }
-
-  function hnSaveToStorage() {
-    hnSave();
-    const snapshot = {
-      id: Date.now().toString(36) + Math.random().toString(36).slice(2),
-      savedAt: Date.now(),
-      from: hnData.from || '—',
-      shift: hnData.shift || 'day',
-      tasks: (hnData.tasks || []).map(t => ({ ...t })),
-      events: (hnData.events || []).map(e => ({ ...e })),
-      notes: hnData.notes || ''
-    };
-    const archive = hnGetArchive();
-    archive.unshift(snapshot);
-    hnSetArchive(archive);
-    hnRenderStorage();
-    document.getElementById('hnModal').classList.remove('hidden');
-  }
-
-  function hnGoToStorage() {
-    const el = document.getElementById('hnStorageSection');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    hnHideReport();
-  }
-
-  function hnHideReport() { document.getElementById('hnModal').classList.add('hidden'); }
-
-  function hnRenderStorage() {
-    const list = document.getElementById('hnStorageList');
-    const cntEl = document.getElementById('hnArchiveCnt');
-    if (!list) return;
-    const archive = hnGetArchive();
-    if (!archive.length) {
-      list.innerHTML = '<div class="hn-empty" id="hnStorageEmpty">Пока нет сохранённых смен. Нажмите «Сохранить в хранилище» после заполнения формы.</div>';
-      if (cntEl) cntEl.style.display = 'none';
-      return;
-    }
-    if (cntEl) { cntEl.textContent = archive.length; cntEl.style.display = ''; }
-    list.innerHTML = archive.map(item => {
-      const date = new Date(item.savedAt);
-      const dateStr = date.toLocaleDateString('ru-RU', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-      const shift = item.shift === 'day' ? 'День' : 'Ночь';
-      const tasks = item.tasks || [];
-      const doneCount = tasks.filter(t => t.status === 'done').length;
-      const tasksSummary = tasks.length ? `${tasks.length} задач, ${doneCount} выполнено` : 'нет задач';
-      const eventsCount = (item.events || []).length;
-      const bodyId = 'hn-body-' + item.id;
-      const tasksHtml = tasks.length ? tasks.map(t => {
-        const ico = t.status === 'done' ? '✓' : t.status === 'doing' ? '→' : '○';
-        const by = t.status === 'done' && (t.completedBy || '').trim() ? ` <span class="hn-storage-by">выполнил: ${hnEsc(t.completedBy)}</span>` : '';
-        return `<div class="hn-storage-task-line"><span class="hn-status-ico">${ico}</span><span>${hnEsc(t.text)}${by}</span></div>`;
-      }).join('') : '<div class="hn-storage-task-line">Нет задач</div>';
-      const eventsHtml = (item.events || []).map(e => `${hnEsc(e.time)} [${HN_CAT_SHORT[e.category]||e.category}] ${hnEsc(e.text)}`).join('<br>');
-      const notesHtml = (item.notes || '').trim() ? hnEsc(item.notes.trim()) : '';
-      return `<div class="hn-storage-item" data-id="${hnEsc(item.id)}">
-        <div class="hn-storage-head" onclick="hnToggleStorageItem('${hnEsc(item.id)}')">
-          <div class="hn-storage-meta">
-            <strong>${hnEsc(dateStr)} · ${shift}</strong>
-            <span class="hn-storage-stats">${hnEsc(item.from)} · ${tasksSummary} · ${eventsCount} событий</span>
-          </div>
-          <span class="hn-storage-expand">▼</span>
-        </div>
-        <div class="hn-storage-body" id="${bodyId}">
-          <div class="hn-storage-tasks"><div class="hn-storage-tasks-title">Задачи (отслеживание выполнения)</div>${tasksHtml}</div>
-          ${eventsCount ? `<div class="hn-storage-events-title">События</div><div class="hn-storage-event-line">${eventsHtml}</div>` : ''}
-          ${notesHtml ? `<div class="hn-storage-notes">${notesHtml}</div>` : ''}
-          <button type="button" class="hn-storage-del" onclick="hnDeleteFromArchive('${hnEsc(item.id)}'); event.stopPropagation();">Удалить из хранилища</button>
-        </div>
-      </div>`;
-    }).join('');
-  }
-
-  function hnToggleStorageItem(id) {
-    const item = document.querySelector(`.hn-storage-item[data-id="${id}"]`);
-    if (item) item.classList.toggle('open');
-  }
-
-  function hnDeleteFromArchive(id) {
-    const archive = hnGetArchive().filter(item => item.id !== id);
-    hnSetArchive(archive);
-    hnRenderStorage();
-  }
-
-  function hnNewShift() {
-    if (!confirm('Начать новую смену? Все данные текущей смены будут очищены.')) return;
-    hnData = { from: '', shift: hnData.shift || 'day', tasks: [], events: [], notes: '' };
-    localStorage.setItem(HN_KEY, JSON.stringify(hnData));
-    hnInit();
-  }
-
-  document.addEventListener('keydown', e => { if (e.key==='Escape') hnHideReport(); });
   // Инициализация при загрузке и при каждом показе вкладки
   function _hnTryInit() { try { hnInit(); } catch(e) { console.error('[HN] init error:', e); } }
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _hnTryInit); } else { _hnTryInit(); }
